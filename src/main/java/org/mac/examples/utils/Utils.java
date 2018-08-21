@@ -26,7 +26,7 @@ import java.io.IOException;
  **/
 
 public final class Utils {
-    private Utils(){};
+    private Utils(){}
 
     public static <T extends Closeable>void close(T... resources) {
         if (resources == null || resources.length <= 0) {
