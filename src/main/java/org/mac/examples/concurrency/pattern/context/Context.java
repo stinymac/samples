@@ -14,12 +14,18 @@
  * limitations under the License.
  */
 package org.mac.examples.concurrency.pattern.context;
-
+/*
+ *       ___        |
+ *      /_\ `*      |.===.         ,,,,,
+ *     (o o)        {}o o{}       /(o o)\
+ * ooO--(_)--Ooo-ooO--(_)--Ooo-ooO--(_)--Ooo-
+ *
+ * 虽不能至,心向往之。(Although it is not possible, the heart is longing for it.)
+ */
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Entry class description
  *
  * @author Mac
  * @create 2018-06-06 11:24

@@ -1,3 +1,11 @@
+/*
+ *       ___        |
+ *      /_\ `*      |.===.         ,,,,,
+ *     (o o)        {}o o{}       /(o o)\
+ * ooO--(_)--Ooo-ooO--(_)--Ooo-ooO--(_)--Ooo-
+ *
+ * 虽不能至,心向往之。(Although it is not possible, the heart is longing for it.)
+ */
 package org.mac.examples.concurrency.juc.cas;
 
 import sun.misc.Unsafe;
@@ -7,7 +15,6 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * Entry class description
  *
  * @author Mac
  * @create 2018-06-12 10:20
@@ -22,12 +29,12 @@ public interface Counter {
 
         private long counter;
 
-        @Override
+
         public void increment() {
             counter++;
         }
 
-        @Override
+
         public long getCountResult() {
             return counter;
         }
@@ -37,12 +44,12 @@ public interface Counter {
 
         private long counter;
 
-        @Override
+
         public synchronized void increment() {
             counter++;
         }
 
-        @Override
+
         public long getCountResult() {
             return counter;
         }
@@ -52,12 +59,10 @@ public interface Counter {
 
         private AtomicLong counter = new AtomicLong(0);
 
-        @Override
         public  void increment() {
             counter.incrementAndGet();
         }
 
-        @Override
         public long getCountResult() {
             return counter.get();
         }
@@ -67,7 +72,7 @@ public interface Counter {
 
         private long counter ;
         private final Lock lock = new ReentrantLock();
-        @Override
+
         public  void increment() {
             try {
                 lock.lock();
@@ -77,7 +82,7 @@ public interface Counter {
             }
         }
 
-        @Override
+
         public long getCountResult() {
             return counter;
         }
@@ -100,12 +105,10 @@ public interface Counter {
             }
         }
 
-        @Override
         public  void increment() {
             unsafe.getAndAddLong(this, offset, 1L);
         }
 
-        @Override
         public long getCountResult() {
             return counter;
         }

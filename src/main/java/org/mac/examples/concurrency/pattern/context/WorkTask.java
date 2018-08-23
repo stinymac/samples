@@ -16,7 +16,6 @@
 package org.mac.examples.concurrency.pattern.context;
 
 /**
- * Entry class description
  *
  * @author Mac
  * @create 2018-06-06 11:21
