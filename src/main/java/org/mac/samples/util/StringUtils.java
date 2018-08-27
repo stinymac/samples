@@ -5,7 +5,7 @@
   * ooO--(_)--Ooo-ooO--(_)--Ooo-ooO--(_)--Ooo--8---(_)--Ooo----ooO--(_)--Ooo-ooO--(_)--Ooo-ooO--(_)--Ooo-
   *
   *
-  * 虽不能至,心向往之。(Although it is not possible, the heart is longing for it.)
+  * 虽不能至,心向往之。(Although I can't, my heart is longing for it.)
   *
   *
   *       ___        |
