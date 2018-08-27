@@ -1,12 +1,20 @@
 /*
+ *      (             |"|           !!!       #   ___                             o
+ *      _)_          _|_|_       `  _ _  '    #  <_*_>             ,,,         ` /_\ '       __MMM__
+ *     (o o)         (o o)      -  (OXO)  -   #  (o o)            (o o)       - (o o) -       (o o)
+ * ooO--(_)--Ooo-ooO--(_)--Ooo-ooO--(_)--Ooo--8---(_)--Ooo----ooO--(_)--Ooo-ooO--(_)--Ooo-ooO--(_)--Ooo-
+ *
  *       ___        |
  *      /_\ `*      |.===.         ,,,,,
  *     (o o)        {}o o{}       /(o o)\
  * ooO--(_)--Ooo-ooO--(_)--Ooo-ooO--(_)--Ooo-
  *
+ *
  * 虽不能至,心向往之。(Although it is not possible, the heart is longing for it.)
  */
 package org.mac.examples.utils;
+
+import java.util.regex.Pattern;
 
 /**
  * string util
@@ -17,31 +25,47 @@ package org.mac.examples.utils;
 
 public abstract class StringUtils {
 
+    public static final Pattern PATTERN_NUMERIC = Pattern.compile("^-?(0|[1-9][0-9]*)(\\.[0-9]+)?$");
+    public static final Pattern PATTERN_POSITIVE_INTEGER = Pattern.compile("^[1-9][0-9]*$");
+
+
     private StringUtils(){}
 
-    public static boolean isEmpty(String str){
-        return str == null || str.trim().length() <= 0;
+    public static boolean isEmpty(String value){
+        return value == null || value.trim().length() <= 0;
     }
 
-    public static boolean isNotEmpty(String str){return !isEmpty(str);}
+    public static boolean isNotEmpty(String value){return !isEmpty(value);}
 
 
-    public static boolean isNumeric(String str){
-        if (isEmpty(str))
+    public static boolean isNumeric(String value){
+        if (isEmpty(value))
             return false;
-        final String numeric = "^-?(0|[1-9][0-9]*)(\\.[0-9]+)?$";
-        return str.matches(numeric);
+
+        return PATTERN_NUMERIC.matcher(value).matches();
     }
 
-    public static boolean isPositiveInteger(String str){
-        if (isEmpty(str))
+    public static boolean isPositiveInteger(String value){
+        if (isEmpty(value))
             return false;
-        final String positiveInteger = "^[1-9][0-9]*$";
-        return str.matches(positiveInteger);
+
+        return PATTERN_POSITIVE_INTEGER.matcher(value).matches();
     }
 
-    public static boolean isNotPositiveInteger(String str) {
-        return !isPositiveInteger(str);
+    public static boolean isNotPositiveInteger(String value) {
+        return !isPositiveInteger(value);
+    }
+
+    public static void main(String[] args) {
+
+        System.out.println(isNumeric("-.1"));
+        System.out.println(isNumeric("-0.1"));
+        System.out.println(isNumeric("0.1"));
+        System.out.println(isNumeric("0.0000"));
+        System.out.println(isNumeric("-0.0000"));
+        System.out.println(isNumeric("0"));
+        System.out.println(isNumeric("-0"));
+        System.out.println(isNumeric("01"));
     }
 }
 
