@@ -8,9 +8,14 @@
  */
 package org.mac.samples.concurrency.thread.threadpool;
 
-import org.mac.samples.utils.StringUtils;
+import org.mac.samples.util.StringUtils;
 
-import java.util.*;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Properties;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -177,7 +182,7 @@ public class SimpleThreadPool extends Thread implements ThreadPool {
                 int currentPoolSize = pool.size();
                 if (taskQueue.isEmpty() && currentPoolSize > activeThreadNum) {
                     int releaseNum = currentPoolSize - activeThreadNum;
-                    for (Iterator<Executor> it = pool.iterator();it.hasNext();){
+                    for (Iterator<Executor> it = pool.iterator(); it.hasNext();){
                         if (releaseNum <= 0) {
                             break;
                         }

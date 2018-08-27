@@ -8,9 +8,14 @@
  */
 package org.mac.samples.io.nio;
 
-import org.mac.samples.utils.Utils;
+import org.mac.samples.util.Utils;
 
-import java.io.*;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.MappedByteBuffer;

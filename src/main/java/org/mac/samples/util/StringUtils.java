@@ -12,7 +12,7 @@
  *
  * 虽不能至,心向往之。(Although it is not possible, the heart is longing for it.)
  */
-package org.mac.samples.utils;
+package org.mac.samples.util;
 
 import java.util.regex.Pattern;
 

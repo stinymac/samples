@@ -8,7 +8,7 @@
  */
 package org.mac.samples.io.nio.non_blocking;
 
-import org.mac.samples.utils.Utils;
+import org.mac.samples.util.Utils;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;

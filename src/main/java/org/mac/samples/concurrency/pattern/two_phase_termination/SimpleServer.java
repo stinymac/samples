@@ -8,7 +8,7 @@
  */
 package org.mac.samples.concurrency.pattern.two_phase_termination;
 
-import org.mac.samples.utils.Utils;
+import org.mac.samples.util.Utils;
 
 import java.io.IOException;
 import java.net.ServerSocket;
