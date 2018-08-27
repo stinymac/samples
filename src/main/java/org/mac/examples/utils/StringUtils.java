@@ -55,17 +55,5 @@ public abstract class StringUtils {
     public static boolean isNotPositiveInteger(String value) {
         return !isPositiveInteger(value);
     }
-
-    public static void main(String[] args) {
-
-        System.out.println(isNumeric("-.1"));
-        System.out.println(isNumeric("-0.1"));
-        System.out.println(isNumeric("0.1"));
-        System.out.println(isNumeric("0.0000"));
-        System.out.println(isNumeric("-0.0000"));
-        System.out.println(isNumeric("0"));
-        System.out.println(isNumeric("-0"));
-        System.out.println(isNumeric("01"));
-    }
 }
 
