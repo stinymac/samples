@@ -6,7 +6,7 @@
  *
  * 虽不能至,心向往之。(Although it is not possible, the heart is longing for it.)
  */
-package org.mac.samples.concurrency.juc.utils.Semaphore;
+package org.mac.samples.concurrency.juc.utils.semaphore;
 
 import java.util.concurrent.Semaphore;
 
