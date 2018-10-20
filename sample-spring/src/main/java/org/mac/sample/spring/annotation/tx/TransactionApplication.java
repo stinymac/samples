@@ -23,7 +23,6 @@
 
 package org.mac.sample.spring.annotation.tx;
 
-import org.mac.sample.spring.annotation.lifecycle.config.LifeCycleApplicationConfiguration;
 import org.mac.sample.spring.annotation.tx.config.TransactionApplicationConfiguration;
 import org.mac.sample.spring.annotation.tx.service.SimpleService;
 import org.springframework.context.ApplicationContext;

@@ -41,7 +41,7 @@ public class SimpleRepository {
     public JdbcTemplate jdbcTemplate;
 
     public void insert(){
-        String sql = "insert into user (name,age) values (?,?)";
+        String sql = "INSERT INTO `test`.`t_user`(`name`, `age`) VALUES ( ?, ?)";
         String name = UUID.randomUUID().toString().substring(0,5).toUpperCase();
         jdbcTemplate.update(sql,name,18);
     }
