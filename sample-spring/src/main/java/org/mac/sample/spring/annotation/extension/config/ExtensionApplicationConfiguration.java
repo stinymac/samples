@@ -35,7 +35,9 @@ import org.springframework.context.annotation.Configuration;
  * @date 2018-10-22
  */
 @Configuration
-@ComponentScan("org.mac.sample.spring.annotation.extension.processor")
+@ComponentScan({"org.mac.sample.spring.annotation.extension.processor",
+                "org.mac.sample.spring.annotation.extension.listener",
+                "org.mac.sample.spring.annotation.extension.service"})
 public class ExtensionApplicationConfiguration {
 
     @Bean(initMethod = "init",destroyMethod = "destroy")

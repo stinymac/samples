@@ -25,6 +25,7 @@ package org.mac.sample.spring.annotation.extension;
 
 import org.mac.sample.spring.annotation.extension.config.ExtensionApplicationConfiguration;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationEvent;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 /**
@@ -39,7 +40,8 @@ public class ExtensionApplication {
 
         ApplicationContext context =
                 new AnnotationConfigApplicationContext(ExtensionApplicationConfiguration.class);
-
+        context.publishEvent(new ApplicationEvent("simple custom application event") {
+        });
         ((AnnotationConfigApplicationContext)context).close();
 
     }
