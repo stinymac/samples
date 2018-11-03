@@ -25,14 +25,20 @@ package org.mac.sample.spring.annotation.extension.processor;
 
 import org.mac.sample.spring.annotation.extension.bean.Dog;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.beans.factory.config.BeanDefinitionHolder;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProcessor;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
+import org.springframework.beans.factory.support.RootBeanDefinition;
+import org.springframework.context.annotation.ConfigurationClassPostProcessor;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -56,13 +62,51 @@ import java.util.List;
 public class SimpleBeanDefinitionRegistryPostProcessor implements BeanDefinitionRegistryPostProcessor{
 
     public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) throws BeansException {
-        System.out.println("postProcessBeanDefinitionRegistry()执行时容器中Bean的数量:"+registry.getBeanDefinitionCount());
+        System.out.println("PostProcessBeanDefinitionRegistry()执行时容器中Bean的数量:"+registry.getBeanDefinitionCount());
+
+        if (registry instanceof DefaultListableBeanFactory){
+            DefaultListableBeanFactory defaultListableBeanFactory = (DefaultListableBeanFactory) registry;
+            defaultListableBeanFactory.registerAlias("cat","cat-1");
+            defaultListableBeanFactory.canonicalName("");
+        }
+        System.err.println("-->");
+        System.err.println(registry.getBeanDefinition("cat"));
+
+        RootBeanDefinition rootBeanDefinition  = (RootBeanDefinition)registry.getBeanDefinition("cat");
+
+
+        //Class<?> beanClass = rootBeanDefinition.getBeanClass();
+        //System.err.println(rootBeanDefinition.getBeanClassName());
+        BeanDefinitionHolder holder = rootBeanDefinition.getDecoratedDefinition();
+        System.out.println("-->"+holder);
+
+
+
+
 
         AbstractBeanDefinition beanDefinition = BeanDefinitionBuilder.rootBeanDefinition(Dog.class).getBeanDefinition();
         registry.registerBeanDefinition("dog",beanDefinition);
+
+        System.err.println(registry);
     }
 
     public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
         System.out.println("BeanFactoryPostProcessor()执行时容器中Bean的数量:"+beanFactory.getBeanDefinitionCount());
+        System.err.println(beanFactory.getBean("cat-1"));
+
+        System.err.println(beanFactory.getBeanDefinition("cat"));
+        //System.err.println(beanFactory.getBeanDefinition("cat-1"));
+        RootBeanDefinition rootBeanDefinition  = (RootBeanDefinition)beanFactory.getBeanDefinition("cat");
+
+        BeanDefinitionHolder holder = rootBeanDefinition.getDecoratedDefinition();
+        System.out.println("-->"+holder);
+
+        ConfigurationClassPostProcessor configurationClassPostProcessor = beanFactory.getBean(ConfigurationClassPostProcessor.class);
+
+        if (configurationClassPostProcessor != null) {
+            //configurationClassPostProcessor.setBeanNameGenerator(beanName);
+        }
+
+        System.err.println(beanFactory);
     }
 }
