@@ -42,7 +42,7 @@ public class OneCondition implements Condition {
      * ConditionContext：判断条件能使用的上下文（环境）
      * AnnotatedTypeMetadata：注释信息
      */
-    @Override
+
     public boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata) {
         //能获取到ioc使用的beanfactory
         ConfigurableListableBeanFactory beanFactory = context.getBeanFactory();
