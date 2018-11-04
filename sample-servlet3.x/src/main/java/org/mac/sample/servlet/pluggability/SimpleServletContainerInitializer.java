@@ -23,10 +23,18 @@
 
 package org.mac.sample.servlet.pluggability;
 
+import org.mac.sample.servlet.SimpleFilter;
+import org.mac.sample.servlet.SimpleServlet;
+import org.mac.sample.servlet.SimpleServletContextListener;
+
+import javax.servlet.DispatcherType;
+import javax.servlet.FilterRegistration;
 import javax.servlet.ServletContainerInitializer;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
+import javax.servlet.ServletRegistration;
 import javax.servlet.annotation.HandlesTypes;
+import java.util.EnumSet;
 import java.util.Set;
 
 /**
@@ -68,7 +76,7 @@ import java.util.Set;
  * @auther mac
  * @date 2018-11-04
  */
-@HandlesTypes(value = {CustomizeServlet.class})
+@HandlesTypes(value = {CustomizeService.class})
 public class SimpleServletContainerInitializer implements ServletContainerInitializer {
     /**
      *
@@ -80,5 +88,14 @@ public class SimpleServletContainerInitializer implements ServletContainerInitia
         for(Class<?> c:set){
             System.out.println("-->"+c.getName());
         }
+        //注册Servlet组建(servlet filter listener)
+        ServletRegistration.Dynamic srd = servletContext.addServlet("simpleServlet",new SimpleServlet());
+        srd.addMapping("/simple");
+
+        servletContext.addListener(SimpleServletContextListener.class);
+
+        FilterRegistration.Dynamic frd = servletContext.addFilter("simple-filter",new SimpleFilter());
+
+        frd.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST),true,"/*");
     }
 }

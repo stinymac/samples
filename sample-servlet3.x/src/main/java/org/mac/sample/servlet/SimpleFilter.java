@@ -23,15 +23,34 @@
 
 package org.mac.sample.servlet;
 
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import java.io.IOException;
 
 /**
- * org.mac.sample.servlet
+ * filter
  *
  * @auther mac
  * @date 2018-11-04
  */
-@WebServlet("/")
-public class IndexServlet extends HttpServlet {
+public class SimpleFilter implements Filter {
+
+    public void init(FilterConfig filterConfig) throws ServletException {
+
+    }
+
+
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+        System.out.println("simple filter run...");
+        chain.doFilter(request,response);
+    }
+
+
+    public void destroy() {
+
+    }
 }

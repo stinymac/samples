@@ -21,13 +21,21 @@
  *
  */
 
-package org.mac.sample.servlet.pluggability;
+package org.mac.sample.servlet;
+
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
- * sample
+ * servlet
  *
  * @auther mac
  * @date 2018-11-04
  */
-public class SimpleServlet implements CustomizeServlet {
+public class SimpleServlet extends HttpServlet {
+    @Override
+    public void doGet(HttpServletRequest req, HttpServletResponse resp){
+        System.out.println("Simple servlet run...");
+    }
 }

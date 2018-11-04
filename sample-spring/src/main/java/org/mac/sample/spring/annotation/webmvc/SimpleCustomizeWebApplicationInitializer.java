@@ -21,13 +21,31 @@
  *
  */
 
-package org.mac.sample.servlet.pluggability;
+package org.mac.sample.spring.annotation.webmvc;
+
+
+import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
+
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
 
 /**
- * sample
+ * Spring mvc 注册到servlet容器
  *
  * @auther mac
  * @date 2018-11-04
  */
-public class HelloWorldServlet implements CustomizeServlet {
+public class SimpleCustomizeWebApplicationInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
+
+    protected Class<?>[] getRootConfigClasses() {
+        return new Class[0];
+    }
+
+    protected Class<?>[] getServletConfigClasses() {
+        return new Class[0];
+    }
+
+    protected String[] getServletMappings() {
+        return new String[0];
+    }
 }

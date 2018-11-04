@@ -24,10 +24,10 @@
 package org.mac.sample.servlet.pluggability;
 
 /**
- * org.mac.sample.servlet
+ * sample
  *
  * @auther mac
  * @date 2018-11-04
  */
-public interface CustomizeServlet {
+public class HelloWorldService implements CustomizeService {
 }
