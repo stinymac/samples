@@ -26,8 +26,6 @@ package org.mac.sample.spring.annotation.webmvc;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
 
 /**
  * Spring mvc 注册到servlet容器
