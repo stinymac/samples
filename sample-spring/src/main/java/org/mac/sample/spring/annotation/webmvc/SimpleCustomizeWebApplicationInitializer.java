@@ -24,6 +24,8 @@
 package org.mac.sample.spring.annotation.webmvc;
 
 
+import org.mac.sample.spring.annotation.webmvc.config.ApplicationConfiguration;
+import org.mac.sample.spring.annotation.webmvc.config.SpringMVCApplicationConfiguration;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.AbstractContextLoaderInitializer;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
@@ -85,21 +87,38 @@ import javax.servlet.ServletContext;
  *         @see AbstractAnnotationConfigDispatcherServletInitializer#createServletApplicationContext()
  *
  * -----------------------------------------------------------------------------------------------------------------
+ * tip:
  * Mechanism of Operation(运作机制)、opposed(对抗)、in combination with(与...结合) compliant(兼容)
+ *
+ *
+ *
  * @auther mac
  * @date 2018-11-04
  */
 public class SimpleCustomizeWebApplicationInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
-
+    /**
+     * 指定根容器的配置类
+     *
+     * @return
+     */
     protected Class<?>[] getRootConfigClasses() {
-        return new Class[0];
+        return new Class[]{ApplicationConfiguration.class};
     }
-
+    /**
+     * 指定Spring MVC Web容器的配置类
+     *
+     * @return
+     */
     protected Class<?>[] getServletConfigClasses() {
-        return new Class[0];
+        return new Class[]{SpringMVCApplicationConfiguration.class};
     }
 
+    /**
+     * 指定Servlet(即 org.springframework.web.servlet.DispatchServlet)的映射
+     * @return
+     */
     protected String[] getServletMappings() {
-        return new String[0];
+        // 拦截全部请求 如 *.js 、*.png ... 不包括 *.jsp
+        return new String[]{"/"};
     }
 }
