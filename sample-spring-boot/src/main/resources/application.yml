@@ -1,0 +1,46 @@
+########################################################################################
+# YAML (YAML Ain't Markup Language)
+#   YAML A Markup Language
+#   YAML isn't Markup Language
+#   YAML 以数据为中心
+#
+# YAML 语法
+#   key(空格)value 表示键值对 空格是必须的
+#   以空格的缩进来控制层级关系 左对齐的一列数据都是同一层级
+#   属性和值都是大小写敏感的
+# YAML 值的表达
+#
+#   字面量:数字 字符串 布尔值
+#   字符串默认不加单引号或双引号
+#   "": 不会转义特殊字符
+#   '': 转义特殊字符
+#
+#   对象
+#   person:
+#       name: jerry
+#       age: 20
+#   或 person: {name: jerry,age: 20}
+#
+#   数组
+#   pets:
+#    - cat
+#    - dog
+#    - pig
+#   或 pets: [cat,dog,pig]
+#
+########################################################################################
+sample:
+ user:
+  name: tom
+  age: 23
+  vip: true
+  birthday: 1993/10/28
+  identityCard:
+   code: 51
+   issuingAuthority: TPS
+  addresses:
+    - {province: S,city: B,district: T,detail: Z}
+    - {province: B,city: B,district: C,detail: A}
+  properties: {y: 100,m: 10}
+
+
