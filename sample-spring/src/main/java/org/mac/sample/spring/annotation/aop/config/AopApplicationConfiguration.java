@@ -124,7 +124,7 @@ import java.util.List;
  * // priorityOrderedPostProcessors
  * org.springframework.context.annotation.internalCommonAnnotationProcessor    //@see{@link CommonAnnotationBeanPostProcessor}
  * // orderedPostProcessors
- * org.springframework.aop.config.internalAutoProxyCreator(启用了AOP功能)       //@see{@link AnnotationAwareAspectJAutoProxyCreator}
+ * org.springframework.aop.autoconfig.internalAutoProxyCreator(启用了AOP功能)       //@see{@link AnnotationAwareAspectJAutoProxyCreator}
  * // nonOrderedPostProcessors (普通的PostProcessors,这里为0)
  *
  * @see {@link org.springframework.context.support.PostProcessorRegistrationDelegate#registerBeanPostProcessors(ConfigurableListableBeanFactory, AbstractApplicationContext)}
@@ -288,19 +288,19 @@ import java.util.List;
  *                                           @see {@link ProxyCreatorSupport#createAopProxy()}
  *                                               @see {@link DefaultAopProxyFactory#createAopProxy(AdvisedSupport)}
  *
- *                                               if (config.isOptimize() || config.isProxyTargetClass() || hasNoUserSuppliedProxyInterfaces(config)) {
- *                                                   Class<?> targetClass = config.getTargetClass();
+ *                                               if (autoconfig.isOptimize() || autoconfig.isProxyTargetClass() || hasNoUserSuppliedProxyInterfaces(autoconfig)) {
+ *                                                   Class<?> targetClass = autoconfig.getTargetClass();
  *                                                   if (targetClass == null) {
  *                                                       throw new AopConfigException("TargetSource cannot determine target class: " +
  *                                                                 "Either an interface or a target is required for proxy creation.");
  *                                                   }
  *                                                   if (targetClass.isInterface() || Proxy.isProxyClass(targetClass)) {
- *                                                       return new JdkDynamicAopProxy(config);
+ *                                                       return new JdkDynamicAopProxy(autoconfig);
  *                                                   }
- *                                                   return new ObjenesisCglibAopProxy(config);
+ *                                                   return new ObjenesisCglibAopProxy(autoconfig);
  *                                               }
  *                                               else {
- *                                                   return new JdkDynamicAopProxy(config);
+ *                                                   return new JdkDynamicAopProxy(autoconfig);
  *                                               }
  *                 至此容器中的一个代理Bean对象创建完成
  *

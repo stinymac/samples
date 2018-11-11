@@ -29,18 +29,19 @@
 #   或 pets: [cat,dog,pig]
 #
 ########################################################################################
-sample:
- user:
-  name: tom
-  age: 23
-  vip: true
-  birthday: 1993/10/28
-  identityCard:
-   code: 51
-   issuingAuthority: TPS
-  addresses:
-    - {province: S,city: B,district: T,detail: Z}
-    - {province: B,city: B,district: C,detail: A}
-  properties: {y: 100,m: 10}
+
+#sample:
+# person:
+#  name: tom
+#  age: 23
+#  vip: true
+#  birthday: 1993/10/28
+#  identityCard:
+#   code: 51
+#   issuingAuthority: TPS
+#  addresses:
+#    - {province: S,city: B,district: T,detail: Z}
+#    - {province: B,city: B,district: C,detail: A}
+#  properties: {y: 100,m: 10}
 
 

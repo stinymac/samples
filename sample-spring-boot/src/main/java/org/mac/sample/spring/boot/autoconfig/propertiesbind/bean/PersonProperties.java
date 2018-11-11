@@ -21,7 +21,7 @@
  *
  */
 
-package org.mac.sample.spring.boot.config.propertiesbind.bean;
+package org.mac.sample.spring.boot.autoconfig.propertiesbind.bean;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
@@ -39,7 +39,7 @@ import java.util.Map;
  * @date 2018-11-10
  */
 @Component
-@ConfigurationProperties(prefix = "sample.user")
+@ConfigurationProperties(prefix = "sample.person")
 public class PersonProperties {
 
     private String name;

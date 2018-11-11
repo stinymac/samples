@@ -55,7 +55,7 @@ import javax.sql.DataSource;
 import java.lang.reflect.Method;
 
 /**
- * config
+ * autoconfig
  *
  *
  * Spring 事务分析
