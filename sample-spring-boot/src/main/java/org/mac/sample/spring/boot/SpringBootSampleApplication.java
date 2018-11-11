@@ -31,8 +31,10 @@ import org.springframework.boot.autoconfigure.AutoConfigurationPackages;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import org.springframework.boot.autoconfigure.http.HttpProperties;
 import org.springframework.context.annotation.ConfigurationClassPostProcessor;
 import org.springframework.context.annotation.DeferredImportSelector;
+import org.springframework.context.annotation.ImportResource;
 import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.io.support.SpringFactoriesLoader;
 import org.springframework.core.type.AnnotationMetadata;
@@ -165,6 +167,43 @@ import java.util.Collection;
  *
  * 所以SpringBoot默认支持的自动装配组件全部将被注册到Spring容器中
  *
+ * 例如:
+ * @see org.springframework.boot.autoconfigure.web.servlet.HttpEncodingAutoConfiguration
+ * @see org.springframework.boot.autoconfigure.http.HttpProperties
+ * <pre>
+ *     // 指定为配置类
+ *     @Configuration
+ *     // 启动HttpProperties的ConfigurationProperties
+ *     // @ConfigurationProperties将HttpProperties对象的属性和配置文件中的对应配置绑定
+ *     @EnableConfigurationProperties(HttpProperties.class)
+ *     // 条件注入 判断当前应用是否为Web应用
+ *     @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
+ *     // 条件注入 判断CharacterEncodingFilter类是否存在
+ *     @ConditionalOnClass(CharacterEncodingFilter.class)
+ *     // 条件注入 判断配置文件中spring.http.encoding.enabled是否存在
+ *     // matchIfMissing = true表示配置文件中不存在spring.http.encoding.enabled
+ *     // spring.http.encoding.enabled = true 为默认
+ *
+ *     @ConditionalOnProperty(prefix = "spring.http.encoding", value = "enabled", matchIfMissing = true)
+ *     public class HttpEncodingAutoConfiguration {
+ *         @Bean
+ *         // Conditional that only matches when no beans of the specified classes and/or
+ *         // with the specified names are already contained in the BeanFactory.
+ *         // 即CharacterEncodingFilter的实例不存在在容器中
+ * 	       @ConditionalOnMissingBean
+ * 	       public CharacterEncodingFilter characterEncodingFilter() {
+ * 		       CharacterEncodingFilter filter = new OrderedCharacterEncodingFilter();
+ * 		       filter.setEncoding(this.properties.getCharset().name());
+ * 		       filter.setForceRequestEncoding(this.properties.shouldForce(Type.REQUEST));
+ * 		       filter.setForceResponseEncoding(this.properties.shouldForce(Type.RESPONSE));
+ * 		       return filter;
+ * 	       }
+ *         ......
+ *     }
+ * </pre>
+ *
+ * 自动配置类一般都要在一定条件下才能生效
+ * 可以在配置文件中设置debug = true 控制台将输出自动配置报告 可以查看启用和未启用的自动配置组件
  *
  * @auther mac
  * @date 2018-10-10

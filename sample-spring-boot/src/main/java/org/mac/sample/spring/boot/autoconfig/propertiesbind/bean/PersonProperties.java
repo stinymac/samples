@@ -24,6 +24,7 @@
 package org.mac.sample.spring.boot.autoconfig.propertiesbind.bean;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -39,6 +40,7 @@ import java.util.Map;
  * @date 2018-11-10
  */
 @Component
+@PropertySource(value = {"classpath:person.properties"})
 @ConfigurationProperties(prefix = "sample.person")
 public class PersonProperties {
 
