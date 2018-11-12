@@ -31,10 +31,8 @@ import org.springframework.boot.autoconfigure.AutoConfigurationPackages;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import org.springframework.boot.autoconfigure.http.HttpProperties;
 import org.springframework.context.annotation.ConfigurationClassPostProcessor;
 import org.springframework.context.annotation.DeferredImportSelector;
-import org.springframework.context.annotation.ImportResource;
 import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.io.support.SpringFactoriesLoader;
 import org.springframework.core.type.AnnotationMetadata;
