@@ -161,7 +161,7 @@ import java.util.Collection;
  * 		   }
  *     }
  * </pre>
- * @see {@link spring-boot-autoconfigure-2.1.0.RELEASE-sources.jar!/META-INF/spring.factories}
+ * @see <a>spring-boot-autoconfigure-2.1.0.RELEASE-sources.jar!/META-INF/spring.factories</a>
  *
  * 所以SpringBoot默认支持的自动装配组件全部将被注册到Spring容器中
  *
