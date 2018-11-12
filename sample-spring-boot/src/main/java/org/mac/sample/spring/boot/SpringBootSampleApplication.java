@@ -80,7 +80,7 @@ import java.util.Collection;
  * </pre>
  *
  * @see AutoConfigurationPackages#register(BeanDefinitionRegistry, String...)
-
+ *
  * 向容器中注册了ID为org.springframework.boot.autoconfigure.AutoConfigurationPackages 定义为
  * <pre>
  *     GenericBeanDefinition beanDefinition = new GenericBeanDefinition();
