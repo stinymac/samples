@@ -44,4 +44,9 @@
 #    - {province: B,city: B,district: C,detail: A}
 #  properties: {y: 100,m: 10}
 
+logging:
+  level: {org.mac.sample.spring.boot.log.service: trace}
+  path: ./log
+
+
 

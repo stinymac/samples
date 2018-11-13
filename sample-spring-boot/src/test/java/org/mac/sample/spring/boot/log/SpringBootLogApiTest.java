@@ -27,8 +27,10 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mac.sample.spring.boot.log.service.BizService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -46,6 +48,9 @@ public class SpringBootLogApiTest {
     //slf4j->logback
     private static final Logger slf4jLogger = LoggerFactory.getLogger(SpringBootLogApiTest.class);
 
+    @Autowired
+    private BizService bizService;
+
     @Test
     public void testLogApi(){
         System.out.println(jclLogger);
@@ -55,5 +60,10 @@ public class SpringBootLogApiTest {
         jclLogger.info("jclLogger info......");
         slf4jLogger.debug("slf4jLogger debug......");
         slf4jLogger.info("slf4jLogger info......");
+    }
+
+    @Test
+    public void testLog(){
+        bizService.doSomething();
     }
 }
