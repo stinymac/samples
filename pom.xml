@@ -10,7 +10,9 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>sample-core-java</module>
+        <module>sample-servlet3.x</module>
         <module>sample-spring</module>
+        <module>sample-spring-boot</module>
     </modules>
 
 
