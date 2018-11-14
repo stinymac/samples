@@ -40,7 +40,7 @@ import org.springframework.core.type.AnnotationMetadata;
 import java.util.Collection;
 
 /**
- * Spring Boot 应用主程序入口
+ * Spring Boot 应用主程序入口(自动装配)
  *
  * @see SpringBootApplication
  *
