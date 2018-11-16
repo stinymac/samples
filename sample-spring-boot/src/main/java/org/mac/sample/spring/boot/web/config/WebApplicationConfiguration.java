@@ -26,6 +26,7 @@ package org.mac.sample.spring.boot.web.config;
 import org.springframework.boot.autoconfigure.web.servlet.DispatcherServletAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 
 /**
@@ -34,7 +35,7 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
  * @see DispatcherServletAutoConfiguration
  * @see WebMvcAutoConfiguration
  *
- * 如SpringBoot对静态资源的处理、欢迎页、favicon.ico的处理
+ * SpringBoot对静态资源的处理、欢迎页、favicon.ico的处理
  *
  * 静态资源
  * @see WebMvcAutoConfiguration.WebMvcAutoConfigurationAdapter#addResourceHandlers(ResourceHandlerRegistry)
@@ -105,6 +106,6 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
  * @auther mac
  * @date 2018-11-15
  */
-
-public class WebConfiguration {
+@Configuration
+public class WebApplicationConfiguration {
 }
