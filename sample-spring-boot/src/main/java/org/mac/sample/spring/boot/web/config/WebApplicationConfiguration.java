@@ -99,7 +99,7 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
  * favicon.ico
  *
  * @see WebMvcAutoConfiguration.WebMvcAutoConfigurationAdapter.FaviconConfiguration#faviconHandlerMapping()
- * 即所有的 xx/favicon.ico 都在静态资源文件下找
+ * 即所有的 xx/favicon.ico 都在静态资源路径目录下找
  *
  * <a>http://localhost:8080/favicon.ico</a>
  *
