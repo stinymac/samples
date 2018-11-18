@@ -23,11 +23,19 @@
 
 package org.mac.sample.spring.boot.web.config;
 
+
 import org.springframework.boot.autoconfigure.web.servlet.DispatcherServletAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.servlet.config.annotation.DelegatingWebMvcConfiguration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.view.ContentNegotiatingViewResolver;
+
+import java.util.List;
 
 /**
  * SpringBoot Web 自动装配
@@ -103,9 +111,130 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
  *
  * <a>http://localhost:8080/favicon.ico</a>
  *
+ *
+ *
+ *
+ * SpringBoot 对SpringMVC自动装配
+ *
+ * @see WebMvcAutoConfiguration
+ *
+ * @see <a>https://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#boot-features-spring-mvc-auto-configuration</a>
+ *
+ * Inclusion of ContentNegotiatingViewResolver and BeanNameViewResolver beans.
+ *
+ * ContentNegotiatingViewResolver : 获取容器中的所有视图解析器 选择最合适的一个
+ * <pre>
+ *     @Override
+ * 	   protected void initServletContext(ServletContext servletContext) {
+ * 		Collection<ViewResolver> matchingBeans =
+ * 				BeanFactoryUtils.beansOfTypeIncludingAncestors(obtainApplicationContext(), ViewResolver.class).values();
+ * 		if (this.viewResolvers == null) {
+ * 			this.viewResolvers = new ArrayList<>(matchingBeans.size());
+ * 			for (ViewResolver viewResolver : matchingBeans) {
+ * 				if (this != viewResolver) {
+ * 					this.viewResolvers.add(viewResolver);
+ * 				}
+ * 			}
+ * 		}
+ * 		else {
+ * 			for (int i = 0; i < this.viewResolvers.size(); i++) {
+ * 				ViewResolver vr = this.viewResolvers.get(i);
+ * 				if (matchingBeans.contains(vr)) {
+ * 					continue;
+ * 				}
+ * 				String name = vr.getClass().getName() + i;
+ * 				obtainApplicationContext().getAutowireCapableBeanFactory().initializeBean(vr, name);
+ * 			}
+ *
+ * 		}
+ * 		AnnotationAwareOrderComparator.sort(this.viewResolvers);
+ * 		this.cnmFactoryBean.setServletContext(servletContext);
+ * 	   }
+ * </pre>
+ *
+ * <pre>
+ *     RequestAttributes attrs = RequestContextHolder.getRequestAttributes();
+ * 		Assert.state(attrs instanceof ServletRequestAttributes, "No current ServletRequestAttributes");
+ * 		List<MediaType> requestedMediaTypes = getMediaTypes(((ServletRequestAttributes) attrs).getRequest());
+ * 		if (requestedMediaTypes != null) {
+ * 			List<View> candidateViews = getCandidateViews(viewName, locale, requestedMediaTypes);
+ * 			View bestView = getBestView(candidateViews, requestedMediaTypes, attrs);
+ * 			if (bestView != null) {
+ * 				return bestView;
+ * 			}
+ * 		}
+ * </pre>
+ * @see ContentNegotiatingViewResolver#getBestView(List, List, RequestAttributes)
+ *
+ * Support for serving static resources, including support for WebJars (covered later in this document)).
+ *
+ * Automatic registration of Converter, GenericConverter, and Formatter beans.
+ * 类型转换和格式化
+ *
+ * Support for HttpMessageConverters (covered later in this document).
+ * 转换Http请求和响应 如对象转换Json
+ *
+ * Automatic registration of MessageCodesResolver (covered later in this document).
+ * 如错误代码
+ *
+ * Static index.html support.
+ * Custom Favicon support (covered later in this document).
+ *
+ * Automatic use of a ConfigurableWebBindingInitializer bean (covered later in this document).
+ * 如WebDataBinder
+ *
+ * --------------------------------------------------------------------------------------------------
+ * tip:
+ *
+ * SpringBoot在自动配置时 一般先查看容器中是否有自定义的配置 使用自定义 并合并自定义和自动配置
+ * 没有则使用自动配置
+ *
+ *
  * @auther mac
  * @date 2018-11-15
  */
 @Configuration
-public class WebApplicationConfiguration {
+//@EnableWebMvc 自动配置失效 需要完全自定义配置 SpringMVC
+//原因: @ConditionalOnMissingBean(WebMvcConfigurationSupport.class)标注在WebMvcAutoConfiguration类上
+//即容器中不存在WebMvcConfigurationSupport时自动配置类生效
+//而@EnableWebMvc会导入WebMvcConfigurationSupport
+public class WebApplicationConfiguration implements WebMvcConfigurer {
+
+    /***
+     *  SpringBoot自动配置SpringMVC和自定义扩展SpringMVC配置
+     *
+     *  @see  WebMvcAutoConfiguration.WebMvcAutoConfigurationAdapter
+     *
+     *  @Configuration
+     * 	@Import(EnableWebMvcConfiguration.class)
+     * 	@EnableConfigurationProperties({ WebMvcProperties.class, ResourceProperties.class })
+     * 	@Order(0)
+     * 	public static class WebMvcAutoConfigurationAdapter
+     * 			implements WebMvcConfigurer, ResourceLoaderAware {
+     * 		......
+     * 	}
+     *
+     *
+     * @Import(EnableWebMvcConfiguration.class)
+     *
+     * @see DelegatingWebMvcConfiguration#setConfigurers(List)
+     * <pre>
+     * 	    @Autowired(required = false)
+     * 	    public void setConfigurers(List<WebMvcConfigurer> configurers) {
+     *       	if (!CollectionUtils.isEmpty(configurers)) {
+     *     		    this.configurers.addWebMvcConfigurers(configurers);
+     *          }
+     * 	    }
+     * </pre>
+     * 容器向其中注入了全部的WebMvcConfigurer,自定义扩张的MVC配置被合并到自动配置中
+     *
+     */
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+        registry.addViewController("/").setViewName("login");
+        registry.addViewController("/index.html").setViewName("login");
+    }
+
+
+
 }
