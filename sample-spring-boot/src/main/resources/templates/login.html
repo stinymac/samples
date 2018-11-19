@@ -1,286 +1,36 @@
-<!--
-thymeleaf名称空间:xmlns:th="http://www.thymeleaf.org" 可以在IDE中语法提示
-
-thymeleaf基本语法
-    th:任意html属性 = ${}
-
-    th:* 执行顺序
-
-    1 Fragment inclusion              th:insert
-                                      th:replace
-
-    2 Fragment iteration              th:each
-
-    3 Conditional evaluation          th:if
-                                      th:unless
-                                      th:switch
-                                      th:case
-      --(like c:set)
-    4 Local variable definition       th:object
-                                      th:with
-
-    5 General attribute modification  th:attr
-                                      th:attrprepend
-                                      th:attrappend
-
-    6 Specific attribute modification th:value
-                                      th:href
-                                      th:src
-                                      ...
-
-    7 Text (tag body modification)    th:text
-                                      th:utext
-
-    8 Fragment specification          th:fragment
-
-    9 Fragment removal                th:remove
-
-    表达式语法
-    Simple expressions:
-        Variable Expressions: ${...}
-        获取对象属性、调用对象方法等
-        [
-			eg:
-			/*
-			 * Access to properties using the point (.). Equivalent to calling property getters.
-			 */
-			${person.father.name}
-			/*
-			 * Access to properties can also be made by using brackets ([]) and writing
-			 * the name of the property as a variable or between single quotes.
-			 */
-			${person['father']['name']}
-			/*
-			 * If the object is a map, both dot and bracket syntax will be equivalent to
-			 * executing a call on its get(...) method.
-			 */
-			${countriesByCode.ES}
-			${personsByName['Stephen Zucchini'].age}
-			/*
-			 * Indexed access to arrays or collections is also performed with brackets,
-			 * writing the index without quotes.
-			 */
-			${personsArray[0].name}
-			/*
-			 * Methods can be called, even with arguments.
-			 */
-			${person.createCompleteName()}
-			${person.createCompleteNameWithSeparator('-')}
-        ]
-        访问内置对象
-        [
-            #ctx : the context object.
-            #vars: the context variables.
-            #locale : the context locale.
-            #request : (only in Web Contexts) the HttpServletRequest object.
-            #response : (only in Web Contexts) the HttpServletResponse object.
-            #session : (only in Web Contexts) the HttpSession object.
-            #servletContext : (only in Web Contexts) the ServletContext object.
-            ----------------------------------------------------------------------
-            eg:
-            <span th:text="${#locale.country}">CN</span>
-
-            ${param.size()}
-            ${param.isEmpty()}
-            ${param.containsKey('foo')
-            ${session.size()}
-            ${session.isEmpty()}
-            ${session.containsKey('foo')}
-        ]
-        内置的工具对象
-        [
-            #execInfo : information about the template being processed.
-            #messages : methods for obtaining externalized messages inside variables expressions, in the same way as they
-                        would be obtained using #{…} syntax.
-            #uris : methods for escaping parts of URLs/URIs
-            #conversions : methods for executing the configured conversion service (if any).
-            #dates : methods for java.util.Date objects: formatting, component extraction, etc.
-            #calendars : analogous to #dates , but for java.util.Calendar objects.
-            #numbers : methods for formatting numeric objects.
-            #strings : methods for String objects: contains, startsWith, prepending/appending, etc.
-            #objects : methods for objects in general.
-            #bools : methods for boolean evaluation.
-            #arrays : methods for arrays.
-            #lists : methods for lists.
-            #sets : methods for sets.
-            #maps : methods for maps.
-            #aggregates : methods for creating aggregates on arrays or collections.
-            #ids : methods for dealing with id attributes that might be repeated (for example, as a result of an iteration)
-        ]
-
-
-        Selection Variable Expressions: *{...}
-        选择表达式 基本和$一样 配合th:object使用
-        [
-            <div th:object="${session.user}">
-                <p>Name: <span th:text="*{firstName}">Sebastian</span>.</p>
-                <p>Surname: <span th:text="*{lastName}">Pepper</span>.</p>
-                <p>Nationality: <span th:text="*{nationality}">Saturn</span>.</p>
-            </div>
-        ]
-
-
-        Message Expressions: #{...}
-        取国际化内容
-
-        Link URL Expressions: @{...}
-        [
-            @{/order/process(execId=${execId},execType='FAST')}
-        ]
-
-        Fragment Expressions: ~{...}
-
-    Literals
-        Text literals: 'one text' , 'Another one!' ,…
-        Number literals: 0 , 34 , 3.0 , 12.3 ,…
-        Boolean literals: true , false
-        Null literal: null
-        Literal tokens: one , sometext , main ,…
-    Text operations
-        String concatenation: +
-        Literal substitutions: |The name is ${name}|
-    Arithmetic operations
-        Binary operators: + , - , * , / , %
-        Minus sign (unary operator): -
-    Boolean operations
-        Binary operators: and , or
-        Boolean negation (unary operator): ! , not
-    Comparisons and equality
-        Comparators: > , < , >= , <= ( gt , lt , ge , le )
-        Equality operators: == , != ( eq , ne )
-    Conditional operators
-        If-then: (if) ? (then)
-        If-then-else: (if) ? (then) : (else)
-        Default: (value) ?: (defaultvalue)
-    Special tokens
-        No-Operation: _
-
--->
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-	<title>登录</title>
-	<!--设置跨浏览器的高度一致性 是一种CSS reset的替代方案-->
-	<link rel="stylesheet" href="css/normalize.css" th:href="@{/webjars/normalize.css/8.0.0/normalize.css}">
-	<!--为Bootstrap设计的图标字体-->
-	<link rel="stylesheet" type="text/css" href="css/font-awesome.5.5.0.css" th:href="@{/webjars/font-awesome/5.5.0/css/fontawesome.min.css}">
-
-
-	<link rel="stylesheet" href="css/login.css">
-	<link rel="stylesheet" href="css/sign-up-login.css">
-
-	<script>
-
-        $(function() {
-            $('#login #login-password').focus(function() {
-                $('.login-owl').addClass('password');
-            }).blur(function() {
-                $('.login-owl').removeClass('password');
-            });
-        });
-
-
-        function login(){//登录
-            var username = $("#login-username").val(),
-                password = $("#login-password").val();
-            //判断用户名密码是否为空
-            if(username == ""){
-                $.pt({
-                    target: $("#login-username"),
-                    position: 'r',
-                    align: 't',
-                    width: 'auto',
-                    height: 'auto',
-                    content:"用户名不能为空"
-                });
-                return;
-            }
-            if(password == ""){
-                $.pt({
-                    target: $("#login-password"),
-                    position: 'r',
-                    align: 't',
-                    width: 'auto',
-                    height: 'auto',
-                    content:"密码不能为空"
-                });
-                return;
-            }
-            //用户名只能是15位以下的字母或数字
-            var regExp = new RegExp("^[a-zA-Z0-9_]{1,15}$");
-            if(!regExp.test(username)){
-                $.pt({
-                    target: $("#login-username"),
-                    position: 'r',
-                    align: 't',
-                    width: 'auto',
-                    height: 'auto',
-                    content:"用户名必须为15位以下的字母或数字"
-                });
-                return;
-            }
-        }
-	</script>
-	<style type="text/css">
-		.snow-container {
-			position: fixed;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
-			pointer-events: none;
-			z-index: 100001;
-		}
-	</style>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<title>Sign in Template for Bootstrap</title>
+	<!-- Bootstrap core CSS -->
+	<link href="asserts/css/bootstrap.min.css" th:href="@{/webjars/bootstrap/4.1.3/css/bootstrap.css}" rel="stylesheet">
+	<!-- Custom styles for this template -->
+	<link href="asserts/css/sign-in.css" th:href="@{/asserts/css/sign-in.css}" rel="stylesheet">
 </head>
-
-<body>
-<!-- 雪花背景 -->
-<div class="snow-container"></div>
-<!-- 登录控件 -->
-<div id="login">
-	<div class="wrapper">
-		<!-- 登录页面 -->
-		<div class="login sign-in-htm">
-			<form class="container offset1 loginform">
-				<!-- 猫头鹰控件 -->
-				<div id="owl-login-l" class="login-owl">
-					<div class="hand"></div>
-					<div class="hand hand-r"></div>
-					<div class="arms">
-						<div class="arm"></div>
-						<div class="arm arm-r"></div>
-					</div>
-				</div>
-				<div class="pad input-container">
-					<section class="content">
-						<span class="input input--hideo">
-                                <input class="input__field input__field--hideo" type="text" id="login-username"
-									   autocomplete="off" placeholder="请输入用户名" tabindex="1" maxlength="15" />
-                                <label class="input__label input__label--hideo" for="login-username">
-                                    <i class="fa fa-fw fa-user icon icon--hideo"></i>
-                                    <span class="input__label-content input__label-content--hideo"></span>
-                                </label>
-						</span>
-						<span class="input input--hideo">
-                                <input class="input__field input__field--hideo" type="password" id="login-password" placeholder="请输入密码" tabindex="2" maxlength="15"/>
-                                <label class="input__label input__label--hideo" for="login-password">
-                                    <i class="fa fa-fw fa-lock icon icon--hideo"></i>
-                                    <span class="input__label-content input__label-content--hideo"></span>
-                                </label>
-                        </span>
-					</section>
-				</div>
-				<div class="form-actions">
-					<input class="btn btn-primary" type="button" tabindex="3" onclick="login()" value="登录" style="color:white;" />
-				</div>
-			</form>
+<body class="text-center">
+	<form class="form-sign-in" action="dashboard.html" th:action="@{/user/login}" method="post">
+		<img class="mb-4" th:src="@{/asserts/img/bootstrap-solid.svg}" src="asserts/img/bootstrap-solid.svg" alt="" width="72" height="72">
+		<h1 class="h3 mb-3 font-weight-normal" th:text="#{login.title}">Please sign in</h1>
+		<!--判断-->
+		<p style="color: red" th:text="${msg}" th:if="${not #strings.isEmpty(msg)}"></p>
+		<label class="sr-only" th:text="#{login.username}">Username</label>
+		<input type="text"  name="username" class="form-control" placeholder="Username" th:placeholder="#{login.username}" required="" autofocus="">
+		<label class="sr-only" th:text="#{login.password}">Password</label>
+		<input type="password" name="password" class="form-control" placeholder="Password" th:placeholder="#{login.password}" required="">
+		<div class="checkbox mb-3">
+			<label>
+				<input type="checkbox" value="remember-me"/> [[#{login.remember}]]
+			</label>
 		</div>
-	</div>
-</div>
+		<button class="btn btn-lg btn-primary btn-block" type="submit" th:text="#{login.btn}">Sign in</button>
+		<p class="mt-5 mb-3 text-muted">© 2017-2018</p>
+		<a class="btn btn-sm" th:href="@{/index.html(local='zh_CN')}">中文</a>
+		<a class="btn btn-sm" th:href="@{/index.html(local='en_US')}">English</a>
+	</form>
 </body>
 
 </html>
