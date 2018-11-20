@@ -71,7 +71,7 @@ import org.springframework.stereotype.Service;
  * Spring Framwork自身使用的日志则是spring-jcl即Spring包装过的jcl
  * 程序中使用的是
  * private static final Log logger = LogFactory.getLog(*.class);
- * 但是Spring通过编程实现了日志框将的适配
+ * 但是Spring通过编程实现了日志框架的适配
  * @see org.apache.commons.logging.LogFactory#getLog(Class)
  * <pre>
  *     return LogAdapter.createLog(name);
