@@ -6,7 +6,7 @@ debug：当此属性设置为true时，将打印出logback内部日志信息，�
 -->
 <configuration scan="false" scanPeriod="60 seconds" debug="false">
     <!-- 定义日志的根目录 -->
-    <property name="LOG_HOME" value="/app/log" />
+    <property name="LOG_HOME" value="./log" />
     <!-- 定义日志文件名称 -->
     <property name="appName" value="sample-spring-boot"></property>
     <!-- ch.qos.logback.core.ConsoleAppender 表示控制台输出 -->
@@ -68,13 +68,15 @@ debug：当此属性设置为true时，将打印出logback内部日志信息，�
     -->
     <logger name="org.mac.sample" level="debug" />
     <!-- Spring framework logger -->
-    <logger name="org.springframework" level="debug" additivity="false"></logger>
+    <logger name="org.springframework" level="trace" additivity="false">
+        <appender-ref ref="appLogAppender" />
+    </logger>
 
     <!-- 
     root与logger是父子关系，没有特别定义则默认为root，任何一个类只会和一个logger对应，
     要么是定义的logger，要么是root，判断的关键在于找到这个logger，然后判断这个logger的appender和level。 
     -->
-    <root level="info">
+    <root level="trace">
         <appender-ref ref="stdout" />
         <appender-ref ref="appLogAppender" />
     </root>

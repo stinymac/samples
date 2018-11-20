@@ -23,10 +23,10 @@
 
 package org.mac.sample.spring.boot.web.config;
 
-
 import org.springframework.boot.autoconfigure.web.servlet.DispatcherServletAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.ConditionContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.servlet.config.annotation.DelegatingWebMvcConfiguration;
@@ -235,6 +235,56 @@ public class WebApplicationConfiguration implements WebMvcConfigurer {
         registry.addViewController("/index.html").setViewName("login");
     }
 
-
-
+    /**
+     * @see WebMvcAutoConfiguration.WebMvcAutoConfigurationAdapter#localeResolver()
+     *
+     * <pre>
+     *      @Bean
+     * 		@ConditionalOnMissingBean
+     * 		@ConditionalOnProperty(prefix = "spring.mvc", name = "locale")
+     * 		public LocaleResolver localeResolver() {
+     * 			if (this.mvcProperties
+     * 					.getLocaleResolver() == WebMvcProperties.LocaleResolver.FIXED) {
+     * 				return new FixedLocaleResolver(this.mvcProperties.getLocale());
+     * 			}
+     * 			AcceptHeaderLocaleResolver localeResolver = new AcceptHeaderLocaleResolver();
+     * 			localeResolver.setDefaultLocale(this.mvcProperties.getLocale());
+     * 			return localeResolver;
+     * 		}
+     * </pre>
+     *
+     * @ConditionalOnMissingBean 按Bean搜索匹配,缺失则注册生效
+     * Bean条件匹配注册
+     * @see org.springframework.boot.autoconfigure.condition.OnBeanCondition#getMatchingBeans(ConditionContext, OnBeanCondition.BeanSearchSpec)
+     *
+     * 条件匹配日志:
+     * Condition OnBeanCondition on org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration$WebMvcAutoConfigurationAdapter#localeResolver matched due to @ConditionalOnMissingBean (types: org.springframework.web.servlet.LocaleResolver; SearchStrategy: all) did not find any beans
+     * 条件匹配搜索策略
+     * <pre>
+     *    public enum SearchStrategy {
+     *
+     * 	      //Search only the current context.
+     *        CURRENT,
+     *
+     * 	      //Search all ancestors(祖先), but not the current context.
+     *        ANCESTORS,
+     *
+     * 	      //Search the entire hierarchy.
+     *        ALL
+     *    }
+     * </pre>
+     *
+     * 因此这里注册自定义LocaleResolver时不能写为
+     * <pre>
+     *     public SimpleCustomizeLocaleResolver simpleCustomizeLocaleResolver()
+     *     或
+     *     public LocaleResolver simpleCustomizeLocaleResolver()
+     * </pre>
+     *
+     * @return
+     */
+    /*@Bean
+    public LocaleResolver localResolver(){
+        return new SimpleCustomizeLocaleResolver();
+    }*/
 }
