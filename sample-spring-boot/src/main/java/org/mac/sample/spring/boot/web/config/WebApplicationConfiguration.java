@@ -226,7 +226,7 @@ public class WebApplicationConfiguration implements WebMvcConfigurer {
      *          }
      * 	    }
      * </pre>
-     * 容器向其中注入了全部的WebMvcConfigurer,自定义扩张的MVC配置被合并到自动配置中
+     * 容器向其中注入了全部的WebMvcConfigurer,自定义扩展的MVC配置被合并到自动配置中
      *
      */
     @Override
