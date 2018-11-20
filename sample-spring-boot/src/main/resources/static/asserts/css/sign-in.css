@@ -20,7 +20,7 @@ body {
 
 .form-sign-in {
   width: 100%;
-  max-width: 330px;
+  max-width: 350px;
   padding: 15px;
   margin: 0 auto;
 }
@@ -32,6 +32,7 @@ body {
   box-sizing: border-box;
   height: auto;
   padding: 10px;
+  margin: 15px auto;
   font-size: 16px;
 }
 .form-sign-in .form-control:focus {

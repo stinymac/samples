@@ -13,10 +13,10 @@
 </head>
 <body class="text-center">
 	<form class="form-sign-in" action="dashboard.html" th:action="@{/user/login}" method="post">
-		<img class="mb-4" th:src="@{/asserts/img/bootstrap-solid.svg}" src="asserts/img/bootstrap-solid.svg" alt="" width="72" height="72">
+		<img class="mb-4" th:src="@{/asserts/img/icon-spring-boot.png}" src="asserts/img/icon-spring-boot.png" alt="" width="72" height="72">
 		<h1 class="h3 mb-3 font-weight-normal" th:text="#{login.title}">Please sign in</h1>
 		<!--判断-->
-		<p style="color: red" th:text="${msg}" th:if="${not #strings.isEmpty(msg)}"></p>
+		<p style="color: red" th:if="${not #strings.isEmpty(msg)}" th:text="${msg}"></p>
 		<label class="sr-only" th:text="#{login.username}">Username</label>
 		<input type="text"  name="username" class="form-control" placeholder="Username" th:placeholder="#{login.username}" required="" autofocus="">
 		<label class="sr-only" th:text="#{login.password}">Password</label>
@@ -26,10 +26,10 @@
 				<input type="checkbox" value="remember-me"/> [[#{login.remember}]]
 			</label>
 		</div>
-		<button class="btn btn-lg btn-primary btn-block" type="submit" th:text="#{login.btn}">Sign in</button>
+		<button class="btn btn-lg btn-primary btn-block" style="background-color: #76BD1D;border-color: #76BD1D;" type="submit" th:text="#{login.btn}">Sign in</button>
 		<p class="mt-5 mb-3 text-muted">© 2017-2018</p>
-		<a class="btn btn-sm" th:href="@{/index.html(local='zh_CN')}">中文</a>
-		<a class="btn btn-sm" th:href="@{/index.html(local='en_US')}">English</a>
+		<a class="btn btn-sm" th:href="@{/index.html(locale='zh_CN')}">中文</a>
+		<a class="btn btn-sm" th:href="@{/index.html(locale='en_US')}">English</a>
 	</form>
 </body>
 
