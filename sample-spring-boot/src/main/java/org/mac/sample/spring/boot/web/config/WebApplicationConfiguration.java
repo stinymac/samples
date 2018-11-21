@@ -23,6 +23,7 @@
 
 package org.mac.sample.spring.boot.web.config;
 
+import org.mac.sample.spring.boot.web.interceptor.LoginControlInterceptor;
 import org.springframework.boot.autoconfigure.web.servlet.DispatcherServletAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration;
 import org.springframework.context.ApplicationContext;
@@ -30,6 +31,7 @@ import org.springframework.context.annotation.ConditionContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.servlet.config.annotation.DelegatingWebMvcConfiguration;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -233,6 +235,14 @@ public class WebApplicationConfiguration implements WebMvcConfigurer {
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/").setViewName("login");
         registry.addViewController("/index.html").setViewName("login");
+        registry.addViewController("/main.html").setViewName("dashboard");
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+
+        registry.addInterceptor(new LoginControlInterceptor())
+                .addPathPatterns("/**").excludePathPatterns("/","/login","/index.html","/asserts/**","/webjars/**");
     }
 
     /**

@@ -7,15 +7,15 @@
 	<meta name="author" content="">
 	<title>Sign in Template for Bootstrap</title>
 	<!-- Bootstrap core CSS -->
-	<link href="asserts/css/bootstrap.min.css" th:href="@{/webjars/bootstrap/4.1.3/css/bootstrap.min.css}" rel="stylesheet">
+	<link href="asserts/css/bootstrap.min.css" th:href="@{/webjars/bootstrap/4.1.3/css/bootstrap.min.css}" rel="stylesheet" type="text/css" >
 	<!-- Custom styles for this template -->
-	<link href="asserts/css/sign-in.css" th:href="@{/asserts/css/sign-in.css}" rel="stylesheet">
+	<link href="asserts/css/sign-in.css" th:href="@{/asserts/css/sign-in.css}" rel="stylesheet" type="text/css" >
 </head>
 <body class="text-center">
-	<form class="form-sign-in" action="dashboard.html" th:action="@{/user/login}" method="post">
+	<form class="form-sign-in" action="dashboard.html" th:action="@{/login}" method="post">
 		<img class="mb-4" th:src="@{/asserts/img/icon-spring-boot.png}" src="asserts/img/icon-spring-boot.png" alt="" width="72" height="72">
 		<h1 class="h3 mb-3 font-weight-normal" th:text="#{login.title}">Please sign in</h1>
-		<!--判断-->
+		<!--判断 Thymeleaf中th:if 的优先级高于th:text-->
 		<p style="color: red" th:if="${not #strings.isEmpty(msg)}" th:text="${msg}"></p>
 		<label class="sr-only" th:text="#{login.username}">Username</label>
 		<input type="text"  name="username" class="form-control" placeholder="Username" th:placeholder="#{login.username}" required="" autofocus="">
