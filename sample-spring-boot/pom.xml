@@ -25,7 +25,7 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.1.0.RELEASE</version>
-		<!-- lookup parent from repository -->
+		<!-- lookup parent from model -->
 		<relativePath/>
 	</parent>
 
@@ -109,8 +109,9 @@
 		<dependency>
 			<groupId>org.webjars.npm</groupId>
 			<artifactId>popper.js</artifactId>
-			<version>1.14.5</version>
+			<version>1.14.3</version>
 		</dependency>
+
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
