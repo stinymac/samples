@@ -86,6 +86,7 @@ import java.util.Locale;
 public class SimpleCustomizeLocaleResolver implements LocaleResolver {
 
     public static final String LOCALE_PARAMETER_NAME = "locale";
+    public static final String LANGUAGE_COUNTRY_CODE_SPLITTER = "_";
 
     @Override
     public Locale resolveLocale(HttpServletRequest request) {
@@ -94,12 +95,12 @@ public class SimpleCustomizeLocaleResolver implements LocaleResolver {
 
         if (StringUtils.hasText(localeParameter)){
 
-            String[] languageAndCountry = localeParameter.split("_");
+            String[] codes = localeParameter.split(LANGUAGE_COUNTRY_CODE_SPLITTER);
 
-            if(languageAndCountry != null && languageAndCountry.length > 1 ) {
+            if(codes != null && codes.length > 1 ) {
 
-                String language = languageAndCountry[0];
-                String country = languageAndCountry[1];
+                String language = codes[0];
+                String country = codes[1];
 
                 return new Locale(language, country);
             }
