@@ -41,10 +41,8 @@ import java.util.Map;
 @Controller
 public class EmployeeController {
 
-    private static Map<Integer, Employee> employees;
-    static{
-        employees = new HashMap<>();
-
+    private static Map<Integer, Employee> employees = new HashMap<>();
+    static {
         employees.put(1001, new Employee(1001, "Jerry", "Jerry@163.com", 1, new Department(101, "D-AA")));
         employees.put(1002, new Employee(1002, "Tome", "Tome@163.com", 1, new Department(102, "D-BB")));
         employees.put(1003, new Employee(1003, "Alex", "Alex@163.com", 0, new Department(103, "D-CC")));
