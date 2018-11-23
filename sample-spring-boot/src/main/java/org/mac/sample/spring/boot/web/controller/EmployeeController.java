@@ -44,7 +44,7 @@ public class EmployeeController {
     private static Map<Integer, Employee> employees = new HashMap<>();
     static {
         employees.put(1001, new Employee(1001, "Jerry", "Jerry@163.com", 1, new Department(101, "D-AA")));
-        employees.put(1002, new Employee(1002, "Tome", "Tome@163.com", 1, new Department(102, "D-BB")));
+        employees.put(1002, new Employee(1002, "Tom", "Tom@163.com", 1, new Department(102, "D-BB")));
         employees.put(1003, new Employee(1003, "Alex", "Alex@163.com", 0, new Department(103, "D-CC")));
         employees.put(1004, new Employee(1004, "Jack", "Jack@163.com", 0, new Department(104, "D-DD")));
         employees.put(1005, new Employee(1005, "Spike", "Spike@163.com", 1, new Department(105, "D-EE")));
