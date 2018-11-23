@@ -54,7 +54,7 @@
                     </table>
                 </div>
             </main>
-            <form id="deleteEmpForm"  method="post">
+            <form id="delete-emp-form"  method="post">
                 <input type="hidden" name="_method" value="delete"/>
             </form>
         </div>
@@ -64,7 +64,7 @@
     <script>
         $(".deleteBtn").click(function(){
             //删除当前员工的
-            $("#deleteEmpForm").attr("action",$(this).attr("del_uri")).submit();
+            $("#delete-emp-form").attr("action",$(this).attr("del_uri")).submit();
             return false;
         });
     </script>
