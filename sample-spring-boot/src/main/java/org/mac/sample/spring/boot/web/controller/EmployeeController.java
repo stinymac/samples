@@ -27,10 +27,15 @@ import org.mac.sample.spring.boot.web.model.entity.Department;
 import org.mac.sample.spring.boot.web.model.entity.Employee;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * 员工管理
@@ -49,10 +54,65 @@ public class EmployeeController {
         employees.put(1004, new Employee(1004, "Jack", "Jack@163.com", 0, new Department(104, "D-DD")));
         employees.put(1005, new Employee(1005, "Spike", "Spike@163.com", 1, new Department(105, "D-EE")));
     }
+    private static AtomicInteger autoIncrementId = new AtomicInteger(1006);
 
-    @GetMapping("employees")
+    private static Map<Integer, Department> departments = new HashMap<>();
+    static{
+        departments.put(101, new Department(101, "D-AA"));
+        departments.put(102, new Department(102, "D-BB"));
+        departments.put(103, new Department(103, "D-CC"));
+        departments.put(104, new Department(104, "D-DD"));
+        departments.put(105, new Department(105, "D-EE"));
+    }
+
+    @GetMapping("/employees")
     public String list(Model model) {
         model.addAttribute("employees",employees.values());
         return "employee/list";
+    }
+
+    @GetMapping("/employee")
+    public String toAdd(Model model) {
+        model.addAttribute("departments",departments.values());
+        return "employee/edit";
+    }
+
+    @PostMapping("/employee")
+    public String add(Employee employee) {
+
+        Integer employeeId = autoIncrementId.getAndIncrement();
+        employee.setId(employeeId);
+        employee.setDepartment(departments.get(employee.getDepartment().getId()));
+
+        employees.put(employeeId,employee);
+        return "redirect:/employees";
+    }
+
+    @GetMapping("/employee/{id}")
+    public String toEdit(@PathVariable("id") Integer id,Model model) {
+
+        Employee employee = employees.get(id);
+        model.addAttribute("employee",employee);
+
+        model.addAttribute("departments",departments.values());
+
+        return "employee/edit";
+    }
+
+
+    @PutMapping("/employee")
+    public String edit(Employee employee) {
+
+        employee.setDepartment(departments.get(employee.getDepartment().getId()));
+        employees.put(employee.getId(),employee);
+
+        return "redirect:/employees";
+    }
+
+    @DeleteMapping ("/employee/{id}")
+    public String remove(@PathVariable("id") Integer id) {
+
+        employees.remove(id);
+        return "redirect:/employees";
     }
 }

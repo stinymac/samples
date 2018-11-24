@@ -26,7 +26,7 @@ package org.mac.sample.spring.annotation.ioc.component;
 import org.springframework.stereotype.Repository;
 
 /**
- * A repository
+ * A model
  *
  * @auther mac
  * @date 2018-10-06

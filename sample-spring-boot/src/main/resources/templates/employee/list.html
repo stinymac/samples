@@ -23,7 +23,7 @@
             <div th:replace="fragments/sidebar::#sidebar(activeUri='employees')"></div>
 
             <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
-                <h2><a class="btn btn-sm btn-success" href="emp" th:href="@{/emp}">员工添加</a></h2>
+                <h2><a class="btn btn-sm btn-success" href="employee" th:href="@{/employee}">员工添加</a></h2>
                 <div class="table-responsive">
                     <table class="table table-striped table-sm">
                         <thead>
@@ -46,8 +46,9 @@
                             <td th:text="${emp.department.departmentName}"></td>
                             <td th:text="${#dates.format(emp.birth, 'yyyy-MM-dd HH:mm')}"></td>
                             <td>
-                                <a class="btn btn-sm btn-primary" th:href="@{/emp/}+${emp.id}">编辑</a>
-                                <button th:attr="del_uri=@{/emp/}+${emp.id}" class="btn btn-sm btn-danger deleteBtn">删除</button>
+                                <a class="btn btn-sm btn-primary" th:href="@{/employee/}+${emp.id}">编辑</a>
+                                <!--自定义属性-->
+                                <button th:attr="uri=@{/employee/}+${emp.id}" class="btn btn-sm btn-danger delete-btn">删除</button>
                             </td>
                         </tr>
                         </tbody>
@@ -62,9 +63,9 @@
 
     <script th:replace="fragments/scripts"/>
     <script>
-        $(".deleteBtn").click(function(){
+        $(".delete-btn").click(function(){
             //删除当前员工的
-            $("#delete-emp-form").attr("action",$(this).attr("del_uri")).submit();
+            $("#delete-emp-form").attr("action",$(this).attr("uri")).submit();
             return false;
         });
     </script>

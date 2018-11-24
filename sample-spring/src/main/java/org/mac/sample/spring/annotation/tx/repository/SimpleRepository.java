@@ -30,7 +30,7 @@ import org.springframework.stereotype.Repository;
 import java.util.UUID;
 
 /**
- * repository
+ * model
  *
  * @auther mac
  * @date 2018-10-18
