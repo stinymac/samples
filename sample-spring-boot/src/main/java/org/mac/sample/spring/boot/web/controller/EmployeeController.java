@@ -90,6 +90,10 @@ public class EmployeeController {
 
     @GetMapping("/employee/{id}")
     public String toEdit(@PathVariable("id") Integer id,Model model) {
+        // for exception handle test
+        if (id == -1) {
+            throw new RuntimeException("user not exist");
+        }
 
         Employee employee = employees.get(id);
         model.addAttribute("employee",employee);
