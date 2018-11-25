@@ -41,7 +41,7 @@ import javax.servlet.ServletContext;
  * 根据 Servlet 3.0规范 Web容器在启动时会扫描每个Jar包下META-INF/services/javax.servlet.ServletContainerInitializer
  * 文件，若文件存在根据该文件指定的ServletContainerInitializer实现类，Web容器加载该类，执行自定义初始化逻辑。
  *
- * Spring的该文件在spring-web(spring-web-5.1.1.RELEASE.jar)包下
+ * Spring的该文件在spring-web(spring-web-5.1.2.RELEASE.jar)包下
  * 其指定的实现类为
  * org.springframework.web.SpringServletContainerInitializer
  *

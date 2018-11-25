@@ -36,6 +36,10 @@ import java.io.IOException;
  * @date 2018-11-25
  */
 public class SimpleServlet extends HttpServlet {
+
+    public SimpleServlet() {
+        System.out.println("SimpleServlet construct");
+    }
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         this.doPost(req, resp);
