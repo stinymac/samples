@@ -55,7 +55,7 @@ public class LoginController {
                         Map<String,Object> model, HttpSession session){
 
         if(StringUtils.hasText(username) && StringUtils.hasText(password)) {
-            session.setAttribute(SessionKey.USER_LOGIN_FLAG_KEY,"verified");
+            session.setAttribute(SessionKey.CURRENT_LOGIN_USER,"verified");
             return "redirect:/main.html";
         }
         model.put("msg","用户名或密码错误");
