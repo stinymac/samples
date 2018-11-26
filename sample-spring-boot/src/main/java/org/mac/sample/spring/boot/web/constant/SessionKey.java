@@ -31,5 +31,5 @@ package org.mac.sample.spring.boot.web.constant;
  */
 
 public abstract class SessionKey {
-    public static final String USER_LOGIN_KEY = "user_login_";
+    public static final String USER_LOGIN_FLAG_KEY = "current_user";
 }
