@@ -1,42 +1,42 @@
 ##########################################################################################
 #
-# SpringBoot \u914D\u7F6E\u6587\u4EF6\u52A0\u8F7D\u987A\u5E8F
+# SpringBoot 配置文件加载顺序
 #
-# SpringBoot \u542F\u52A8\u65F6\u4F1A\u4ECE\u4EE5\u4E0B\u4F4D\u7F6E
+# SpringBoot 启动时会从以下位置
 #
 # file:./config/
 # file:./
 # classpath:/config/
 # classpath:/
 #
-# \u626B\u63CFapplication.properties\u6216application.yml\u914D\u7F6E\u6587\u4EF6\u5E76\u5168\u90E8\u52A0\u8F7D\u4F5C\u4E3A\u9ED8\u8BA4\u914D\u7F6E\u6587\u4EF6
-# \u5176\u4F18\u5148\u7EA7\u7531\u9AD8\u5230\u4F4E,\u9AD8\u4F18\u5148\u7EA7\u914D\u7F6E\u8986\u76D6\u4F4E\u4F18\u5148\u7EA7\u914D\u7F6E
+# 扫描application.properties或application.yml配置文件并全部加载作为默认配置文件
+#其优先级由高到低,高优先级配置覆盖低优先级配置
 #########################################################################################
 
 
-# \u9879\u76EE\u542F\u52A8\u65F6\u8FD8\u53EF\u4EE5\u901A\u8FC7\u547D\u4EE4\u884C\u53C2\u6570\u6307\u5B9A\u914D\u7F6E\u6587\u4EF6\u8DEF\u5F84
+# 项目启动时还可以通过命令行参数指定配置文件路径
 #
 # java -jar xxx.jar --spring.config.location=C:/Users/mac/Desktop/application.yml
 
 ##########################################################################################
-# SpringBoot \u5916\u90E8\u914D\u7F6E\u52A0\u8F7D\u987A\u5E8F
+# SpringBoot 外部配置加载顺序
 #
-# 01.\u547D\u4EE4\u884C\u53C2\u6570
-# 02.java:comp/env\u7684JNDI\u5C5E\u6027
-# 03.java\u7CFB\u7EDF\u5C5E\u6027(System.getProperties())
-# 04.\u64CD\u4F5C\u7CFB\u7EDF\u73AF\u5883\u53D8\u91CF
-# 05.RandomValuePropertySource\u914D\u7F6E\u7684random.*\u5C5E\u6027\u503C
+# 01.命令行参数
+# 02.java:comp/env的JNDI属性
+# 03.java系统属性(System.getProperties())
+# 04.操作系统环境变量
+# 05.RandomValuePropertySource配置的random.*属性值
 #
-# 06.jar\u5305\u5916\u90E8\u7684application-{profile}.properties\u6216application-{profile}.yml\u914D\u7F6E\u6587\u4EF6
-# 07.jar\u5305\u5185\u90E8\u7684application-{profile}.properties\u6216application-{profile}.yml\u914D\u7F6E\u6587\u4EF6
+# 06.jar包外部的application-{profile}.properties或application-{profile}.yml配置文件
+# 07.jar包内部的application-{profile}.properties或application-{profile}.yml配置文件
 #
-# 08.jar\u5305\u5916\u90E8\u7684application.properties\u6216application.yml\u914D\u7F6E\u6587\u4EF6
-# 09.jar\u5305\u5185\u90E8\u7684application.properties\u6216application.yml\u914D\u7F6E\u6587\u4EF6
+# 08.jar包外部的application.properties或application.yml配置文件
+# 09.jar包内部的application.properties或application.yml配置文件
 #
-# 10.@Configuration\u6CE8\u89E3\u7C7B\u4E0A\u7684@PropertySource\u6307\u5B9A\u7684\u914D\u7F6E\u6587\u4EF6
-# 11.\u901A\u8FC7SpringApplication.setDefaultProperties\u6307\u5B9A\u7684\u5C5E\u6027
+# 10.@Configuration注解类上的@PropertySource指定的配置文件
+# 11.通过SpringApplication.setDefaultProperties指定的属性
 #
-# \u4EE5\u4E0A\u914D\u7F6E\u4F18\u5148\u7EA7\u4ECE\u9AD8\u5230\u5E95\u5F62\u6210\u4E92\u8865\u914D\u7F6E
+# 以上配置优先级从高到底形成互补配置
 ##########################################################################################
 
 server:
