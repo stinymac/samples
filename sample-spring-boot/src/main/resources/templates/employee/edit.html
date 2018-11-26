@@ -27,19 +27,19 @@
                 <form th:action="@{/employee}" method="post">
                     <!--发送put请求修改员工数据-->
                     <!--
-                    1、SpringMVC中配置HiddenHttpMethodFilter;（SpringBoot自动配置好的）
+                    1、SpringMVC中配置HiddenHttpMethodFilter;（SpringBoot自动配置）
                     2、页面创建一个post表单
-                    3、创建一个input项，name="_method";值就是我们指定的请求方式
+                    3、创建一个input项，name="_method";值就是指定的请求方式
                     -->
                     <input type="hidden" name="_method" value="put" th:if="${employee!=null}"/>
                     <input type="hidden" name="id" th:if="${employee!=null}" th:value="${employee.id}">
                     <div class="form-group">
                         <label>LastName</label>
-                        <input name="lastName" type="text" class="form-control" placeholder="zhangsan" th:value="${employee!=null}?${employee.lastName}">
+                        <input name="lastName" type="text" class="form-control" placeholder="mac" th:value="${employee!=null}?${employee.lastName}">
                     </div>
                     <div class="form-group">
                         <label>Email</label>
-                        <input name="email" type="email" class="form-control" placeholder="zhangsan@163.com" th:value="${employee!=null}?${employee.email}">
+                        <input name="email" type="email" class="form-control" placeholder="mac@163.com" th:value="${employee!=null}?${employee.email}">
                     </div>
                     <div class="form-group">
                         <label>Gender</label><br/>
@@ -61,7 +61,7 @@
                     </div>
                     <div class="form-group">
                         <label>Birth</label>
-                        <input name="birth" type="text" class="form-control" placeholder="zhangsan" th:value="${employee!=null}?${#dates.format(employee.birth, 'yyyy-MM-dd HH:mm')}">
+                        <input name="birth" type="text" class="form-control" placeholder="mac" th:value="${employee!=null}?${#dates.format(employee.birth, 'yyyy-MM-dd HH:mm')}">
                     </div>
                     <button type="submit" class="btn btn-primary" th:text="${employee!=null}?'修改':'添加'">添加</button>
                 </form>
