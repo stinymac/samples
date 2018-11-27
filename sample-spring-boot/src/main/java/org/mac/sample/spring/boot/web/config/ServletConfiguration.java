@@ -37,7 +37,9 @@ import org.springframework.boot.web.embedded.tomcat.TomcatWebServer;
 import org.springframework.boot.web.server.WebServerFactory;
 import org.springframework.boot.web.server.WebServerFactoryCustomizer;
 import org.springframework.boot.web.server.WebServerFactoryCustomizerBeanPostProcessor;
+import org.springframework.boot.web.servlet.DynamicRegistrationBean;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.boot.web.servlet.RegistrationBean;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
 import org.springframework.boot.web.servlet.ServletContextInitializerBeans;
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
@@ -79,6 +81,31 @@ public class ServletConfiguration {
      * 				registration.setMultipartConfig(this.multipartConfig);
      * 			}
      * 			return registration;
+     * 		}
+     * </pre>
+     *
+     * Servlet组件注册Bean
+     * @see ServletRegistrationBean
+     * @see FilterRegistrationBean
+     * @see ServletListenerRegistrationBean
+     * 都是ServletContextInitializer的实现类
+     *
+     * @see ServletContextInitializer#onStartup(ServletContext)
+     * @see RegistrationBean#onStartup(ServletContext)
+     * @see RegistrationBean#register(String, ServletContext)
+     * @see DynamicRegistrationBean#register(String, ServletContext)
+     * @see ServletRegistrationBean#addRegistration(String, ServletContext)
+     * <pre>
+     *      String name = getServletName();
+     * 		logger.info("Servlet " + name + " mapped to " + this.urlMappings);
+     * 	    注册Servlet
+     * 		return servletContext.addServlet(name, this.servlet);
+     * </pre>
+     * 嵌入式Servlet容器初始化时会调用全部的ServletContextInitializer
+     * @see ServletWebServerApplicationContext#selfInitialize(ServletContext)
+     * <pre>
+     *     for (ServletContextInitializer beans : getServletContextInitializerBeans()) {
+     * 			beans.onStartup(servletContext);
      * 		}
      * </pre>
      *
