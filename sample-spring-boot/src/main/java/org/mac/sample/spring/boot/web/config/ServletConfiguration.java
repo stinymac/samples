@@ -34,6 +34,7 @@ import org.springframework.boot.autoconfigure.web.servlet.ServletWebServerFactor
 import org.springframework.boot.web.embedded.tomcat.ConfigurableTomcatWebServerFactory;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.embedded.tomcat.TomcatWebServer;
+import org.springframework.boot.web.server.WebServerFactory;
 import org.springframework.boot.web.server.WebServerFactoryCustomizer;
 import org.springframework.boot.web.server.WebServerFactoryCustomizerBeanPostProcessor;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -329,12 +330,11 @@ public class ServletConfiguration {
          * @see WebServerFactoryCustomizerBeanPostProcessor
          * @see WebServerFactoryCustomizerBeanPostProcessor#postProcessBeforeInitialization(org.springframework.boot.web.server.WebServerFactory)
          */
-        return new WebServerFactoryCustomizer<ConfigurableServletWebServerFactory>(){
+        return (WebServerFactory factory)-> {
+
+            ConfigurableServletWebServerFactory configurableServletWebServerFactory = (ConfigurableServletWebServerFactory)factory;
             // WEB容器的自定义配置
-            @Override
-            public void customize(ConfigurableServletWebServerFactory factory) {
-                factory.setPort(8888);
-            }
+            configurableServletWebServerFactory.setPort(8888);
         };
     }
 }
