@@ -68,9 +68,9 @@ debug：当此属性设置为true时，将打印出logback内部日志信息，�
     -->
     <logger name="org.mac.sample" level="debug" />
     <!-- Spring framework logger -->
-    <logger name="org.springframework" level="trace" additivity="false">
-        <!--<appender-ref ref="appLogAppender" />-->
-    </logger>
+    <!--<logger name="org.springframework" level="trace" additivity="true">
+        <appender-ref ref="appLogAppender" />
+    </logger>-->
 
     <!-- 
     root与logger是父子关系，没有特别定义则默认为root，任何一个类只会和一个logger对应，

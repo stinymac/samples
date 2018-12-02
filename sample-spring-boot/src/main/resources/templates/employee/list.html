@@ -29,7 +29,7 @@
                         <thead>
                         <tr>
                             <th>#</th>
-                            <th>lastName</th>
+                            <th>name</th>
                             <th>email</th>
                             <th>gender</th>
                             <th>department</th>
@@ -40,10 +40,10 @@
                         <tbody>
                         <tr th:each="emp:${employees}">
                             <td th:text="${emp.id}"></td>
-                            <td>[[${emp.lastName}]]</td>
+                            <td>[[${emp.name}]]</td>
                             <td th:text="${emp.email}"></td>
                             <td th:text="${emp.gender}==0?'女':'男'"></td>
-                            <td th:text="${emp.department.departmentName}"></td>
+                            <td th:text="${emp.department.name}"></td>
                             <td th:text="${#dates.format(emp.birth, 'yyyy-MM-dd HH:mm')}"></td>
                             <td>
                                 <a class="btn btn-sm btn-primary" th:href="@{/employee/}+${emp.id}">编辑</a>

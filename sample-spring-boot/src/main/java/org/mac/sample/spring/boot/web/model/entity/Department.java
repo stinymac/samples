@@ -33,14 +33,14 @@ package org.mac.sample.spring.boot.web.model.entity;
 public class Department {
 
     private Integer id;
-    private String departmentName;
+    private String name;
 
     public Department() {
     }
 
     public Department(int i, String string) {
         this.id = i;
-        this.departmentName = string;
+        this.name = string;
     }
 
     public Integer getId() {
@@ -51,16 +51,16 @@ public class Department {
         this.id = id;
     }
 
-    public String getDepartmentName() {
-        return departmentName;
+    public String getName() {
+        return name;
     }
 
-    public void setDepartmentName(String departmentName) {
-        this.departmentName = departmentName;
+    public void setName(String departmentName) {
+        this.name = departmentName;
     }
 
     @Override
     public String toString() {
-        return "Department [id=" + id + ", departmentName=" + departmentName + "]";
+        return "Department [id=" + id + ", departmentName=" + name + "]";
     }
 }

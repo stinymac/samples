@@ -36,11 +36,11 @@ public class Employee {
     public Employee() {
     }
 
-    public Employee(Integer id, String lastName, String email, Integer gender,
+    public Employee(Integer id, String name, String email, Integer gender,
                     Department department) {
         super();
         this.id = id;
-        this.lastName = lastName;
+        this.name = name;
         this.email = email;
         this.gender = gender;
         this.department = department;
@@ -48,7 +48,7 @@ public class Employee {
     }
 
     private Integer id;
-    private String lastName;
+    private String name;
     private String email;
     //1 male, 0 female
     private Integer gender;
@@ -63,12 +63,12 @@ public class Employee {
         this.id = id;
     }
 
-    public String getLastName() {
-        return lastName;
+    public String getName() {
+        return name;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getEmail() {
@@ -107,7 +107,7 @@ public class Employee {
     public String toString() {
         return "Employee{" +
                 "id=" + id +
-                ", lastName='" + lastName + '\'' +
+                ", lastName='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", gender=" + gender +
                 ", department=" + department +
