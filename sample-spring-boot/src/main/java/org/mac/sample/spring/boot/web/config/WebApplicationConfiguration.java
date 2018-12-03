@@ -242,7 +242,8 @@ public class WebApplicationConfiguration implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
 
         registry.addInterceptor(new LoginControlInterceptor())
-                .addPathPatterns("/**").excludePathPatterns("/","/login","/index.html","/asserts/**","/webjars/**");
+                .addPathPatterns("/**")
+                .excludePathPatterns("/","/login","/asserts/**","/webjars/**","/index.html");
     }
 
     /**
