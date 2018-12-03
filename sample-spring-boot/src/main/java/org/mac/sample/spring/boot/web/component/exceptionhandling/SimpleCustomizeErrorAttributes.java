@@ -23,6 +23,8 @@
 
 package org.mac.sample.spring.boot.web.component.exceptionhandling;
 
+import org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController;
+import org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration;
 import org.springframework.boot.web.servlet.error.DefaultErrorAttributes;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestAttributes;
@@ -31,7 +33,11 @@ import org.springframework.web.context.request.WebRequest;
 import java.util.Map;
 
 /**
- * 在SpringBoot 的错误处理中BasicErrorController
+ * SpringBoot 的WEB错误处理
+ *
+ * @see ErrorMvcAutoConfiguration
+ * @see BasicErrorController
+ *
  * 操作的数据都取自ErrorAttributes,默认为DefaultErrorAttributes
  * 类的实例,因此重写DefaultErrorAttributes可以实现自定义的错误信息
  *
