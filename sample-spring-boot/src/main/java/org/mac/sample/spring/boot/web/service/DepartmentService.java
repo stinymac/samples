@@ -24,7 +24,7 @@
 package org.mac.sample.spring.boot.web.service;
 
 import org.mac.sample.spring.boot.data.mybatis.annotation.DepartmentMapper;
-import org.mac.sample.spring.boot.web.model.entity.Department;
+import org.mac.sample.spring.boot.data.model.entity.Department;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

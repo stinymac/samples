@@ -28,7 +28,7 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
-import org.mac.sample.spring.boot.web.model.entity.Department;
+import org.mac.sample.spring.boot.data.model.entity.Department;
 
 /**
  * 部门

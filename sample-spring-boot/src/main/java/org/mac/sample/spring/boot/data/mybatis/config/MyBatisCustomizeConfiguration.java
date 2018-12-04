@@ -40,7 +40,7 @@ import org.springframework.context.annotation.Configuration;
  * @date 2018-12-04
  */
 @Configuration
-@MapperScan("org.mac.sample.spring.boot.data.mybatis.mapper")
+@MapperScan("org.mac.sample.spring.boot.data.mybatis.annotation")
 public class MyBatisCustomizeConfiguration {
     @Bean
     public ConfigurationCustomizer configurationCustomizer() {

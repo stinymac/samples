@@ -23,8 +23,8 @@
 
 package org.mac.sample.spring.boot.web.controller;
 
-import org.mac.sample.spring.boot.web.model.entity.Department;
-import org.mac.sample.spring.boot.web.model.entity.Employee;
+import org.mac.sample.spring.boot.data.model.entity.Department;
+import org.mac.sample.spring.boot.data.model.entity.Employee;
 import org.mac.sample.spring.boot.web.service.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

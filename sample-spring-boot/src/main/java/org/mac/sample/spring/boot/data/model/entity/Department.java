@@ -21,7 +21,7 @@
  *
  */
 
-package org.mac.sample.spring.boot.web.model.entity;
+package org.mac.sample.spring.boot.data.model.entity;
 
 /**
  * Department

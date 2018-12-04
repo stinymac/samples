@@ -23,6 +23,8 @@
 
 package org.mac.sample.spring.boot.data.mybatis.xml;
 
+import org.mac.sample.spring.boot.data.model.entity.Employee;
+
 /**
  * Employee mapper
  *
@@ -31,4 +33,8 @@ package org.mac.sample.spring.boot.data.mybatis.xml;
  */
 
 public interface EmployeeMapper {
+
+    Employee getEmployeeBy(Integer id);
+
+    void insert(Employee employee);
 }
