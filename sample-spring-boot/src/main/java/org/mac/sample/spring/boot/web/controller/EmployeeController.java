@@ -25,6 +25,8 @@ package org.mac.sample.spring.boot.web.controller;
 
 import org.mac.sample.spring.boot.web.model.entity.Department;
 import org.mac.sample.spring.boot.web.model.entity.Employee;
+import org.mac.sample.spring.boot.web.service.DepartmentService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -65,6 +67,13 @@ public class EmployeeController {
         departments.put(105, new Department(105, "D-EE"));
     }
 
+    private DepartmentService departmentService;
+
+    @Autowired
+    public EmployeeController(DepartmentService departmentService) {
+        this.departmentService = departmentService;
+    }
+
     @GetMapping("/employees")
     public String list(Model model) {
         model.addAttribute("employees",employees.values());
@@ -82,7 +91,7 @@ public class EmployeeController {
 
         Integer employeeId = autoIncrementId.getAndIncrement();
         employee.setId(employeeId);
-        employee.setDepartment(departments.get(employee.getDepartment().getId()));
+        employee.setDepartment(departmentService.get(employee.getDepartment().getId()));
 
         employees.put(employeeId,employee);
         return "redirect:/employees";
