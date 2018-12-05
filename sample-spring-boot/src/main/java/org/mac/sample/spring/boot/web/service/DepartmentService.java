@@ -28,6 +28,8 @@ import org.mac.sample.spring.boot.data.model.entity.Department;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
+
 /**
  *  Department service
  *
@@ -58,6 +60,7 @@ public class DepartmentService {
      */
     @Autowired
     public DepartmentService(DepartmentMapper departmentMapper) {
+        //System.out.println("==========>departmentMapper=======>:"+departmentMapper);
         this.departmentMapper = departmentMapper;
     }
 

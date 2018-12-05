@@ -45,8 +45,7 @@ public class MyBatisCustomizeConfiguration {
     @Bean
     public ConfigurationCustomizer configurationCustomizer() {
 
-        return (org.apache.ibatis.session.Configuration configuration)-> {
+        return (org.apache.ibatis.session.Configuration configuration)->
                 configuration.setMapUnderscoreToCamelCase(true);
-        };
     }
 }
