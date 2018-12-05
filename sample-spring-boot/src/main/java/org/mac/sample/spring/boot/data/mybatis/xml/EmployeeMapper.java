@@ -24,6 +24,7 @@
 package org.mac.sample.spring.boot.data.mybatis.xml;
 
 import org.mac.sample.spring.boot.data.model.entity.Employee;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
@@ -33,7 +34,7 @@ import java.util.List;
  * @auther mac
  * @date 2018-12-04
  */
-
+@Component//for IDEA Could not autowire. No beans of '*Mapper' type found.
 public interface EmployeeMapper {
 
     Employee getEmployeeBy(Integer id);

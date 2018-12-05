@@ -58,9 +58,8 @@ public class DepartmentService {
      * Java类加载实例化的过程中，构造方法是最后一步。
      * @param departmentMapper
      */
-    @Autowired
+    //@Autowired注解在构造函数上是可选的
     public DepartmentService(DepartmentMapper departmentMapper) {
-        //System.out.println("==========>departmentMapper=======>:"+departmentMapper);
         this.departmentMapper = departmentMapper;
     }
 

@@ -68,7 +68,6 @@ public class EmployeeController {
     private DepartmentService departmentService;
     private EmployeeService employeeService;
 
-    @Autowired
     public EmployeeController(DepartmentService departmentService,EmployeeService employeeService) {
         this.departmentService = departmentService;
         this.employeeService = employeeService;

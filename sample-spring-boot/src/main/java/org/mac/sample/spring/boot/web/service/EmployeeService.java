@@ -41,7 +41,7 @@ public class EmployeeService {
 
     private EmployeeMapper employeeMapper;
 
-    @Autowired
+    //@Autowired注解在构造函数上是可选的
     public EmployeeService(EmployeeMapper employeeMapper) {
         this.employeeMapper = employeeMapper;
     }

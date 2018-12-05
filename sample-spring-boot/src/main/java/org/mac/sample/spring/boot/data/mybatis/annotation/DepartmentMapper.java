@@ -29,6 +29,7 @@ import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 import org.mac.sample.spring.boot.data.model.entity.Department;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
@@ -38,6 +39,7 @@ import java.util.List;
  * @auther mac
  * @date 2018-12-04
  */
+@Component//for IDEA Could not autowire. No beans of '*Mapper' type found.
 public interface DepartmentMapper {
     @Select("select * from department where id=#{id}")
     Department getDepartmentBy(Integer id);
