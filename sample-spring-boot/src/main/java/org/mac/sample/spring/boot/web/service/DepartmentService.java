@@ -72,4 +72,8 @@ public class DepartmentService {
     public Department get(Integer departmentId){
        return departmentMapper.getDepartmentBy(departmentId);
     }
+
+    public Object getDepartments() {
+        return departmentMapper.getAll();
+    }
 }

@@ -21,28 +21,51 @@
  *
  */
 
-package org.mac.sample.spring.boot.data.mybatis.xml;
+package org.mac.sample.spring.boot.web.service;
 
 import org.mac.sample.spring.boot.data.model.entity.Employee;
+import org.mac.sample.spring.boot.data.mybatis.xml.EmployeeMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 /**
- * Employee mapper
+ * Employee service
  *
  * @auther mac
- * @date 2018-12-04
+ * @date 2018-12-05
  */
+@Service
+public class EmployeeService {
 
-public interface EmployeeMapper {
+    private EmployeeMapper employeeMapper;
 
-    Employee getEmployeeBy(Integer id);
+    @Autowired
+    public EmployeeService(EmployeeMapper employeeMapper) {
+        this.employeeMapper = employeeMapper;
+    }
 
-    void insert(Employee employee);
+    public Employee get(Integer id){
+        return employeeMapper.getEmployeeBy(id);
+    }
 
-    List<Employee> getAll();
+    public List<Employee> getEmployees(){
+       return employeeMapper.getAll();
+    }
 
-    int update(Employee employee);
+    public Employee save(Employee employee){
 
-    int deleteEmployeeBy(Integer id);
+        employeeMapper.insert(employee);
+
+        return employee;
+    }
+
+    public int update(Employee employee) {
+        return employeeMapper.update(employee);
+    }
+
+    public int remove(Integer id) {
+        return employeeMapper.deleteEmployeeBy(id);
+    }
 }

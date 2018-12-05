@@ -30,6 +30,8 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 import org.mac.sample.spring.boot.data.model.entity.Department;
 
+import java.util.List;
+
 /**
  * 部门
  *
@@ -49,4 +51,7 @@ public interface DepartmentMapper {
 
     @Update("update department set name=#{name} where id=#{id}")
     int update(Department department);
+
+    @Select("select * from department")
+    List<Department> getAll();
 }
