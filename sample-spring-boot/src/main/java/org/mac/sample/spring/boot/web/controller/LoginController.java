@@ -23,7 +23,9 @@
 
 package org.mac.sample.spring.boot.web.controller;
 
+import org.mac.sample.spring.boot.data.model.entity.User;
 import org.mac.sample.spring.boot.web.constant.SessionKey;
+import org.mac.sample.spring.boot.web.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -40,6 +42,13 @@ import java.util.Map;
  */
 @Controller
 public class LoginController {
+
+    private UserService userService;
+
+    public LoginController(UserService userService) {
+        this.userService = userService;
+    }
+
     /**
      * 用户登录
      *
@@ -55,9 +64,21 @@ public class LoginController {
                         Map<String,Object> model, HttpSession session){
 
         if(StringUtils.hasText(username) && StringUtils.hasText(password)) {
-            session.setAttribute(SessionKey.SESSION_USER_KEY,"verified");
+            User user = userService.getUserBy(username);
+            if (user == null) {
+                model.put("msg","用户名或密码错误");
+                return "login";
+            }
+
+            if (!password.equals(user.getPassword())) {
+                model.put("msg","用户名或密码错误");
+                return "login";
+            }
+
+            session.setAttribute(SessionKey.SESSION_USER_KEY,user);
             return "redirect:/main.html";
         }
+
         model.put("msg","用户名或密码错误");
         return "login";
     }

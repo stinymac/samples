@@ -210,7 +210,25 @@ import java.util.Collection;
  */
 @SpringBootApplication
 public class SpringBootSampleApplication {
-
+	/**
+	 * Spring Boot 启动、运行以及自动装配流程分析
+	 *
+	 * SpringApplication.run(SpringBootSampleApplication.class, args);
+	 * 开始执行应用启动
+	 *
+	 * @see SpringApplication#run(java.lang.Class[], java.lang.String[])
+	 * <pre>
+	 *     return new SpringApplication(primarySources).run(args);
+	 * </pre>
+	 *
+	 * 即首先创建Spring应用(new SpringApplication(primarySources))
+	 * @see SpringApplication#SpringApplication(org.springframework.core.io.ResourceLoader, java.lang.Class[])
+	 *
+	 * 然后应用运行
+	 * @see SpringApplication#run(java.lang.String...)
+	 *
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		SpringApplication.run(SpringBootSampleApplication.class, args);
 	}
