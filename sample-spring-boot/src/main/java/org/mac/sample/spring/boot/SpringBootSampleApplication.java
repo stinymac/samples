@@ -28,11 +28,31 @@ import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigurationImportSelector;
 import org.springframework.boot.autoconfigure.AutoConfigurationMetadata;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackages;
+import org.springframework.boot.autoconfigure.BackgroundPreinitializer;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener;
+import org.springframework.boot.builder.ParentContextCloserApplicationListener;
+import org.springframework.boot.cloud.CloudFoundryVcapEnvironmentPostProcessor;
+import org.springframework.boot.context.ConfigurationWarningsApplicationContextInitializer;
+import org.springframework.boot.context.ContextIdApplicationContextInitializer;
+import org.springframework.boot.context.FileEncodingApplicationListener;
+import org.springframework.boot.context.config.AnsiOutputApplicationListener;
+import org.springframework.boot.context.config.ConfigFileApplicationListener;
+import org.springframework.boot.context.config.DelegatingApplicationContextInitializer;
+import org.springframework.boot.context.config.DelegatingApplicationListener;
+import org.springframework.boot.context.logging.ClasspathLoggingApplicationListener;
+import org.springframework.boot.context.logging.LoggingApplicationListener;
+import org.springframework.boot.env.SpringApplicationJsonEnvironmentPostProcessor;
+import org.springframework.boot.env.SystemEnvironmentPropertySourceEnvironmentPostProcessor;
+import org.springframework.boot.liquibase.LiquibaseServiceLocatorApplicationListener;
+import org.springframework.boot.web.context.ServerPortInfoApplicationContextInitializer;
+import org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext;
 import org.springframework.context.annotation.ConfigurationClassPostProcessor;
 import org.springframework.context.annotation.DeferredImportSelector;
+import org.springframework.context.event.AbstractApplicationEventMulticaster;
+import org.springframework.context.event.SimpleApplicationEventMulticaster;
 import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.io.support.SpringFactoriesLoader;
 import org.springframework.core.type.AnnotationMetadata;
@@ -224,8 +244,202 @@ public class SpringBootSampleApplication {
 	 * 即首先创建Spring应用(new SpringApplication(primarySources))
 	 * @see SpringApplication#SpringApplication(org.springframework.core.io.ResourceLoader, java.lang.Class[])
 	 *
+	 * <pre>
+	 *      // 保存ResourceLoader 当前应用ResourceLoader为空
+	 *      this.resourceLoader = resourceLoader;
+	 * 		Assert.notNull(primarySources, "PrimarySources must not be null");
+	 * 	    // 资源类Class对象 当前应用为	SpringBootSampleApplication.class
+	 * 		this.primarySources = new LinkedHashSet<>(Arrays.asList(primarySources));
+	 * 	    // 推断应用类型 即通过加载对应的类 判断是否存在 推断应用类型
+	 * 	    @see org.springframework.boot.WebApplicationType#deduceFromClasspath()
+	 *
+	 * 		this.webApplicationType = WebApplicationType.deduceFromClasspath();
+	 *
+	 * 	    // 保存加载的	ApplicationContextInitializer类型的 initializers(即对Spring上下文初始化 @see org.springframework.context.ApplicationContextInitializer)
+	 *      @see SpringApplication#getSpringFactoriesInstances(java.lang.Class, java.lang.Class[], java.lang.Object...)
+	 *      @see SpringFactoriesLoader#loadSpringFactories(java.lang.ClassLoader)
+	 *      // 即从META-INF/spring.factories文件中加载配置的spring factories,筛选出ApplicationContextInitializer
+	 *      // 然后实例化这些ApplicationContextInitializer并排序 (一般按类上标注的排序注解或对Order的实现)
+	 *      //当前的ApplicationContextInitializer为
+	 *      @see DelegatingApplicationContextInitializer
+	 *      @see org.springframework.boot.autoconfigure.SharedMetadataReaderFactoryContextInitializer
+	 *      @see ContextIdApplicationContextInitializer
+	 *      @see ConfigurationWarningsApplicationContextInitializer
+	 *      @see ServerPortInfoApplicationContextInitializer // 同时实现了ApplicationListener
+	 *      @see ConditionEvaluationReportLoggingListener
+	 *      // @link {spring-boot-2.1.0.RELEASE.jar!/META-INF/spring.factories#org.springframework.context.ApplicationContextInitializer}
+	 *      // @link {spring-boot-autoconfigure-2.1.0.RELEASE.jar!/META-INF/spring.factories#org.springframework.context.ApplicationContextInitializer}
+	 *
+	 * 		setInitializers((Collection) getSpringFactoriesInstances(
+	 * 				ApplicationContextInitializer.class));
+	 *
+	 * 	    // 保存加载的	ApplicationListener类型的 listeners (监听器 @see org.springframework.context.ApplicationListener)
+	 * 	    // 当前的ApplicationListener为
+	 *      @see BackgroundPreinitializer //@see org.springframework.boot.autoconfigure.BackgroundPreinitializer#performPreinitialization()
+	 *      // Liquibase是一个用于数据库重构和迁移的开源工具，通过日志文件的形式记录数据库的变更，
+	 *      // 然后执行日志文件中的修改，将数据库更新或回滚到一致的状态
+	 *      @see LiquibaseServiceLocatorApplicationListener
+	 *      @see LoggingApplicationListener
+	 *      @see ClasspathLoggingApplicationListener
+	 *      @see DelegatingApplicationListener
+	 *      @see ConfigFileApplicationListener
+	 *      @see AnsiOutputApplicationListener
+	 *      @see ParentContextCloserApplicationListener
+	 *      @see org.springframework.boot.ClearCachesApplicationListener
+	 *      @see FileEncodingApplicationListener
+	 *      // @link {spring-boot-autoconfigure-2.1.0.RELEASE.jar!/META-INF/spring.factories}
+	 *      // @link {spring-boot-2.1.0.RELEASE.jar!/META-INF/spring.factories}
+	 *
+	 * 		setListeners((Collection) getSpringFactoriesInstances(ApplicationListener.class));
+	 *      // 推断MainClass
+	 * 		this.mainApplicationClass = deduceMainApplicationClass();
+	 * </pre>
+	 *
 	 * 然后应用运行
 	 * @see SpringApplication#run(java.lang.String...)
+	 * <pre>
+	 *      StopWatch stopWatch = new StopWatch();
+	 * 		stopWatch.start();//秒表启动
+	 * 		ConfigurableApplicationContext context = null;
+	 * 		Collection<SpringBootExceptionReporter> exceptionReporters = new ArrayList<>();
+	 * 	    //java.awt.headless Headless模式是在缺少显示屏、键盘或者鼠标的系统配置。
+	 * 		configureHeadlessProperty();
+	 *
+	 * 	    // 取RunListenners 即同样从META-INF/spring.factories加载 当前为
+	 * 	    @see org.springframework.boot.context.event.EventPublishingRunListener
+	 * 	    // @link {spring-boot-2.1.0.RELEASE.jar!/META-INF/spring.factories}
+	 * 		SpringApplicationRunListeners listeners = getRunListeners(args);
+	 *
+	 * 	    // 当前即广播 ApplicationStartingEvent事件
+	 * 	    @see SimpleApplicationEventMulticaster#multicastEvent(org.springframework.context.ApplicationEvent, org.springframework.core.ResolvableType)
+	 *      @see AbstractApplicationEventMulticaster#getApplicationListeners(org.springframework.context.ApplicationEvent, org.springframework.core.ResolvableType)
+	 *      @see AbstractApplicationEventMulticaster#retrieveApplicationListeners(org.springframework.core.ResolvableType, java.lang.Class, org.springframework.context.event.AbstractApplicationEventMulticaster.ListenerRetriever)
+	 *      // 即从new SpringApplication()时加载的10个ApplicationListener中按支持的事件类型(ApplicationStartingEvent事件)过滤出4个
+	 *      @see LoggingApplicationListener
+	 *      @see BackgroundPreinitializer
+	 *      @see DelegatingApplicationListener
+	 *      @see LiquibaseServiceLocatorApplicationListener
+	 *
+	 *      LoggingApplicationListener#onApplicationStartingEvent获取系统日志类型
+	 *  	@see org.springframework.boot.logging.LoggingSystem#get(java.lang.ClassLoader)
+	 * 	 	// beforeInitialize初始化日志
+	 * 	 	@see org.springframework.boot.logging.logback.LogbackLoggingSystem#beforeInitialize()
+	 *      BackgroundPreinitializer#onApplicationEvent(org.springframework.boot.context.event.SpringApplicationEvent)
+	 * 	    @see BackgroundPreinitializer#performPreinitialization() // 异步执行了一些初始化
+	 *      DelegatingApplicationListener#onApplicationEvent(ApplicationEvent event) // 此时DelegatingApplicationListener什么都不做
+	 * 	    LiquibaseServiceLocatorApplicationListener // 当前不应用
+	 *
+	 * 		listeners.starting();
+	 * 		try {
+	 * 	        // 封装main方法的参数
+	 * 			ApplicationArguments applicationArguments = new DefaultApplicationArguments(args);
+	 *
+	 * 			// 准备环境 当前为WEB环境
+	 *          @see SpringApplication#getOrCreateEnvironment()
+	 * 			@see org.springframework.web.context.support.StandardServletEnvironment
+	 *          @see SpringApplication#configureEnvironment(org.springframework.core.env.ConfigurableEnvironment, java.lang.String[])
+	 *          @see SpringApplication#configurePropertySources(org.springframework.core.env.ConfigurableEnvironment, java.lang.String[])
+	 *          @see SpringApplication#configureProfiles(org.springframework.core.env.ConfigurableEnvironment, java.lang.String[])
+	 *          // 同时广播ApplicationEnvironmentPreparedEvent  同listeners.starting()一样
+	 *          // 从new SpringApplication()时加载的10个ApplicationListener中按支持的事件类型(ApplicationEnvironmentPreparedEvent)过滤出7个
+	 *          @see ConfigFileApplicationListener
+	 *          @see AnsiOutputApplicationListener
+	 *          @see LoggingApplicationListener
+	 *          @see ClasspathLoggingApplicationListener
+	 *          @see BackgroundPreinitializer
+	 *          @see DelegatingApplicationListener
+	 *          @see FileEncodingApplicationListener
+	 *
+	 *          //回调ConfigFileApplicationListener
+	 *          @see ConfigFileApplicationListener#onApplicationEnvironmentPreparedEvent(org.springframework.boot.context.event.ApplicationEnvironmentPreparedEvent)
+	 * 	        // 即从/META-INF/spring.factories加载EnvironmentPostProcessor 如下
+	 * 	        @see SystemEnvironmentPropertySourceEnvironmentPostProcessor
+	 * 	        @see SpringApplicationJsonEnvironmentPostProcessor
+	 * 	        @see CloudFoundryVcapEnvironmentPostProcessor
+	 * 	        // 并将ConfigFileApplicationListener(实现了EnvironmentPostProcessor)本身加入然后排序 最后依次执行
+	 * 	        @see org.springframework.boot.env.SystemEnvironmentPropertySourceEnvironmentPostProcessor#postProcessEnvironment(org.springframework.core.env.ConfigurableEnvironment, org.springframework.boot.SpringApplication)
+	 * 	        @see org.springframework.boot.env.SpringApplicationJsonEnvironmentPostProcessor#postProcessEnvironment(org.springframework.core.env.ConfigurableEnvironment, org.springframework.boot.SpringApplication)
+	 * 	        // VCAP-VMware's Cloud Application Platform //Cloud Foundry is an open platform-as-a-service (PaaS).
+	 * 	        @see org.springframework.boot.cloud.CloudFoundryVcapEnvironmentPostProcessor#postProcessEnvironment(org.springframework.core.env.ConfigurableEnvironment, org.springframework.boot.SpringApplication)
+	 * 	        @see org.springframework.boot.context.config.ConfigFileApplicationListener#addPropertySources(org.springframework.core.env.ConfigurableEnvironment, org.springframework.core.io.ResourceLoader)
+	 *
+	 *          //回调AnsiOutputApplicationListener 即配置spring.output.ansi.enabled
+	 *          @see AnsiOutputApplicationListener#onApplicationEvent(org.springframework.boot.context.event.ApplicationEnvironmentPreparedEvent)
+	 * 	        //回调LoggingApplicationListener
+	 * 	        @see LoggingApplicationListener#onApplicationEnvironmentPreparedEvent(org.springframework.boot.context.event.ApplicationEnvironmentPreparedEvent)
+	 * 	        @see LoggingApplicationListener#initialize(org.springframework.core.env.ConfigurableEnvironment, java.lang.ClassLoader)
+	 * 			//回调ClasspathLoggingApplicationListener即日志输出类路径下的jar
+	 *          @see ClasspathLoggingApplicationListener#onApplicationEvent(org.springframework.context.ApplicationEvent)
+	 *          //回调BackgroundPreinitializer //do nothing
+	 *          @see BackgroundPreinitializer#onApplicationEvent(org.springframework.boot.context.event.SpringApplicationEvent)
+	 *          //回调DelegatingApplicationListener //getListeners 为空 do nothing
+	 *          @see DelegatingApplicationListener#onApplicationEvent(org.springframework.context.ApplicationEvent)
+	 *          //回调FileEncodingApplicationListener 检查spring.mandatory-file-encoding 若没有直接返回
+	 *          @see FileEncodingApplicationListener#onApplicationEvent(org.springframework.boot.context.event.ApplicationEnvironmentPreparedEvent)
+	 *
+	 * 			ConfigurableEnvironment environment = prepareEnvironment(listeners,
+	 * 					applicationArguments);
+	 * 			// 配置ignore bean info //spring.beaninfo.ignore
+	 * 			configureIgnoreBeanInfo(environment);
+	 *
+	 * 			Banner printedBanner = printBanner(environment);
+	 * 		    // 当前为WEB环境，创建AnnotationConfigServletWebServerApplicationContext
+	 *          @see AnnotationConfigServletWebServerApplicationContext#AnnotationConfigServletWebServerApplicationContext()
+	 *          <pre>
+	 *              //this->AnnotationConfigServletWebServerApplicationContext implements AnnotationConfigRegistry
+	 *              this.reader = new AnnotatedBeanDefinitionReader(this);
+	 * 		        this.scanner = new ClassPathBeanDefinitionScanner(this);
+	 *          </pre>
+	 * 			context = createApplicationContext();
+	 *
+	 * 	        // 从/META-INF/spring.factories加载错误报表分析器
+	 * 			exceptionReporters = getSpringFactoriesInstances(SpringBootExceptionReporter.class,new Class[] { ConfigurableApplicationContext.class }, context);
+	 *
+	 * 			// 上下文准备
+	 *
+	 *          @see SpringApplication#postProcessApplicationContext(org.springframework.context.ConfigurableApplicationContext)
+	 *
+	 *          //执行初始化 即依次执行new SpingApplication时从/META-INF/spring.factories加载的6个initializer
+	 *          // DelegatingApplicationContextInitializer 从环境中获取context.initializer.classes的值配置的
+	 *          // 并依次执行 当前环境无context.initializer.classes配置
+	 *          // SharedMetadataReaderFactoryContextInitializer 向上下文注册CachingMetadataReaderFactoryPostProcessor
+	 *          // ContextIdApplicationContextInitializer 向BeanFactory中注册ContextId
+	 *          // ConfigurationWarningsApplicationContextInitializer 向上下文注册ConfigurationWarningsPostProcessor
+	 *          // ServerPortInfoApplicationContextInitializer 向上下文注册其自身 (implements ApplicationListener<WebServerInitializedEvent>)
+	 *          // ConditionEvaluationReportLoggingListener 向上下文注册ConditionEvaluationReportListener
+	 *          @see SpringApplication#applyInitializers(org.springframework.context.ConfigurableApplicationContext)
+	 *
+	 *          // 上下文准备事件发布 即广播ApplicationContextInitializedEvent
+	 *          // 从加载的10个ApplicationListener中按支持的事件类型(ApplicationContextInitializedEvent)匹配到2个
+	 *          @see BackgroundPreinitializer //do nothing
+	 *          @see DelegatingApplicationListener //do nothing
+	 *
+	 * 			prepareContext(context, environment, listeners, applicationArguments,printedBanner);
+	 *
+	 * 			refreshContext(context);
+	 * 			afterRefresh(context, applicationArguments);
+	 * 			stopWatch.stop();
+	 * 			if (this.logStartupInfo) {
+	 * 				new StartupInfoLogger(this.mainApplicationClass)
+	 * 						.logStarted(getApplicationLog(), stopWatch);
+	 * 			}
+	 * 			listeners.started(context);
+	 * 			callRunners(context, applicationArguments);
+	 * 		}
+	 * 		catch (Throwable ex) {
+	 * 			handleRunFailure(context, ex, exceptionReporters, listeners);
+	 * 			throw new IllegalStateException(ex);
+	 * 		}
+	 *
+	 * 		try {
+	 * 			listeners.running(context);
+	 * 		}
+	 * 		catch (Throwable ex) {
+	 * 			handleRunFailure(context, ex, exceptionReporters, null);
+	 * 			throw new IllegalStateException(ex);
+	 * 		}
+	 * 		return context;
+	 * </pre>
 	 *
 	 * @param args
 	 */
@@ -233,3 +447,14 @@ public class SpringBootSampleApplication {
 		SpringApplication.run(SpringBootSampleApplication.class, args);
 	}
 }
+/**
+ * tips:
+ *
+ * Spring字符串分割工具
+ *
+ * @see org.springframework.util.StringUtils#delimitedListToStringArray(java.lang.String, java.lang.String)
+ *
+ * 返回指定键映射到的值，如果不包含该键的映射返回给定的默认值。
+ * @see java.util.Map#getOrDefault(java.lang.Object, java.lang.Object)
+ *
+ */
