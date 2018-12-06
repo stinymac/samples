@@ -36,7 +36,7 @@ import javax.persistence.Table;
  * @auther mac
  * @date 2018-12-05
  */
-@Entity //告诉JPA这是一个实体类（和数据表映射的类）
+@Entity
 @Table(name = "user")
 public class User {
     @Id
