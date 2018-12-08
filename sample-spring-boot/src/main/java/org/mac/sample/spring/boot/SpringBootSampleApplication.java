@@ -390,7 +390,7 @@ public class SpringBootSampleApplication {
 	 *              this.reader = new AnnotatedBeanDefinitionReader(this);
 	 * 		        this.scanner = new ClassPathBeanDefinitionScanner(this);
 	 *          </pre>
-	 * 			context = createApplicationContext();
+	 * 			context = createApplicationContext();// 创建context 创建BeanFactory 并注册了内置的注解配置PostProcess
 	 *
 	 * 	        // 从/META-INF/spring.factories加载错误报表分析器
 	 * 			exceptionReporters = getSpringFactoriesInstances(SpringBootExceptionReporter.class,new Class[] { ConfigurableApplicationContext.class }, context);
@@ -414,9 +414,32 @@ public class SpringBootSampleApplication {
 	 *          @see BackgroundPreinitializer //do nothing
 	 *          @see DelegatingApplicationListener //do nothing
 	 *
-	 * 			prepareContext(context, environment, listeners, applicationArguments,printedBanner);
+	 *          // 加载资源
 	 *
-	 * 			refreshContext(context);
+	 *          // 广播上下文加载完成事件 即广播ApplicationPreparedEvent
+	 *          // 首先将已加载的10个listener放入上下文中
+	 *          <pre>
+	 *              for (ApplicationListener<?> listener : this.application.getListeners()) {
+	 * 			        if (listener instanceof ApplicationContextAware) {
+	 * 				        ((ApplicationContextAware) listener).setApplicationContext(context);
+	 * 			        }
+	 * 			        context.addApplicationListener(listener);
+	 * 		        }
+	 *          </pre>
+	 *          匹配到4个listener 向其广播ApplicationPreparedEvent
+	 *          @see ConfigFileApplicationListener // 上下文加入 @see PropertySourceOrderingPostProcessor
+	 *          @see LoggingApplicationListener //beanFactory.registerSingleton(LOGGING_SYSTEM_BEAN_NAME, this.loggingSystem);
+	 *          @see BackgroundPreinitializer // do nothing
+	 *          @see DelegatingApplicationListener // do nothing
+	 *
+	 * 			prepareContext(context, environment, listeners, applicationArguments,printedBanner);
+	 * 		    <pre>
+	 * 		        load(context, sources.toArray(new Object[0]));// 将@SpringBootApplication标注的类作为配置source注册到容器
+	 * 		    </pre>
+	 *
+	 *
+	 * 			***refreshContext(context);//解析配置 注册Bean 实例化并注册单例Bean ......
+	 *
 	 * 			afterRefresh(context, applicationArguments);
 	 * 			stopWatch.stop();
 	 * 			if (this.logStartupInfo) {
@@ -456,5 +479,10 @@ public class SpringBootSampleApplication {
  *
  * 返回指定键映射到的值，如果不包含该键的映射返回给定的默认值。
  * @see java.util.Map#getOrDefault(java.lang.Object, java.lang.Object)
+ *
+ * properties 文件加载工具
+ * @see org.springframework.core.io.support.PropertiesLoaderUtils#loadProperties(org.springframework.core.io.Resource)
+ *
+ * private static final String XML_FILE_EXTENSION = ".xml";
  *
  */
