@@ -415,6 +415,9 @@ public class SpringBootSampleApplication {
 	 *          @see DelegatingApplicationListener //do nothing
 	 *
 	 *          // 加载资源
+	 *          <pre>
+	 * 	  		    load(context, sources.toArray(new Object[0]));// 将@SpringBootApplication标注的类(即当前类)作为配置source注册到容器
+	 * 	  		</pre>
 	 *
 	 *          // 广播上下文加载完成事件 即广播ApplicationPreparedEvent
 	 *          // 首先将已加载的10个listener放入上下文中
@@ -433,12 +436,24 @@ public class SpringBootSampleApplication {
 	 *          @see DelegatingApplicationListener // do nothing
 	 *
 	 * 			prepareContext(context, environment, listeners, applicationArguments,printedBanner);
-	 * 		    <pre>
-	 * 		        load(context, sources.toArray(new Object[0]));// 将@SpringBootApplication标注的类作为配置source注册到容器
-	 * 		    </pre>
 	 *
-	 *
-	 * 			***refreshContext(context);//解析配置 注册Bean 实例化并注册单例Bean ......
+	 *          //解析配置 注册Bean 实例化并注册单例Bean ......
+	 *          @see org.springframework.context.annotation.ConfigurationClassParser#parse(java.util.Set<org.springframework.beans.factory.config.BeanDefinitionHolder>)
+	 *          @see org.springframework.context.annotation.ConfigurationClassParser#doProcessConfigurationClass
+	 *          @see org.springframework.context.annotation.ComponentScanAnnotationParser#parse
+	 *          @see org.springframework.context.annotation.ClassPathBeanDefinitionScanner#doScan
+	 *          //classpath*:org/mac/sample/spring/boot/**\\/*.class
+	 *          @see org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider#scanCandidateComponents
+	 *          @see org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider#isCandidateComponent(org.springframework.core.type.classreading.MetadataReader)
+	 *          @see org.springframework.context.annotation.AnnotationConfigUtils#applyScopedProxyMode
+	 *          @see org.springframework.context.annotation.ConfigurationClassParser#processConfigurationClass
+	 *          @see org.springframework.context.annotation.ConfigurationClassParser#doProcessConfigurationClass
+	 *          @see org.springframework.context.annotation.ConfigurationClassParser#processImports
+	 *          @see org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader#loadBeanDefinitionsForConfigurationClass
+	 *          @see org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader#loadBeanDefinitionsFromImportedResources
+	 *          @see org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader#loadBeanDefinitionsFromRegistrars
+	 *          @see @link {samples/sample-spring/src/main/java/org/mac/sample/spring/annotation/initialization/SpringAnnotationDriveApplication.java}
+	 * 			***refreshContext(context);
 	 *
 	 * 			afterRefresh(context, applicationArguments);
 	 * 			stopWatch.stop();
