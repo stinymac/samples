@@ -470,7 +470,7 @@ public class SpringBootSampleApplication {
 	 *              @see AutoConfigurationImportSelector
 	 *              //从META-INF/spring.factories下加载EnableAutoConfiguration.class的实现
 	 *              //在当前应用启动时已多次调用org.springframework.core.io.support.SpringFactoriesLoader#loadSpringFactories(java.lang.ClassLoader)
-	 *              //所有这里从缓存中取值(当前208个EnableAutoConfiguration的实现(包含当前工程引用的Mybatis的starter中的EnableAutoConfiguration))
+	 *              //所以这里从缓存中取值(当前208个EnableAutoConfiguration的实现(包含当前工程引用的Mybatis的starter中的EnableAutoConfiguration))
 	 *              @see AutoConfigurationImportSelector#getCandidateConfigurations(org.springframework.core.type.AnnotationMetadata, org.springframework.core.annotation.AnnotationAttributes)
 	 *          ]
 	 *          @see org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader#loadBeanDefinitionsForConfigurationClass
