@@ -437,7 +437,20 @@ public class SpringBootSampleApplication {
 	 *
 	 * 			prepareContext(context, environment, listeners, applicationArguments,printedBanner);
 	 *
-	 *          //解析配置 注册Bean 实例化并注册单例Bean ......
+	 *          //解析配置 自动装配 驱动当前工程的嵌入式Servlet容器启动 注册Bean 实例化并注册单例Bean ......
+	 *          @see ConfigurationClassPostProcessor#postProcessBeanDefinitionRegistry(org.springframework.beans.factory.support.BeanDefinitionRegistry)
+	 *          @see ConfigurationClassPostProcessor#processConfigBeanDefinitions(org.springframework.beans.factory.support.BeanDefinitionRegistry)
+	 *          [
+	 *          org.springframework.context.annotation.internalConfigurationAnnotationProcessor
+	 *          org.springframework.context.annotation.internalAutowiredAnnotationProcessor
+	 *          org.springframework.context.annotation.internalCommonAnnotationProcessor
+	 *          org.springframework.context.annotation.internalPersistenceAnnotationProcessor
+	 *          org.springframework.context.event.internalEventListenerProcessor
+	 *          org.springframework.context.event.internalEventListenerFactory
+	 *          springBootSampleApplication //当前自定义启动入口
+	 *          org.springframework.boot.autoconfigure.internalCachingMetadataReaderFactory
+	 *          ]
+	 *
 	 *          @see org.springframework.context.annotation.ConfigurationClassParser#parse(java.util.Set<org.springframework.beans.factory.config.BeanDefinitionHolder>)
 	 *          @see org.springframework.context.annotation.ConfigurationClassParser#doProcessConfigurationClass
 	 *          @see org.springframework.context.annotation.ComponentScanAnnotationParser#parse
@@ -448,12 +461,21 @@ public class SpringBootSampleApplication {
 	 *          @see org.springframework.context.annotation.AnnotationConfigUtils#applyScopedProxyMode
 	 *          @see org.springframework.context.annotation.ConfigurationClassParser#processConfigurationClass
 	 *          @see org.springframework.context.annotation.ConfigurationClassParser#doProcessConfigurationClass
-	 *          @see org.springframework.context.annotation.ConfigurationClassParser#processImports
+	 *          @see org.springframework.context.annotation.ConfigurationClassParser#processImports //自动装配在这里导入
+	 *          [
+	 *              @see AutoConfigurationImportSelector
+	 *              //从META-INF/spring.factories下加载EnableAutoConfiguration.class的实现
+	 *              //在当前应用启动时已多次调用org.springframework.core.io.support.SpringFactoriesLoader#loadSpringFactories(java.lang.ClassLoader)
+	 *              //所有这里从缓存中取值(当前208个EnableAutoConfiguration的实现(包含当前工程引用的Mybatis的starter中的EnableAutoConfiguration))
+	 *              @see AutoConfigurationImportSelector#getCandidateConfigurations(org.springframework.core.type.AnnotationMetadata, org.springframework.core.annotation.AnnotationAttributes)
+	 *          ]
 	 *          @see org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader#loadBeanDefinitionsForConfigurationClass
 	 *          @see org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader#loadBeanDefinitionsFromImportedResources
 	 *          @see org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader#loadBeanDefinitionsFromRegistrars
 	 *          @see @link {samples/sample-spring/src/main/java/org/mac/sample/spring/annotation/initialization/SpringAnnotationDriveApplication.java}
-	 * 			***refreshContext(context);
+	 *
+	 * 		     // 驱动内置Servlet容器启动 @see org.mac.sample.spring.boot.web.config.ServletConfiguration#webServerFactoryCustomizer()注释分析
+	 * 	     	***refreshContext(context);// @see org.springframework.context.support.AbstractApplicationContext#refresh()
 	 *
 	 * 			afterRefresh(context, applicationArguments);
 	 * 			stopWatch.stop();
