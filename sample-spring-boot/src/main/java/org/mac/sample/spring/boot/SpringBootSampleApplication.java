@@ -23,6 +23,8 @@
 package org.mac.sample.spring.boot;
 
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
+import org.springframework.boot.ApplicationRunner;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.actuate.metrics.web.tomcat.TomcatMetricsBinder;
@@ -493,6 +495,8 @@ public class SpringBootSampleApplication {
 	 * 			listeners.started(context);
 	 *
 	 * 		    // 从上下文取ApplicationRunner和CommandLineRunner	执行 当前为空
+	 *          @see ApplicationRunner
+	 *          @see CommandLineRunner
 	 * 			callRunners(context, applicationArguments);
 	 * 		}
 	 * 		catch (Throwable ex) {
