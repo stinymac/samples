@@ -494,7 +494,7 @@ public class SpringBootSampleApplication {
 	 *          @see TomcatMetricsBinder#onApplicationEvent(org.springframework.boot.context.event.ApplicationStartedEvent)
 	 * 			listeners.started(context);
 	 *
-	 * 		    // 从上下文取ApplicationRunner和CommandLineRunner	执行 当前为空
+	 * 		    // 从上下文取ApplicationRunner和CommandLineRunner的实现执行 当前为空
 	 *          @see ApplicationRunner
 	 *          @see CommandLineRunner
 	 * 			callRunners(context, applicationArguments);
