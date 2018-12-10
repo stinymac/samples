@@ -25,6 +25,8 @@ package org.mac.sample.spring.boot;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.SpringBootConfiguration;
+import org.springframework.boot.actuate.metrics.web.tomcat.TomcatMetricsBinder;
+import org.springframework.boot.admin.SpringApplicationAdminMXBeanRegistrar;
 import org.springframework.boot.autoconfigure.AutoConfigurationImportSelector;
 import org.springframework.boot.autoconfigure.AutoConfigurationMetadata;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackages;
@@ -477,13 +479,20 @@ public class SpringBootSampleApplication {
 	 * 		     // 驱动内置Servlet容器启动 @see org.mac.sample.spring.boot.web.config.ServletConfiguration#webServerFactoryCustomizer()注释分析
 	 * 	     	***refreshContext(context);// @see org.springframework.context.support.AbstractApplicationContext#refresh()
 	 *
+	 *          //do nothing
 	 * 			afterRefresh(context, applicationArguments);
 	 * 			stopWatch.stop();
 	 * 			if (this.logStartupInfo) {
 	 * 				new StartupInfoLogger(this.mainApplicationClass)
 	 * 						.logStarted(getApplicationLog(), stopWatch);
 	 * 			}
+	 * 		    // 发布started事件
+	 * 		    @see BackgroundPreinitializer //do nothig
+	 *          @see DelegatingApplicationListener //do nothig
+	 *          @see TomcatMetricsBinder#onApplicationEvent(org.springframework.boot.context.event.ApplicationStartedEvent)
 	 * 			listeners.started(context);
+	 *
+	 * 		    // 从上下文取ApplicationRunner和CommandLineRunner	执行 当前为空
 	 * 			callRunners(context, applicationArguments);
 	 * 		}
 	 * 		catch (Throwable ex) {
@@ -492,6 +501,10 @@ public class SpringBootSampleApplication {
 	 * 		}
 	 *
 	 * 		try {
+	 * 	        // 发布ApplicationReadyEvent事件
+	 *          @see SpringApplicationAdminMXBeanRegistrar#onApplicationEvent(org.springframework.context.ApplicationEvent)
+	 *          @see BackgroundPreinitializer#onApplicationEvent(org.springframework.boot.context.event.SpringApplicationEvent)
+	 *          @see DelegatingApplicationListener#onApplicationEvent(org.springframework.context.ApplicationEvent)//do nothing
 	 * 			listeners.running(context);
 	 * 		}
 	 * 		catch (Throwable ex) {
