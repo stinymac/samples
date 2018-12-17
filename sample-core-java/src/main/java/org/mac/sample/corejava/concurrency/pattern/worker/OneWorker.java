@@ -33,7 +33,7 @@ public class OneWorker extends Thread{
     @Override
     public void run() {
         while(true) {
-            ProductionLine.Product p = this.productionLine.StepOne();
+            ProductionLine.Product p = this.productionLine.stepOne();
             System.out.println("Step one->" + p);
         }
     }

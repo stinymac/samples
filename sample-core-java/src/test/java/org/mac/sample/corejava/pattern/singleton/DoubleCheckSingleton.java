@@ -16,19 +16,19 @@ package org.mac.sample.corejava.pattern.singleton;
 
 public class DoubleCheckSingleton {
     // 使用volatile 阻止重排序优化而造成的返回的实例对象使用时的NullPointException
-    private static  volatile DoubleCheckSingleton INSTANCE ;
+    private static  volatile DoubleCheckLockSingleton INSTANCE ;
 
     private DoubleCheckSingleton(){
 
     }
 
-    public  static DoubleCheckSingleton getInstance(){
+    public  static DoubleCheckLockSingleton getInstance(){
         if (null == INSTANCE) {
 
-            synchronized (DoubleCheckSingleton.class) {
+            synchronized (DoubleCheckLockSingleton.class) {
 
                 if (null == INSTANCE) {
-                    INSTANCE = new DoubleCheckSingleton();
+                    INSTANCE = new DoubleCheckLockSingleton();
                 }
             }
         }

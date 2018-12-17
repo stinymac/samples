@@ -58,7 +58,7 @@ public class ProductionLine {
     }
 
 
-    public synchronized Product StepOne() {
+    public synchronized Product stepOne() {
         while (counter > MAX_LIMIT) {
             try {
                 this.wait();
@@ -74,7 +74,7 @@ public class ProductionLine {
         return product;
     }
 
-    public synchronized Product StepTwo() {
+    public synchronized Product stepTwo() {
         while (counter <= 0) {
             try {
                 this.wait();
@@ -110,7 +110,7 @@ public class ProductionLine {
         @Override
         public String toString() {
             return "Product{" +
-                    "no='" + no + '\'' +
+                    "No.='" + no + '\'' +
                     ", name='" + name + '\'' +
                     '}';
         }
