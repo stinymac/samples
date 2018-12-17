@@ -14,11 +14,11 @@ package org.mac.sample.corejava.pattern.singleton;
  * @create 2018-05-21 15:11
  **/
 
-public class DoubleCheckSingleton {
+public class DoubleCheckLockSingleton {
     // 使用volatile 阻止重排序优化而造成的返回的实例对象使用时的NullPointException
     private static  volatile DoubleCheckLockSingleton INSTANCE ;
 
-    private DoubleCheckSingleton(){
+    private DoubleCheckLockSingleton(){
 
     }
 
