@@ -32,15 +32,13 @@ public final class Utils {
         if (resources == null || resources.length <= 0) {
             return;
         }
-        for (T resource:resources){
-            if (resource != null) {
-                try {
+        try {
+            for (T resource:resources){
+                if (resource != null)
                     resource.close();
-                } catch (IOException e) {
-                    //e.printStackTrace();
-                    throw new RuntimeException("close resource exception:",e);
-                }
             }
+        } catch (IOException e) {
+            throw new RuntimeException("close resource exception:",e);
         }
     }
 }
