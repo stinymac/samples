@@ -74,21 +74,22 @@ public class SimpleThreadPool extends Thread implements ThreadPool {
             Properties properties = new Properties();
             properties.load(SimpleThreadPool.class.getResourceAsStream("init.properties"));
 
-            String poolInitSize = properties.getProperty("pool-init-size");
+            String poolInitSize = properties.getProperty("pool.init.size");
             initThreadNum = (StringUtils.isNotPositiveInteger(poolInitSize))?DEFAULT_POOL_INIT_THREAD_NUM:Integer.parseInt(poolInitSize);
 
-            String poolActiveSize = properties.getProperty("pool-active-size");
+            String poolActiveSize = properties.getProperty("pool.active.size");
             activeThreadNum = (StringUtils.isNotPositiveInteger(poolActiveSize )) ? DEFAULT_POOL_ACTIVE_THREAD_NUM : Integer.parseInt(poolActiveSize);
 
-            String poolMaxSize = properties.getProperty("pool-max-size");
+            String poolMaxSize = properties.getProperty("pool.max.size");
             maxThreadNum = (StringUtils.isNotPositiveInteger(poolMaxSize)) ? DEFAULT_POOL_MAX_THREAD_NUM :Integer.parseInt(poolMaxSize);
 
-            String taskWaitingQueueSize = properties.getProperty("task-waiting-queue-size");
+            String taskWaitingQueueSize = properties.getProperty("task.waiting.queue.size");
             taskQueueSize = (StringUtils.isNotPositiveInteger(taskWaitingQueueSize)) ? DEFAULT_TASK_QUEUE_SIZE :Integer.parseInt(taskWaitingQueueSize);
+
+            if (!(maxThreadNum >= activeThreadNum && activeThreadNum >= initThreadNum)) {
+                applyDefaultConfiguration();
+            }
         } catch (Exception e) {
-            applyDefaultConfiguration();
-        }
-        if (!(maxThreadNum >= activeThreadNum && activeThreadNum >= initThreadNum)) {
             applyDefaultConfiguration();
         }
     }
