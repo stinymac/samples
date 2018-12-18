@@ -12,7 +12,7 @@
 	<description>Spring annotation driven project</description>
 
 	<parent>
-		<artifactId>some-samples</artifactId>
+		<artifactId>samples</artifactId>
 		<groupId>org.mac</groupId>
 		<version>1.0-SNAPSHOT</version>
 	</parent>
@@ -27,29 +27,29 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
-			<version>5.1.2.RELEASE</version>
+			<version>5.1.3.RELEASE</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-aspects</artifactId>
-			<version>5.1.2.RELEASE</version>
+			<version>5.1.3.RELEASE</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-jdbc</artifactId>
-			<version>5.1.2.RELEASE</version>
+			<version>5.1.3.RELEASE</version>
 		</dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
-            <version>5.1.2.RELEASE</version>
+            <version>5.1.3.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
-            <version>5.1.2.RELEASE</version>
+            <version>5.1.3.RELEASE</version>
         </dependency>
 
 		<dependency>
