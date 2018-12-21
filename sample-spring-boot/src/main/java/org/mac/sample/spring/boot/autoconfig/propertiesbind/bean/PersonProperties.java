@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * A user object
+ * A user info object
  *
  * @ConfigurationProperties 标注的类与配置文件中的值绑定
  *
