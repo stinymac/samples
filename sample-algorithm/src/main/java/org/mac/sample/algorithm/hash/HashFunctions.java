@@ -26,7 +26,6 @@ package org.mac.sample.algorithm.hash;
 /**
  * hash函数
  *
- * @auther mac
  * @date 2018-12-27
  */
 public abstract class HashFunctions {
