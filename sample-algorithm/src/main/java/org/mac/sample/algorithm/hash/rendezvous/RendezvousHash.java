@@ -29,7 +29,7 @@ import com.google.common.hash.HashFunction;
  *     高命中：由于所有客户端都确定将指定key放入同一节点N，因此每次获取或将K放入Node会产生命中率方面的最大效用。
  *     High hit rate: Since all clients agree on placing an key K into the same node N ,
  *     each fetch or placement of K into N yields the maximum utility in terms of hit rate.
- *     除非被Node的某些替换算法驱逐，否则将始终找到K.
+ *     除非被Node的某些替换算法逐出，否则将始终找到K.
  *     The key K will always be found unless it is evicted by some replacement algorithm at N.
  * </li>
  * <li>
