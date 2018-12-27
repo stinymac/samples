@@ -47,13 +47,13 @@ public class PlainConsistentHash {
             "192.168.36.103:6379"
     };
 
-    /**key表示服务器的hash值，value表示服务器的名称*/
+    /**hash环 key表示服务器的hash值，value表示服务器的名称*/
     private static SortedMap<Integer, String> buckets =  new TreeMap<Integer, String>();
 
     static {
         for (int i = 0 ,size = servers.length; i < size; i++) {
             /*String 本身的hash方法此时产生结果分布在一个很小的区间,即hash环数据倾斜*/
-            buckets.put(HashFunctions.fnv132Hash(servers[i]),servers[i]);
+            buckets.put(HashFunctions.fnv1_32_hash(servers[i]),servers[i]);
         }
         //System.out.println(buckets);
     }
@@ -66,7 +66,7 @@ public class PlainConsistentHash {
      */
     public static String routeToServer(String key) {
 
-        int hash  = HashFunctions.fnv132Hash(key);
+        int hash  = HashFunctions.fnv1_32_hash(key);
         SortedMap<Integer, String> set = buckets.tailMap(hash);
         if (set.isEmpty()) {
             return buckets.get(buckets.firstKey());

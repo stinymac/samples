@@ -23,8 +23,17 @@
 
 package org.mac.sample.algorithm.hash;
 
+import com.google.common.hash.Funnel;
+import com.google.common.hash.Funnels;
+import com.google.common.hash.HashFunction;
+import com.google.common.hash.Hashing;
 import org.junit.Test;
+import org.mac.sample.algorithm.hash.rendezvous.RendezvousHash;
 
+import java.nio.charset.Charset;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -56,7 +65,7 @@ public class ConsistentHashTest {
 
         for (int i = 0; i < size; i++) {
             String key = nextKey(i);
-            System.out.println( "keys["+i+"]:"+key+" hash:"+HashFunctions.fnv132Hash(key)+" route to server:"+ PlainConsistentHash.routeToServer(key));
+            System.out.println( "keys["+i+"]:"+key+" hash:"+HashFunctions.fnv1_32_hash(key)+" route to server:"+ PlainConsistentHash.routeToServer(key));
         }
     }
 
@@ -81,6 +90,46 @@ public class ConsistentHashTest {
         for (int i = 0; i < size; i++) {
             String key = nextKey(i);
             System.out.println( key+"->"+ImprovedConsistentHash.routeToServer(key) );
+        }
+    }
+
+    /**
+     * 一次运行结果统计
+     *
+     * 192.168.36.100:6379	2438
+     * 192.168.36.101:6379	2570
+     * 192.168.36.102:6379	2545
+     * 192.168.36.103:6379	2447
+     *
+     * HashFunction :
+     *
+     * @see com.google.common.hash.SipHashFunction
+     * @see com.google.common.hash.Murmur3_32HashFunction
+     * @see com.google.common.hash.Murmur3_128HashFunction
+     * @see com.google.common.hash.ChecksumHashFunction
+     * @see com.google.common.hash.Crc32cHashFunction
+     * @see com.google.common.hash.MessageDigestHashFunction
+     * ......
+     */
+    @Test
+    public void testRendezvousHash(){
+        final HashFunction hashFunc = Hashing.murmur3_128();
+        final Funnel<CharSequence> strFunnel = Funnels.stringFunnel(Charset.defaultCharset());
+
+        final List<String> realServerNodes = new LinkedList<String>(Arrays.asList(
+                "192.168.36.100:6379",
+                "192.168.36.101:6379",
+                "192.168.36.102:6379",
+                "192.168.36.103:6379")
+        );
+
+        RendezvousHash<String, String> rendezvousHash = new RendezvousHash(hashFunc, strFunnel, strFunnel, realServerNodes);
+
+        int size = 10000;
+
+        for (int i = 0; i < size; i++) {
+            String key = nextKey(i);
+            System.out.println( key+"->"+rendezvousHash.get(key) );
         }
     }
 }

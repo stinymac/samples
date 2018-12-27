@@ -61,7 +61,7 @@ public class ImprovedConsistentHash {
         for (String realNode : realServerNodes) {
             for (int i = 0; i < VIRTUAL_NODES; i++) {
                 String virtualNodeName = "VN["+i+"]"+SEPARATOR+realNode;
-                int hash = HashFunctions.fnv132Hash(virtualNodeName);
+                int hash = HashFunctions.fnv1_32_hash(virtualNodeName);
                 virtualBuckets.put(hash, virtualNodeName);
             }
         }
@@ -76,7 +76,7 @@ public class ImprovedConsistentHash {
      */
     public static String routeToServer(String key) {
 
-        int hash  = HashFunctions.fnv132Hash(key);
+        int hash  = HashFunctions.fnv1_32_hash(key);
         SortedMap<Integer, String> set = virtualBuckets.tailMap(hash);
 
         String firstNode = set.isEmpty()? virtualBuckets.get(virtualBuckets.firstKey()) : set.get(set.firstKey());

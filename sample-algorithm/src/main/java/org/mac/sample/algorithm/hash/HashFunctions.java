@@ -38,7 +38,7 @@ public abstract class HashFunctions {
      * @param s
      * @return
      */
-    public static int fnv132Hash(String s){
+    public static int fnv1_32_hash(String s){
 
         final int p = 16777619;
         int hash = (int)2166136261L;
