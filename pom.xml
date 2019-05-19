@@ -13,6 +13,7 @@
         <module>sample-servlet3.x</module>
         <module>sample-spring</module>
         <module>sample-spring-boot</module>
+        <module>sample-algorithm</module>
     </modules>
 
 

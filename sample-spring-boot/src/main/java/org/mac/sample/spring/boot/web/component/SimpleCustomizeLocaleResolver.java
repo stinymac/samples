@@ -35,6 +35,7 @@ import org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Arrays;
 import java.util.Locale;
 
 /**
@@ -93,18 +94,17 @@ public class SimpleCustomizeLocaleResolver implements LocaleResolver {
 
         String localeParameter = request.getParameter(LOCALE_PARAMETER_NAME);
 
-        if (StringUtils.hasText(localeParameter)){
+        ////localeParameter.split(LANGUAGE_COUNTRY_CODE_SPLITTER);
+        String[] codes = StringUtils.delimitedListToStringArray(localeParameter,LANGUAGE_COUNTRY_CODE_SPLITTER);
 
-            String[] codes = localeParameter.split(LANGUAGE_COUNTRY_CODE_SPLITTER);
+        if(codes != null && codes.length > 1 ) {
 
-            if(codes != null && codes.length > 1 ) {
+            String language = codes[0];
+            String country = codes[1];
 
-                String language = codes[0];
-                String country = codes[1];
-
-                return new Locale(language, country);
-            }
+            return new Locale(language, country);
         }
+
         return request.getLocale();
     }
 

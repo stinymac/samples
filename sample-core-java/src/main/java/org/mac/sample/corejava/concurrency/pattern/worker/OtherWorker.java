@@ -34,7 +34,7 @@ public class OtherWorker extends Thread{
     @Override
     public void run() {
         while(true) {
-            ProductionLine.Product p = this.productionLine.StepTwo();
+            ProductionLine.Product p = this.productionLine.stepTwo();
             System.out.println("Step two->" + p);
         }
     }

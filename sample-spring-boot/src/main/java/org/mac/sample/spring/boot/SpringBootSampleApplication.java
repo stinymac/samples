@@ -23,8 +23,12 @@
 package org.mac.sample.spring.boot;
 
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
+import org.springframework.boot.ApplicationRunner;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.SpringBootConfiguration;
+import org.springframework.boot.actuate.metrics.web.tomcat.TomcatMetricsBinder;
+import org.springframework.boot.admin.SpringApplicationAdminMXBeanRegistrar;
 import org.springframework.boot.autoconfigure.AutoConfigurationImportSelector;
 import org.springframework.boot.autoconfigure.AutoConfigurationMetadata;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackages;
@@ -390,7 +394,7 @@ public class SpringBootSampleApplication {
 	 *              this.reader = new AnnotatedBeanDefinitionReader(this);
 	 * 		        this.scanner = new ClassPathBeanDefinitionScanner(this);
 	 *          </pre>
-	 * 			context = createApplicationContext();
+	 * 			context = createApplicationContext();// 创建context 创建BeanFactory 并注册了内置的注解配置PostProcess
 	 *
 	 * 	        // 从/META-INF/spring.factories加载错误报表分析器
 	 * 			exceptionReporters = getSpringFactoriesInstances(SpringBootExceptionReporter.class,new Class[] { ConfigurableApplicationContext.class }, context);
@@ -414,16 +418,85 @@ public class SpringBootSampleApplication {
 	 *          @see BackgroundPreinitializer //do nothing
 	 *          @see DelegatingApplicationListener //do nothing
 	 *
+	 *          // 加载资源
+	 *          <pre>
+	 * 	  		    load(context, sources.toArray(new Object[0]));// 将@SpringBootApplication标注的类(即当前类)作为配置source注册到容器
+	 * 	  		</pre>
+	 *
+	 *          // 广播上下文加载完成事件 即广播ApplicationPreparedEvent
+	 *          // 首先将已加载的10个listener放入上下文中
+	 *          <pre>
+	 *              for (ApplicationListener<?> listener : this.application.getListeners()) {
+	 * 			        if (listener instanceof ApplicationContextAware) {
+	 * 				        ((ApplicationContextAware) listener).setApplicationContext(context);
+	 * 			        }
+	 * 			        context.addApplicationListener(listener);
+	 * 		        }
+	 *          </pre>
+	 *          匹配到4个listener 向其广播ApplicationPreparedEvent
+	 *          @see ConfigFileApplicationListener // 上下文加入 @see PropertySourceOrderingPostProcessor
+	 *          @see LoggingApplicationListener //beanFactory.registerSingleton(LOGGING_SYSTEM_BEAN_NAME, this.loggingSystem);
+	 *          @see BackgroundPreinitializer // do nothing
+	 *          @see DelegatingApplicationListener // do nothing
+	 *
 	 * 			prepareContext(context, environment, listeners, applicationArguments,printedBanner);
 	 *
-	 * 			refreshContext(context);
+	 *          //解析配置 自动装配 驱动当前工程的嵌入式Servlet容器启动 注册Bean 实例化并注册单例Bean ......
+	 *          @see ConfigurationClassPostProcessor#postProcessBeanDefinitionRegistry(org.springframework.beans.factory.support.BeanDefinitionRegistry)
+	 *          @see ConfigurationClassPostProcessor#processConfigBeanDefinitions(org.springframework.beans.factory.support.BeanDefinitionRegistry)
+	 *          [
+	 *          org.springframework.context.annotation.internalConfigurationAnnotationProcessor
+	 *          org.springframework.context.annotation.internalAutowiredAnnotationProcessor
+	 *          org.springframework.context.annotation.internalCommonAnnotationProcessor
+	 *          org.springframework.context.annotation.internalPersistenceAnnotationProcessor
+	 *          org.springframework.context.event.internalEventListenerProcessor
+	 *          org.springframework.context.event.internalEventListenerFactory
+	 *          springBootSampleApplication //当前自定义启动入口
+	 *          org.springframework.boot.autoconfigure.internalCachingMetadataReaderFactory
+	 *          ]
+	 *
+	 *          @see org.springframework.context.annotation.ConfigurationClassParser#parse(java.util.Set<org.springframework.beans.factory.config.BeanDefinitionHolder>)
+	 *          @see org.springframework.context.annotation.ConfigurationClassParser#doProcessConfigurationClass
+	 *          @see org.springframework.context.annotation.ComponentScanAnnotationParser#parse
+	 *          @see org.springframework.context.annotation.ClassPathBeanDefinitionScanner#doScan
+	 *          //classpath*:org/mac/sample/spring/boot/**\\/*.class
+	 *          @see org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider#scanCandidateComponents
+	 *          @see org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider#isCandidateComponent(org.springframework.core.type.classreading.MetadataReader)
+	 *          @see org.springframework.context.annotation.AnnotationConfigUtils#applyScopedProxyMode
+	 *          @see org.springframework.context.annotation.ConfigurationClassParser#processConfigurationClass
+	 *          @see org.springframework.context.annotation.ConfigurationClassParser#doProcessConfigurationClass
+	 *          @see org.springframework.context.annotation.ConfigurationClassParser#processImports //自动装配在这里导入
+	 *          [
+	 *              @see AutoConfigurationImportSelector
+	 *              //从META-INF/spring.factories下加载EnableAutoConfiguration.class的实现
+	 *              //在当前应用启动时已多次调用org.springframework.core.io.support.SpringFactoriesLoader#loadSpringFactories(java.lang.ClassLoader)
+	 *              //所以这里从缓存中取值(当前208个EnableAutoConfiguration的实现(包含当前工程引用的Mybatis的starter中的EnableAutoConfiguration))
+	 *              @see AutoConfigurationImportSelector#getCandidateConfigurations(org.springframework.core.type.AnnotationMetadata, org.springframework.core.annotation.AnnotationAttributes)
+	 *          ]
+	 *          @see org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader#loadBeanDefinitionsForConfigurationClass
+	 *          @see org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader#loadBeanDefinitionsFromImportedResources
+	 *          @see org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader#loadBeanDefinitionsFromRegistrars
+	 *          @see @link {samples/sample-spring/src/main/java/org/mac/sample/spring/annotation/initialization/SpringAnnotationDriveApplication.java}
+	 *
+	 * 		     // 驱动内置Servlet容器启动 @see org.mac.sample.spring.boot.web.config.ServletConfiguration#webServerFactoryCustomizer()注释分析
+	 * 	     	***refreshContext(context);// @see org.springframework.context.support.AbstractApplicationContext#refresh()
+	 *
+	 *          //do nothing
 	 * 			afterRefresh(context, applicationArguments);
 	 * 			stopWatch.stop();
 	 * 			if (this.logStartupInfo) {
 	 * 				new StartupInfoLogger(this.mainApplicationClass)
 	 * 						.logStarted(getApplicationLog(), stopWatch);
 	 * 			}
+	 * 		    // 发布started事件
+	 * 		    @see BackgroundPreinitializer //do nothig
+	 *          @see DelegatingApplicationListener //do nothig
+	 *          @see TomcatMetricsBinder#onApplicationEvent(org.springframework.boot.context.event.ApplicationStartedEvent)
 	 * 			listeners.started(context);
+	 *
+	 * 		    // 从上下文取ApplicationRunner和CommandLineRunner的实现执行 当前为空
+	 *          @see ApplicationRunner
+	 *          @see CommandLineRunner
 	 * 			callRunners(context, applicationArguments);
 	 * 		}
 	 * 		catch (Throwable ex) {
@@ -432,6 +505,10 @@ public class SpringBootSampleApplication {
 	 * 		}
 	 *
 	 * 		try {
+	 * 	        // 发布ApplicationReadyEvent事件
+	 *          @see SpringApplicationAdminMXBeanRegistrar#onApplicationEvent(org.springframework.context.ApplicationEvent)
+	 *          @see BackgroundPreinitializer#onApplicationEvent(org.springframework.boot.context.event.SpringApplicationEvent)
+	 *          @see DelegatingApplicationListener#onApplicationEvent(org.springframework.context.ApplicationEvent)//do nothing
 	 * 			listeners.running(context);
 	 * 		}
 	 * 		catch (Throwable ex) {
@@ -456,5 +533,10 @@ public class SpringBootSampleApplication {
  *
  * 返回指定键映射到的值，如果不包含该键的映射返回给定的默认值。
  * @see java.util.Map#getOrDefault(java.lang.Object, java.lang.Object)
+ *
+ * properties 文件加载工具
+ * @see org.springframework.core.io.support.PropertiesLoaderUtils#loadProperties(org.springframework.core.io.Resource)
+ *
+ * private static final String XML_FILE_EXTENSION = ".xml";
  *
  */
