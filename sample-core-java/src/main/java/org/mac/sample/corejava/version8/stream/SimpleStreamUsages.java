@@ -19,6 +19,10 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
 
@@ -43,8 +47,27 @@ public class SimpleStreamUsages {
                 new Dish("prawns", false, 300, Dish.Type.FISH),
                 new Dish("salmon", false, 450, Dish.Type.FISH));
 
+        System.out.println(menu.stream().collect(Collectors.toMap(Dish::getName, dish -> dish)));
+        System.out.println(menu.stream().collect(Collectors.toMap(Dish::getName, Function.identity())));
+
         System.out.println(getDishNameLowCalories(menu));
         System.out.println(getDishNameLowCaloriesWithStream(menu));
+
+        System.out.println("================");
+
+        System.out.println(menu.stream().filter(dish -> {
+            System.out.println("filtering->:"+dish.getName());
+            return dish.getCalories() < LOW_CALORIES_DISH_THRESHOLD;
+        }).map(dish -> {
+            System.out.println("map->:"+dish.getName());
+            return dish.getName();
+        }).collect(toList()));
+
+        System.out.println("================");
+
+        Stream dishStream = Stream.of(new Dish("prawns", false, 300, Dish.Type.FISH),
+                new Dish("salmon", false, 450, Dish.Type.FISH));
+        dishStream.forEach(System.out::println);
     }
 
     /**
