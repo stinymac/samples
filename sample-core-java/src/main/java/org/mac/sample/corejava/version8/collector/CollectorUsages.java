@@ -16,9 +16,11 @@ package org.mac.sample.corejava.version8.collector;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.TreeMap;
+import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.stream.Collectors;
 
 /**
@@ -61,6 +63,24 @@ public class CollectorUsages {
         Optional.ofNullable(menu.stream().collect(Collectors.groupingBy(Dish::getType, TreeMap::new,Collectors.averagingInt(Dish::getCalories)))).ifPresent(System.out::println);
 
         Optional.ofNullable(menu.stream().collect(Collectors.summarizingInt(Dish::getCalories))).ifPresent(System.out::println);
+
+        Optional.ofNullable(menu.stream().collect(Collectors.groupingByConcurrent(Dish::getType))).ifPresent(System.out::println);
+
+        Optional.ofNullable(menu.stream().collect(Collectors.groupingByConcurrent(Dish::getType,Collectors.averagingInt(Dish::getCalories)))).ifPresent(System.out::println);
+
+        Optional.ofNullable(menu.stream().collect(Collectors.groupingByConcurrent(Dish::getType, ConcurrentSkipListMap::new,Collectors.averagingInt(Dish::getCalories)))).ifPresent(System.out::println);
+
+        Optional.ofNullable(menu.stream().map(Dish::getName).collect(Collectors.joining())).ifPresent(System.out::println);
+
+        Optional.ofNullable(menu.stream().map(Dish::getName).collect(Collectors.joining(","))).ifPresent(System.out::println);
+
+        Optional.ofNullable(menu.stream().map(Dish::getName).collect(Collectors.joining(",","Names:[","]"))).ifPresent(System.out::println);
+
+        Optional.ofNullable(menu.stream().collect(Collectors.mapping(Dish::getName,Collectors.joining(",","Names:[","]")))).ifPresent(System.out::println);
+
+        menu.stream().collect(Collectors.maxBy(Comparator.comparingInt(Dish::getCalories))).ifPresent(System.out::println);
+
+        menu.stream().collect(Collectors.minBy(Comparator.comparingInt(Dish::getCalories))).ifPresent(System.out::println);
     }
 
 
