@@ -12,7 +12,7 @@
  *
  */
 
-package org.mac.sample.corejava.version8.collector;
+package org.mac.sample.corejava.version8.stream;
 
 import java.util.Arrays;
 import java.util.Collections;
