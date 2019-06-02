@@ -17,10 +17,12 @@ package org.mac.sample.corejava.version8.collector;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.TreeMap;
 import java.util.concurrent.ConcurrentSkipListMap;
+import java.util.function.BinaryOperator;
 import java.util.stream.Collectors;
 
 /**
@@ -81,6 +83,30 @@ public class CollectorUsages {
         menu.stream().collect(Collectors.maxBy(Comparator.comparingInt(Dish::getCalories))).ifPresent(System.out::println);
 
         menu.stream().collect(Collectors.minBy(Comparator.comparingInt(Dish::getCalories))).ifPresent(System.out::println);
+
+        Optional.ofNullable(menu.stream().collect(Collectors.partitioningBy(Dish::isVegetarian))).ifPresent(System.out::println);
+
+        Optional.ofNullable(menu.stream().collect(Collectors.partitioningBy(Dish::isVegetarian,Collectors.averagingInt(Dish::getCalories)))).ifPresent(System.out::println);
+
+        menu.stream().collect(Collectors.reducing(BinaryOperator.maxBy(Comparator.comparing(Dish::getCalories)))).ifPresent(System.out::println);
+        menu.stream().collect(Collectors.reducing(BinaryOperator.minBy(Comparator.comparing(Dish::getCalories)))).ifPresent(System.out::println);
+
+        Optional.ofNullable(menu.stream().map(Dish::getCalories).collect(Collectors.reducing(0,(d1,d2) -> d1 + d2))).ifPresent(System.out::println);
+        Optional.ofNullable(menu.stream().collect(Collectors.reducing(0,Dish::getCalories,(d1,d2) -> d1 + d2))).ifPresent(System.out::println);
+
+        Optional.ofNullable(menu.stream().collect(Collectors.summarizingDouble(Dish::getCalories))).ifPresent(System.out::println);
+
+        Optional.ofNullable(menu.stream().collect(Collectors.toCollection(LinkedHashSet::new))).ifPresent(System.out::println);
+
+        Optional.ofNullable(menu.stream().collect(Collectors.toConcurrentMap(Dish::getName,Dish::getCalories))).ifPresent(System.out::println);
+
+        Optional.ofNullable(menu.stream().collect(Collectors.toConcurrentMap(Dish::getType,v -> 1L,(a,b) -> a + b))).ifPresent(System.out::println);
+
+        Optional.ofNullable(menu.stream().collect(Collectors.toConcurrentMap(Dish::getType,v -> 1L,(a,b) -> a + b,ConcurrentSkipListMap::new))).ifPresent(System.out::println);
+
+        Optional.ofNullable(menu.stream().filter(Dish::isVegetarian).collect(Collectors.toList())).ifPresent(System.out::println);
+
+        Optional.ofNullable(menu.stream().filter(Dish::isVegetarian).collect(Collectors.collectingAndThen(Collectors.toMap(Dish::getName,Dish::getCalories),Collections::synchronizedMap))).ifPresent(System.out::println);
     }
 
 
