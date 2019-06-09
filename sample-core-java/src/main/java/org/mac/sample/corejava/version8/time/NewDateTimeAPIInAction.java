@@ -44,7 +44,6 @@ public class NewDateTimeAPIInAction {
 
         LocalDate localDateParse =LocalDate.parse("2019-02-20");  //String --> LocalDate实例
         /*
-         * 获取表示明天的LocalDate实例
          * plus(TemporalAmount amountToAdd)  plusWeeks  plusMonths  plusYears
          * minus(TemporalAmount amountToAdd) minusWeeks minusMonths minusYears
          * TemporalAmount 时间量 -> ChronoPeriod(长周期时间量)/ChronoPeriodImpl ,Duration , Period
