@@ -93,12 +93,12 @@ public class SnowflakeIdGenerator {
      * id generate algorithm
      * @return snowflake id
      */
-    public synchronized long nextId() {
+    public synchronized long next() {
 
         long timestamp = System.currentTimeMillis();
-
+        // 系统时钟回拨抛出异常
         if (timestamp < lastTimestamp) {
-            throw new RuntimeException(String.format("Clock moved backwards.  Refusing to generate id for %d milliseconds",
+            throw new RuntimeException(String.format("System clock moved backwards.  Refusing to generate id for %d milliseconds",
                     lastTimestamp - timestamp));
         }
         if (lastTimestamp == timestamp) {
@@ -152,7 +152,7 @@ public class SnowflakeIdGenerator {
     public static void main(String[] args) {
         final SnowflakeIdGenerator generator = new SnowflakeIdGenerator(0,0,0);
         IntStream.rangeClosed(1,10).forEach(i -> {
-            String id = generator.nextId()+"";
+            String id = generator.next()+"";
             System.out.println("id:"+id+"\n");
         });
     }
