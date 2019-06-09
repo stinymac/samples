@@ -33,7 +33,7 @@ import java.util.function.Supplier;
  * @auther mac
  * @date 2019-05-19
  */
-public class LambdaCommonUsages {
+public class LambdaIntroduction {
 
     private static List<Apple> filter(List<Apple> source, Predicate<Apple> predicate) {
         List<Apple> result = new ArrayList<>();
