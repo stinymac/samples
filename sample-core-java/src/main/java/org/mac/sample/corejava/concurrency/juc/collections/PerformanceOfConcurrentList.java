@@ -1,19 +1,17 @@
- /*
-  *      (             |"|           !!!       #   ___                             o
-  *      _)_          _|_|_       `  _ _  '    #  <_*_>             ,,,         ` /_\ '       __MMM__
-  *     (o o)         (o o)      -  (OXO)  -   #  (o o)            (o o)       - (o o) -       (o o)
-  * ooO--(_)--Ooo-ooO--(_)--Ooo-ooO--(_)--Ooo--8---(_)--Ooo----ooO--(_)--Ooo-ooO--(_)--Ooo-ooO--(_)--Ooo-
-  *
-  *
-  * 虽不能至,心向往之。(Although I can't, my heart is longing for it.)
-  *
-  *
-  *       ___        |
-  *      /_\ `*      |.===.         ,,,,,
-  *     (o o)        {}o o{}       /(o o)\
-  * ooO--(_)--Ooo-ooO--(_)--Ooo-ooO--(_)--Ooo-
-  *
-  */
+/*
+ *          (          (
+ *          )\ )  (    )\   )  )     (
+ *  (  (   (()/( ))\( ((_| /( /((   ))\
+ *  )\ )\   ((_))((_)\ _ )(_)|_))\ /((_)
+ * ((_|(_)  _| (_))((_) ((_)__)((_|_))
+ * / _/ _ \/ _` / -_|_-< / _` \ V // -_)
+ * \__\___/\__,_\___/__/_\__,_|\_/ \___|
+ *
+ * 东隅已逝，桑榆非晚。(The time has passed,it is not too late.)
+ * 虽不能至，心向往之。(Although I can't, my heart is longing for it.)
+ *
+ */
+
 package org.mac.sample.corejava.concurrency.juc.collections;
 
 import java.util.Collection;
@@ -48,7 +46,7 @@ public class PerformanceOfConcurrentList {
         long totalTime = 0;
         for (int i = 0; i < testTimes; i++) {
             ExecutorService executor = Executors.newFixedThreadPool(nThreads);
-            long startNanoTime = System.nanoTime();
+            long startTime = System.nanoTime();
             for (int j = 0 ; j < nThreads;j++) {
                 executor.execute(()->{
                     for (int k = 0; k < dataSize; k++) {
@@ -66,8 +64,8 @@ public class PerformanceOfConcurrentList {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            long endNanoTime = System.nanoTime();
-            long millisTime = (endNanoTime - startNanoTime )/1000000;
+            long endTime = System.nanoTime();
+            long millisTime = (endTime - startTime )/1000000;
             System.out.println("insert or get "+nThreads * dataSize +" data  take [" +millisTime+"] ms");
             totalTime+=millisTime;
         }

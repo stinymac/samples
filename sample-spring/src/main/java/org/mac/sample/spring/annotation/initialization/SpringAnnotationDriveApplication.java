@@ -240,7 +240,7 @@ import java.util.List;
  * 		}
  * }
  *
- * 11.初始化所用非懒加载的单例bean
+ * 11.初始化所有非懒加载的单例bean
  *
  * // Instantiate all remaining (non-lazy-init) singletons.
  * finishBeanFactoryInitialization(beanFactory);
@@ -249,7 +249,7 @@ import java.util.List;
  *
  * 1) 初始化类型转化Bean
  *
- * 2) 初始化内置的智解析相关的Bean
+ * 2) 初始化内置的解析相关的Bean
  * <pre>
  *  // Register a default embedded value resolver if no bean post-processor
  * 	// (such as a PropertyPlaceholderConfigurer bean) registered any before:
