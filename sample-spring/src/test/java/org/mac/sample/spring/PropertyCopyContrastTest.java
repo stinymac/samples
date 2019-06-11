@@ -76,7 +76,7 @@ public class PropertyCopyContrastTest {
             testPropertiesCopier(springBeanUtilsPropertiesCopier, times);
             testPropertiesCopier(apacheCommonsBeanUtilsPropertiesCopier, times);
             testPropertiesCopier(apacheCommonsPropertyUtilsPropertiesCopier, times);
-            System.out.println("----------------------------------------------------");
+            System.out.println("--------------------------------------------------------------------------------");
         }
 
     }
