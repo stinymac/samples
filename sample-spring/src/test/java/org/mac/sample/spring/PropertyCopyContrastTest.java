@@ -71,17 +71,17 @@ public class PropertyCopyContrastTest {
         int[] timesArray = new int[]{100,1000,10000,100000,1000000,10000000};
         for (int i = 0,length = timesArray.length; i < length ; i++) {
             int times = timesArray[i];
-            testPropertiesCopier(cglibBeanCopier, times);
-            testPropertiesCopier(staticCglibBeanCopier, times);
-            testPropertiesCopier(springBeanUtilsPropertiesCopier, times);
-            testPropertiesCopier(apacheCommonsBeanUtilsPropertiesCopier, times);
-            testPropertiesCopier(apacheCommonsPropertyUtilsPropertiesCopier, times);
+            doPropertiesCopy(cglibBeanCopier, times);
+            doPropertiesCopy(staticCglibBeanCopier, times);
+            doPropertiesCopy(springBeanUtilsPropertiesCopier, times);
+            doPropertiesCopy(apacheCommonsBeanUtilsPropertiesCopier, times);
+            doPropertiesCopy(apacheCommonsPropertyUtilsPropertiesCopier, times);
             System.out.println("--------------------------------------------------------------------------------");
         }
 
     }
 
-    public static void testPropertiesCopier(PropertiesCopier copier,int times) throws Exception {
+    public static void doPropertiesCopy(PropertiesCopier copier,int times) throws Exception {
         Account source = new Account("621109089121237901", 99999999.99, 1, true, LocalDateTime.of(2099,12,31,23,59,59));
         Account target = new Account();
 
@@ -91,7 +91,7 @@ public class PropertyCopyContrastTest {
             copier.copyProperties(source,target);
         }
         long endTime = System.nanoTime();
-        System.out.println(copier.getClass().getName() + "->" + times + " times copy cost:["+((endTime-startTime)/1000000)+"] ms");
+        System.out.println(copier.getClass().getName() + "-> " + times + " times copy cost:["+(endTime-startTime)+"] ns");
     }
 
     public interface PropertiesCopier {
