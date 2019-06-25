@@ -1,23 +1,14 @@
 /*
- *      (             |"|           !!!       #   ___                             o
- *      _)_          _|_|_       `  _ _  '    #  <_*_>             ,,,         ` /_\ '       __MMM__
- *     (o o)         (o o)      -  (OXO)  -   #  (o o)            (o o)       - (o o) -       (o o)
- * ooO--(_)--Ooo-ooO--(_)--Ooo-ooO--(_)--Ooo--8---(_)--Ooo----ooO--(_)--Ooo-ooO--(_)--Ooo-ooO--(_)--Ooo-
+ *          (          (
+ *          )\ )  (    )\   )  )     (
+ *  (  (   (()/( ))\( ((_| /( /((   ))\
+ *  )\ )\   ((_))((_)\ _ )(_)|_))\ /((_)
+ * ((_|(_)  _| (_))((_) ((_)__)((_|_))
+ * / _/ _ \/ _` / -_|_-< / _` \ V // -_)
+ * \__\___/\__,_\___/__/_\__,_|\_/ \___|
  *
- *
- *
- *                    !!!         |                             |"|            _             o          _     _
- *    __MMM__      `  _ _  '      |.===.         ,,,,,         _|_|_         _|_|_        ` /_\ '     o' \,=./ `o
- *     (o o)      -  (OXO)  -     {}o o{}       /(o o)\        (o o)         (o o)       - (o o) -       (o o)
- * ooO--(_)--Ooo-ooO--(_)--Ooo-ooO--(_)--Ooo-ooO--(_)--Ooo-ooO--(_)--Ooo-ooO--(_)--Ooo-ooO--(_)--Ooo-ooO--(_)--Ooo-
- *
- *
- * 虽不能至,心向往之。(Although it is not possible, my heart is longing for it.)
- *
- *       ___        |
- *      /_\ `*      |.===.         ,,,,,
- *     (o o)        {}o o{}       /(o o)\
- * ooO--(_)--Ooo-ooO--(_)--Ooo-ooO--(_)--Ooo-
+ * 东隅已逝，桑榆非晚。(The time has passed,it is not too late.)
+ * 虽不能至，心向往之。(Although I can't, my heart is longing for it.)
  *
  */
 
@@ -28,14 +19,12 @@ import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.aop.aspectj.annotation.AnnotationAwareAspectJAutoProxyCreator;
 import org.springframework.aop.config.AopConfigUtils;
 import org.springframework.aop.framework.autoproxy.InfrastructureAdvisorAutoProxyCreator;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.context.annotation.AdviceMode;
 import org.springframework.context.annotation.AutoProxyRegistrar;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.ComponentScans;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.jdbc.core.JdbcTemplate;

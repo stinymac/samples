@@ -1,23 +1,14 @@
 /*
- *      (             |"|           !!!       #   ___                             o
- *      _)_          _|_|_       `  _ _  '    #  <_*_>             ,,,         ` /_\ '       __MMM__
- *     (o o)         (o o)      -  (OXO)  -   #  (o o)            (o o)       - (o o) -       (o o)
- * ooO--(_)--Ooo-ooO--(_)--Ooo-ooO--(_)--Ooo--8---(_)--Ooo----ooO--(_)--Ooo-ooO--(_)--Ooo-ooO--(_)--Ooo-
+ *          (          (
+ *          )\ )  (    )\   )  )     (
+ *  (  (   (()/( ))\( ((_| /( /((   ))\
+ *  )\ )\   ((_))((_)\ _ )(_)|_))\ /((_)
+ * ((_|(_)  _| (_))((_) ((_)__)((_|_))
+ * / _/ _ \/ _` / -_|_-< / _` \ V // -_)
+ * \__\___/\__,_\___/__/_\__,_|\_/ \___|
  *
- *
- *
- *                    !!!         |                             |"|            _             o          _     _
- *    __MMM__      `  _ _  '      |.===.         ,,,,,         _|_|_         _|_|_        ` /_\ '     o' \,=./ `o
- *     (o o)      -  (OXO)  -     {}o o{}       /(o o)\        (o o)         (o o)       - (o o) -       (o o)
- * ooO--(_)--Ooo-ooO--(_)--Ooo-ooO--(_)--Ooo-ooO--(_)--Ooo-ooO--(_)--Ooo-ooO--(_)--Ooo-ooO--(_)--Ooo-ooO--(_)--Ooo-
- *
- *
- * 虽不能至,心向往之。(Although it is not possible, my heart is longing for it.)
- *
- *       ___        |
- *      /_\ `*      |.===.         ,,,,,
- *     (o o)        {}o o{}       /(o o)\
- * ooO--(_)--Ooo-ooO--(_)--Ooo-ooO--(_)--Ooo-
+ * 东隅已逝，桑榆非晚。(The time has passed,it is not too late.)
+ * 虽不能至，心向往之。(Although I can't, my heart is longing for it.)
  *
  */
 
@@ -26,7 +17,6 @@ package org.mac.sample.spring.boot.web.controller;
 import org.mac.sample.spring.boot.data.model.entity.Employee;
 import org.mac.sample.spring.boot.web.service.DepartmentService;
 import org.mac.sample.spring.boot.web.service.EmployeeService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -36,6 +26,24 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 
 /**
+ * tip:
+ *
+ * 保持@Controller的简洁和专注
+ *
+ * 	Controller应该非常简单。
+ * 	希望控制器作为协调和委派的角色，而不是执行实际的业务逻辑。
+ *
+ * 以下是主要做法：
+ *
+ * 	控制器应该是无状态的！默认情况下，控制器是单例，并且任何状态都可能导致大量问题。
+ *
+ * 	控制器不应该执行业务逻辑，而是依赖委托。
+ *
+ * 	控制器应该处理应用程序的HTTP层，这不应该传递给服务。
+ *
+ * 	控制器应该围绕用例/业务能力来设计。
+ *
+ *
  * 员工管理
  *
  * @auther mac

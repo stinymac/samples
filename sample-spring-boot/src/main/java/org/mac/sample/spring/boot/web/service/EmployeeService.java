@@ -1,23 +1,14 @@
 /*
- *      (             |"|           !!!       #   ___                             o
- *      _)_          _|_|_       `  _ _  '    #  <_*_>             ,,,         ` /_\ '       __MMM__
- *     (o o)         (o o)      -  (OXO)  -   #  (o o)            (o o)       - (o o) -       (o o)
- * ooO--(_)--Ooo-ooO--(_)--Ooo-ooO--(_)--Ooo--8---(_)--Ooo----ooO--(_)--Ooo-ooO--(_)--Ooo-ooO--(_)--Ooo-
+ *          (          (
+ *          )\ )  (    )\   )  )     (
+ *  (  (   (()/( ))\( ((_| /( /((   ))\
+ *  )\ )\   ((_))((_)\ _ )(_)|_))\ /((_)
+ * ((_|(_)  _| (_))((_) ((_)__)((_|_))
+ * / _/ _ \/ _` / -_|_-< / _` \ V // -_)
+ * \__\___/\__,_\___/__/_\__,_|\_/ \___|
  *
- *
- *
- *                    !!!         |                             |"|            _             o          _     _
- *    __MMM__      `  _ _  '      |.===.         ,,,,,         _|_|_         _|_|_        ` /_\ '     o' \,=./ `o
- *     (o o)      -  (OXO)  -     {}o o{}       /(o o)\        (o o)         (o o)       - (o o) -       (o o)
- * ooO--(_)--Ooo-ooO--(_)--Ooo-ooO--(_)--Ooo-ooO--(_)--Ooo-ooO--(_)--Ooo-ooO--(_)--Ooo-ooO--(_)--Ooo-ooO--(_)--Ooo-
- *
- *
- * 虽不能至,心向往之。(Although it is not possible, my heart is longing for it.)
- *
- *       ___        |
- *      /_\ `*      |.===.         ,,,,,
- *     (o o)        {}o o{}       /(o o)\
- * ooO--(_)--Ooo-ooO--(_)--Ooo-ooO--(_)--Ooo-
+ * 东隅已逝，桑榆非晚。(The time has passed,it is not too late.)
+ * 虽不能至，心向往之。(Although I can't, my heart is longing for it.)
  *
  */
 
@@ -25,7 +16,6 @@ package org.mac.sample.spring.boot.web.service;
 
 import org.mac.sample.spring.boot.data.model.entity.Employee;
 import org.mac.sample.spring.boot.data.mybatis.xml.EmployeeMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
