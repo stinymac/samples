@@ -16,7 +16,7 @@ package org.mac.sample.corejava.concurrency.pattern.future;
 
 public class FutureExecutor {
     public<T> Future<T> execute (FutureRunnable<T> task) {
-        AsynFuture<T> aysnFuture = new AsynFuture<T>();
+        AsyncFuture<T> aysnFuture = new AsyncFuture<T>();
         new Thread(new Runnable() {
             @Override
             public void run() {

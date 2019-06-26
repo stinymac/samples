@@ -17,28 +17,26 @@ package org.mac.sample.corejava.concurrency.pattern.future;
 /**
  *
  * @author Mac
- * @create 2018-05-25 20:44
+ * @create 2018-05-25 20:48
  **/
 
-public class FutureExecutor {
-    public<T> Future<T> execute (FutureRunnable<T> task) {
-        AsyncFuture<T> aysncFuture = new AsyncFuture<T>();
-        new Thread(() -> {
+public class AsyncFuture<T> implements Future<T>{
 
-                T result = task.call();
-                aysncFuture.set(result);
-
-        }).start();
-        return aysncFuture;
+    private volatile T result;
+    @Override
+    public T get() throws InterruptedException {
+        synchronized (this) {
+            while (result == null) {
+                this.wait();
+            }
+        }
+        return result;
     }
 
-    public<T> void execute (FutureRunnable<T> task,Callback<T> call) {
-
-        new Thread(() -> {
-                T result = task.call();
-                call.accept(result);
-            }
-        ).start();
-
+    public void set (T result) {
+        synchronized (this) {
+           this.result = result;
+           this.notifyAll();
+        }
     }
 }

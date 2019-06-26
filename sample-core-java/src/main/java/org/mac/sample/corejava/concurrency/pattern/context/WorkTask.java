@@ -1,18 +1,17 @@
 /*
- * Copyright 2018-2020 the original author or authors.
+ *          (          (
+ *          )\ )  (    )\   )  )     (
+ *  (  (   (()/( ))\( ((_| /( /((   ))\
+ *  )\ )\   ((_))((_)\ _ )(_)|_))\ /((_)
+ * ((_|(_)  _| (_))((_) ((_)__)((_|_))
+ * / _/ _ \/ _` / -_|_-< / _` \ V // -_)
+ * \__\___/\__,_\___/__/_\__,_|\_/ \___|
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * 东隅已逝，桑榆非晚。(The time has passed,it is not too late.)
+ * 虽不能至，心向往之。(Although I can't, my heart is longing for it.)
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
  */
+
 package org.mac.sample.corejava.concurrency.pattern.context;
 
 /**
