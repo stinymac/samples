@@ -20,7 +20,7 @@ package org.mac.sample.corejava.concurrency.thread.lock.custom;
  * @create 2018-05-09 21:09
  **/
 public interface Lock {
-    public class TimeoutException extends Exception {
+    class TimeoutException extends Exception {
         public TimeoutException () {
             super();
         }
@@ -30,7 +30,7 @@ public interface Lock {
         }
     }
 
-    public class IllegalOperationException extends Exception {
+    class IllegalOperationException extends Exception {
         public IllegalOperationException () {
             super();
         }
@@ -39,11 +39,9 @@ public interface Lock {
         }
     }
 
-    public void lock() throws InterruptedException;
+    void lock() throws InterruptedException;
 
-    public void lock(long millis) throws TimeoutException, InterruptedException;
+    void lock(long millis) throws TimeoutException, InterruptedException;
 
-    public void unlock() throws IllegalOperationException;
-
-
+    void unlock() throws IllegalOperationException;
 }
