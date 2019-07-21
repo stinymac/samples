@@ -15,6 +15,8 @@
         <module>sample-spring-boot</module>
         <module>sample-algorithm</module>
         <module>sample-linux</module>
+        <module>sample-http</module>
+        <module>sample-mixed-collection</module>
     </modules>
 
 
