@@ -17,6 +17,7 @@
         <module>sample-linux</module>
         <module>sample-http</module>
         <module>sample-mixed-collection</module>
+        <module>sample-nginx</module>
     </modules>
 
 
