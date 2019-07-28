@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>sample-mixed-collection</artifactId>
+    <artifactId>sample-mixed-collections</artifactId>
 
     <name>sample-mixed-collection</name>
     <!-- FIXME change it to the project's website -->

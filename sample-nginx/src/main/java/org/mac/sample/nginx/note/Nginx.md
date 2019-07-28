@@ -298,6 +298,7 @@
 
 /***********************************************************************
 ###CentOS7查看和关闭防火墙
+###Nginx虚拟主机
 
     查看防火墙状态
     firewall-cmd --state
@@ -316,3 +317,35 @@
     SELINUX=enforcing改为SELINUX=disabled
 
 ***********************************************************************/
+    Nginx下，一个server标签就是一个虚拟主机。可以使用三种方式实现虚拟主机
+    
+    1、基于域名的虚拟主机，通过域名来区分虚拟主机
+    2、基于端口的虚拟主机，通过端口来区分虚拟主机
+    3、基于ip的虚拟主机
+    
+    eg.基于域名的虚拟主机配置
+    
+    本地hosts添加服务ip地址对应的域名解析
+    192.168.0.88 www.code.com
+    192.168.0.88 www.blog.com
+    
+    建立对应目录
+    /data/code 
+    /data/blog
+    
+    目录下添加index.html文件
+    
+    配置nginx server
+    
+    server {
+       listen 80;
+       server_name www.code.com;
+       index index.html;
+       root /data/code ;
+    }
+    server {
+       listen 80;
+       server_name www.blog.com;
+       index index.html;
+       root /data/blog;
+    }
