@@ -351,3 +351,233 @@
        index index.html;
        root /data/blog;
     }
+    
+    
+###Nginx日志
+    
+    error.log
+    access.log
+    
+    log_format配置
+    
+    Syntax : log_format name [escape = default|json] string ...;
+    Default: log-format combined "...";
+    Context: http
+    
+###Nginx变量
+
+    HTTP请求变量 arg_PARAMETER http_HEADER sent_http_HEADER
+                eg. $http_user_agent
+                
+    内置变量  nginx内置的变量
+    
+    @see http://nginx.org/en/docs/http/ngx_http_core_module.html
+    
+    '$remote_addr - $remote_user [$time_local] "$request" '
+    '$status $body_bytes_sent "$http_referer" '
+    '"$http_user_agent" "$http_x_forwarded_for"';
+    
+    自定义变量
+    
+    
+###Nginx模块
+
+    nginx -V 可以查看Nginx开启的模块
+    
+    
+     --with-compat 
+     --with-file-aio 
+     --with-threads 
+     --with-http_addition_module 
+     --with-http_auth_request_module 
+     --with-http_dav_module 
+     --with-http_flv_module 
+     --with-http_gunzip_module 
+     --with-http_gzip_static_module 
+     --with-http_mp4_module 
+     --with-http_random_index_module 
+     --with-http_realip_module 
+     --with-http_secure_link_module 
+     --with-http_slice_module 
+     --with-http_ssl_module 
+     --with-http_stub_status_module 
+     --with-http_sub_module 
+     --with-http_v2_module 
+     --with-mail 
+     --with-mail_ssl_module 
+     --with-stream 
+     --with-stream_realip_module 
+     --with-stream_ssl_module 
+     --with-stream_ssl_preread_module
+     
+     模块                           作用
+     --with-http_stub_status_module Nginx的客户端状态
+     
+     配置
+     Syntax : stub_status;     
+     Default: -               默认未配置
+     Context: server,location 配置上下文(可以在何处配置)
+     
+     eg.
+     location /show-stub-status {
+          stub_status;
+     }
+     
+     访问/show-stub-status 响应:
+     
+     Active connections: 4 
+     server accepts handled requests
+      5 5 3 
+     Reading: 0 Writing: 1 Waiting: 3
+     
+      模块                            作用
+     --with-http_random_index_module  目录中选择一个随机主页
+     
+     配置
+     Syntax : random_index on|off;     
+     Default: random_index off;               
+     Context: location 
+     
+     
+     模块                              作用
+     --with-http_sub_module            http内容替换
+     
+     配置
+     Syntax : sub_filter string replacement;    
+     Default: -;               
+     Context: http server location 
+     
+     Syntax : sub_filter_last_modified on|off;     
+     Default: sub_filter_last_modified off;               
+     Context: http server location 
+     
+     Syntax : sub_filter_once on|off;     
+     Default: sub_filter_once on;               
+     Context: http server location 
+     
+###Nginx请求限制
+
+    连接频率的限制 - limit_conn_module
+    请求频率的限制 - limit_req_module
+    
+    连接频率的限制配置:
+    Syntax : limit_conn_zone key zone=name:size;     
+    Default: -;               
+    Context: http
+     
+    Syntax : limit_conn key zone number;     
+    Default: -;               
+    Context: http server location
+    
+    请求频率的限制配置:
+    
+    Syntax : limit_req_zone key zone=name:size rate=rate;     
+    Default: -;               
+    Context: http
+    
+    Syntax : limit_req zone=name [burst=number] [nodelay];     
+    Default: -;               
+    Context: http server location
+    
+    
+    eg.
+    
+    1.配置限制
+    [default.conf]
+    
+    limit_conn_zone $binary_remote_addr zone=conn_zone:1m;
+    limit_req_zone  $binary_remote_addr zone=req_zone:1m rate=1r/s;
+    server {
+        listen       80;
+        server_name  localhost;
+    
+    
+        location / {
+            root   /usr/share/nginx/html;
+            #limit_conn conn_zone 1;
+            #limit_req  zone=req_zone burst=3 nodelay; // 3个延迟到下一秒 其他的不延迟
+            #limit_req  zone=req_zone burst=3;
+            limit_req  zone=req_zone;
+            index  index.html index.htm;
+        }
+    
+       
+        location = /50x.html {
+            root   /usr/share/nginx/html;
+        }
+    }
+    2.测试
+    ab -n 50 -c 20 http://localhost/index.html
+    [
+    ......
+    Concurrency Level:      20
+    Time taken for tests:   0.009 seconds
+    Complete requests:      50
+    Failed requests:        49
+       (Connect: 0, Receive: 0, Length: 49, Exceptions: 0)
+    Write errors:           0
+    Non-2xx responses:      49
+    ......
+    ]
+    
+###Nginx访问控制
+
+    基于IP的访问控制 - http_access_module
+    基于用户的信任登录 - http_auth_basic_module
+    
+    
+    基于IP的访问控制配置
+    
+    Syntax : allow address | CIDR | unix:| all ;     
+    Default: -;               
+    Context: http server location limit_except
+    
+    Syntax : deny address | CIDR | unix:| all ;     
+    Default: -;               
+    Context: http server location limit_except
+    
+    eg.
+    
+    location ~ ^/admin.html {
+        root   /usr/share/nginx/html;
+        allow  112.96.176.39;    
+        deny all;      
+    }
+    
+    基于IP的访问控制局限性
+    
+    由于基于remote_addr 在客户端使用代理等访问服务端时 无法完成访问控制
+    
+    解决方法:
+    1.使用http_x_forward_for
+    2.结合geo模块
+    3.通过http自定义变量
+    
+    基于用户的信任登录配置
+    
+    
+    Syntax : auth_basic string | off ;     
+    Default: auth_basic off;               
+    Context: http server location limit_except
+    
+    Syntax : auth_basic_use_file file ;     
+    Default: -;               
+    Context: http server location limit_except
+    
+     eg.
+        
+     location ~ ^/admin.html {
+         root   /usr/share/nginx/html;
+         auth_basic "login"
+         auth_basic_use_file /etc/nginx/auth_conf // 可以使用htpasswd工具生成 或查询使用官网支持的其他方式      
+     }
+     
+     基于用户的信任登录局限性
+     
+     依赖文件
+     
+     解决方法:
+     
+     1.Nginx结合LUA
+     2.利用nginx-auth-ldap模块
+    
