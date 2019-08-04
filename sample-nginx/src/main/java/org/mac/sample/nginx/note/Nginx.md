@@ -1,3 +1,5 @@
+##Nginx简介
+
 ###什么是Nginx
 
     Nginx是一个开源的高性能且可靠的HTTP中间件、代理服务。
@@ -580,4 +582,441 @@
      
      1.Nginx结合LUA
      2.利用nginx-auth-ldap模块
+  
+##Nginx使用实践
+
+###Nginx静态资源WEB服务
+
+    静态资源服务场景-CDN
+    
+    Nignx节点配置
+    
+    Syntax : sendfile on | off ;     
+    Default: sendfile off;               
+    Context: http,server,location,if in location
+    
+     // sendfile on 时才可以使用
+    Syntax : tcp_nopush  on | off ;     
+    Default: tcp_nopush  off;               
+    Context: http,server,location
+   
+    Syntax : tcp_nodelay  on | off ;     
+    Default: tcp_nodelay  off;               
+    Context: http,server,location
+    
+    //压缩
+    Syntax : gzip  on | off ;     
+    Default: gzip  off;               
+    Context: http,server,location;
+    
+    Syntax : gzip_comp_level  level ;     
+    Default: gzip_comp_level  1 ;               
+    Context: http,server,location
+    
+    Syntax : gzip_http_version  1.0 | 1.1 ;     
+    Default: gzip_http_version  1.1 ;               
+    Context: http,server,location
+    
+    [static_server.conf]
+    
+    server {
+        listen 80;
+        server_name static.mac.com;
+        
+        sendfile on;
+        access_log /var/log/nginx/log/static_access.log main;
+        
+        location ~ .*\.(jpg|gif|png)$ {
+            gizp on;
+            gzip_http_version  1.1;
+            gzip_comp_level  2;
+            gzip_types text/plain application/javascript  apllication/x-javascript text/css application/xml
+            text/javascript application/x-httpd-php image/jpeg image/gif image/png;  
+            root /opt/static/images;
+        }
+        
+        location ~ .*\.(txt|xml)$ {
+            gizp on;
+            gzip_http_version  1.1;
+            gzip_comp_level  1;
+            gzip_types text/plain application/javascript  apllication/x-javascript text/css application/xml
+                    text/javascript application/x-httpd-php image/jpeg image/gif image/png;       
+            root /opt/static/doc;
+        }
+        location ~ ^/download {
+            gizp_static on; // giz预读
+            tcp_nopush on;
+            root /opt/static/download;
+        }
+    }
+    
+    静态资源服务场景-浏览器缓存
+    
+    1 校验过期机制
+    
+    校验是否过期 Expires Cache-Control(max-age)
+    协议中的Etag头信息校验 Etag
+    Last-Modified信息校验 Last-Modified
+    
+    2.配置
+    
+    添加 Expires Cache-Control头
+    
+    Syntax : expires  [modified] time;  
+             expires epoch|max|off;   
+    Default: expires off;               
+    Context: http,server,location,if in location
+    
+    location ~ .*\.(html|htm)$ {
+        expires 24; 
+        root /opt/static/code;
+    }
+    
+    静态资源服务场景-跨站访问
+    
+    Syntax : add_header name value [always] ;
+    Default: -;               
+    Context: http,server,location,if in location
+    
+    location ~ .*\.(html|htm)$ {
+        expires 24; 
+        add_header Access-Controll-allow-origin http://code.mac.com;
+        add_header Access-Controll-allow-Methods GET,POST,PUT,DELETE,OPTIONS;
+        root /opt/static/code;
+    }
+    
+    静态资源服务场景-防盗链
+    
+    Syntax : valid_referers none|blocked|server_names|string...;
+    Default: -;               
+    Context: server,location
+    
+    location ~ .*\.(jpg|gif|png)$ {
+        gizp on;
+        gzip_http_version  1.1;
+        gzip_comp_level  2;
+        gzip_types text/plain application/javascript  apllication/x-javascript text/css application/xml
+        text/javascript application/x-httpd-php image/jpeg image/gif image/png; 
+        valid_referers none blocked http://code.mac.com;
+        if ($invalid_referer){
+            return 403;
+        }
+        root /opt/static/images;
+    }
+    
+###代理服务场景-正向/反向代理
+    
+    Syntax : proxy_pass URL;
+    Default: -;               
+    Context: location,if in location,limit_expect
+    
+    Syntax : proxy_buffering on | off;
+    Default: proxy_buffering on;               
+    Context: http,server,location
+    
+    Syntax : proxy_redirect default; proxy_redirect off; proxy_redirect redirect replacement;
+    Default: proxy_redirect default;               
+    Context: http,server,location
+    
+    Syntax : proxy_set_header field vale;
+    Default: proxy_set_header Host $proxy_host;  
+             proxy_set_header Connection close;              
+    Context: http,server,location
+    
+    Syntax : proxy_connect_timeout time;
+    Default: proxy_connect_timeout 60s;              
+    Context: http,server,location
+    
+    [proxy.conf]
+    location / {
+        proxy_pass 127.0.0.1:8080;
+        
+        proxy_redirect default;
+        
+        proxy_set_header Host $proxy_host;
+        proxy_set_header X-Real-IP $remote_addr;
+        
+        proxy_connect_timeout 30;
+        proxy_send_timeout 60;
+        proxy_read_timeout 60;
+        
+        proxy_buffering on;
+        proxy_buffer_size 32k;
+        proxy_buffers 4 128k;
+        proxy_busy_buffers_size 256k;
+        proxy_max_temp_file_size 256k; 
+    }
+    
+###负载均衡服务场景
+    
+    配置语法
+    Syntax : upstream name {...};
+    Default: -;              
+    Context: http
+    
+    服务在负载均衡调度中的状态
+    down             当前server不参与负载均衡调度
+    backup           预留备份
+    max_fails        允许请求失败的次数
+    fail_timeout     经过max_fails失败后 服务暂停时间
+    max_conns        限制最大的接受连接数
+    
+    Nginx负载均衡调度算法
+    
+    轮询           按时间顺序逐一分配到不同服务
+    加权轮询        weight越大 机率越高
+    ip_hash        同IP到同一个服务
+    url_hash       同URL到同一个服务
+    least_conn     服务连接最少 分配连接到对应服务
+    hash关键数值    hash自定义key
+    
+    url_hash
+    Syntax : hash key [consistent];
+    Default: -;              
+    Context: upstream
+    
+    
+###缓存服务场景
+    
+    配置
+    
+    Syntax : proxy_cache_path path [levels = levels]
+             [user_temp_path = on | off] ......;
+    Default: -;              
+    Context: http
+    
+    Syntax : proxy_cache zone | off;
+    Default: proxy_cache off;              
+    Context: http,server,location
+    
+    Syntax : proxy_cache_valid [code...] time;
+    Default: -;              
+    Context: http,server,location
+    
+    Syntax : proxy_cache_key string;
+    Default: proxy_cache_key $scheme$proxy_host$request_uri;           
+    Context: http,server,location
+    
+    
+    [proxy_cache.conf]
+    proxy_cache_path /opt/app/cache levels = 1:2 keys_zone=mac_cache:10m max_size=10g inactive=60m use_tem_path=off
+    server {
+        ...
+        location / {
+            proxy_pass http://code.mac.com;
+            proxy_cache mac_cache;
+            proxy_cache_valid 200 304 12h;
+            proxy_cache_valid any 10m;
+            proxy_cache_key $host$uri$is_args$args;
+            add_header Nginx-Cache "$upsteam_cache_status";
+            
+            proxy_next_upstream error timeout invalid_header http_500 http_502 http_503 http_504;
+        }
+    }
+    
+###动静分离
+    
+    server {
+        ...
+        root /opt/app/code
+        
+        location ~ \.jsp$ { 
+            proxy_pass  http://127.0.0.1:8080;
+            index index.html;
+        }
+        location ~ \.(jpg|jpeg|gif|png)$ {
+            expires 1h;
+            gzip on;     
+        }
+    }
+    
+###rewrite规则
+    
+    使用场景
+    1 URL访问跳转
+      页面跳转 兼容支持 展示效果等
+    2 SEO优化
+    3 维护
+      后台维护 流量转发等
+    4 安全
+    
+    配置
+    
+    Syntax : rewrite regex replacement [flag];
+    Default: -;           
+    Context: server,location,if
+    
+    flag
+    
+    last           停止rewrite检测
+    break          停止rewrite检测
+    redirect       返回302临时重定向
+    permanent      返回301永久重定向
+    
+    eg
+    
+    location / {
+        rewrite ^/course-(\d+)-(\d+)-(\d+).html  /course/$1/$2/course-$3.html break;
+        
+        if ($http-user-agent ~* Chrome) {
+            rewrite ^/course http://code.mac.com/course.html break;
+        }
+        
+        if (!-f $request_filename) {
+            rewrite ^(.*)/$ https://www.baodu.com/$1 redirect;
+        }
+    }
+    
+###secure_link_module模块
+
+    1 制定并检查请求链接的真实性，保护资源免遭未授权的访问。
+    2 限制链接生效周期
+    
+    配置
+    
+    Syntax : secure_link expression;
+    Default: -;           
+    Context: http,server,location
+    
+    Syntax : secure_link_md5 expression;
+    Default: -;           
+    Context: http,server,location
+    
+    
+    location / {
+        secure_link $arg_md5,$arg_expires;
+        secure_link_md5 "$secure_link_expires$uri";
+        
+        if ($secure_link = "" {
+            return 403;
+        }
+        
+        if ($secure_link = "0" {
+            return 410;
+        }
+    }
+    
+###geoip_module模块
+
+    基于IP地址匹配MaxMind GeoIP二进制文件 读取IP所在的地域信息
+    
+    1.区别国内国外的访问做访问规则控制
+    2.区别城市地域做访问规则控制
+    
+    模块安装
+    
+    yum install nginx_module_geoip
+    
+    编辑nginx.conf加载安装的nginx_module_geoip模块
+    
+    load_module "modules/ngx_http_geoip_module.so";
+    load_module "modules/ngx_stream_geoip_module.so";
+    
+    下载geoip数据文件
+    http://geolite.maxmind.com/download/geoip/database/GeoLiteCountry/GeoIP.dat.gz
+    http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz
+    
+    解压数据文件
+    
+    配置
+    [geoip.conf]
+    
+    geoip_country /etc/nginx/geoip/GeoIP.dat;
+    geoip_country_city /etc/nginx/geoip/GeoLiteCity.dat;
+    
+    server {
+        ...
+        
+        location /{
+            if ($geo_country_code != CN) {
+                return 403;
+            }
+            ...
+        }
+        
+        location /ip{
+            default_type text/plain;
+            return 200 "$remote_addr $geo_country_name $geo_country_code $geo_country_city";
+        }
+    }
+    
+    
+###Nginx使用https服务
+
+    生成密钥和CA证书
+    
+    1. 生成key密钥
+       openssl genrsa -idea -out mac.key 1024
+    2. 生成证书签名请求文件(csr文件)
+       openssl req -new -key mac.key -out mac.csr
+    3. 生成证书签名文件(CA文件)
+       openssl x509 -req -days 36500 -in mac.csr -signkey mac.key -out mac.crt
+       
+    配置
+    
+    Syntax : ssl on | off;
+    Default: ssl off;           
+    Context: http,server
+    
+    Syntax : ssl_certificate file;
+    Default: -;           
+    Context: http,server
+    
+    Syntax : ssl_certificate_key file;
+    Default: -;           
+    Context: http,server
+    
+    配置苹果要求的HTTPS
+    
+    openssl req -days 36500 -x509 -sha256 -nodes -newkey rsa:2048 -keyout mac.key -out mac_apple.crt
+    
+    跳过nginx启动ssl时要求输入密码
+    openssl rsa -in ./mac.key -out ./mac_nopass.key
+    然后 ssl_certificate_key使用mac_nopass.key
+    
+    
+    https服务优化
+    
+    1.激活keepalive长连接
+    2.设置ssl session缓存
+    
+###Nginx与Lua
+
+    Nginx+Lua环境
+    
+    1.LuaJIT
+    
+    wget http://luajit.org/download/LuaJIT-2.0.2.tar.gz
+    
+    make install PREFIX=/usr/local/LuaJIT
+    
+    export LUAJIT_LIB=/usr/local/LuaJIT/lib
+    
+    export LUAJIT_INC=/usr/local/LuaJIT/include/luajit-2.0
+    
+   
+    2.ngx_devel_kit和lua_nginx_module
+    
+    cd /opt/download
+    
+    wget https://github.com/simpl/ngx_devel_kit/archive/v0.3.0.tar.gz
+    
+    wget https://github.com/openresty/lua-nginx-module/archive/v0.10.9rc7.tar.gz
+    
+    分别解压、安装
+    
+    3.重新编译nginx
+    
+    cd /opt/download
+    wget http://nginx.org/download/nginx-1.12.1.tar.gz
+    执行解压，后按照如下方式编译：
+    ./configure --prefix=/etc/nginx --sbin-path=/usr/sbin/nginx --modules-path=/usr/lib64/nginx/modules --conf-path=/etc/nginx/nginx.conf --error-log-path=/var/log/nginx/error.log --http-log-path=/var/log/nginx/access.log --pid-path=/var/run/nginx.pid --lock-path=/var/run/nginx.lock --http-client-body-temp-path=/var/cache/nginx/client_temp --http-proxy-temp-path=/var/cache/nginx/proxy_temp --http-fastcgi-temp-path=/var/cache/nginx/fastcgi_temp --http-uwsgi-temp-path=/var/cache/nginx/uwsgi_temp --http-scgi-temp-path=/var/cache/nginx/scgi_temp --user=nginx --group=nginx --with-compat --with-file-aio --with-threads --with-http_addition_module --with-http_auth_request_module --with-http_dav_module --with-http_flv_module --with-http_gunzip_module --with-http_gzip_static_module --with-http_mp4_module --with-http_random_index_module --with-http_realip_module --with-http_secure_link_module --with-http_slice_module --with-http_ssl_module --with-http_stub_status_module --with-http_sub_module --with-http_v2_module --with-mail --with-mail_ssl_module --with-stream --with-stream_realip_module --with-stream_ssl_module --with-stream_ssl_preread_module --with-cc-opt='-O2 -g -pipe -Wall -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector-strong --param=ssp-buffer-size=4 -grecord-gcc-switches -m64 -mtune=generic -fPIC' --with-ld-opt='-Wl,-z,relro -Wl,-z,now -pie' 
+    --add-module=/opt/download/ngx_devel_kit-0.3.0 --add-module=/opt/download/lua-nginx-module-0.10.9rc7
+    make -j 4 && make install
+    
+    4.加载lua库，加入到ld.so.conf文件
+    echo "/usr/local/LuaJIT/lib" >> /etc/ld.so.conf
+    然后执行如下命令：
+    ldconfig
+  
     
