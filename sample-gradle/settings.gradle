@@ -1,0 +1,4 @@
+rootProject.name = 'sample-gradle'
+
+println '初始化阶段...'
+
