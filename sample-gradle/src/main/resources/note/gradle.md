@@ -34,5 +34,8 @@
     
 ###Gradle Project
     
-    Gradle工程默认以一个build.gradle文件识别一个Project
+    Gradle默认以一个build.gradle文件识别一个Project
+    
+    查看Projects命令: gradle projects
+
     
