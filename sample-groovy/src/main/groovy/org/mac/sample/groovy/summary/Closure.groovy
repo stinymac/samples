@@ -14,15 +14,13 @@
 
 package org.mac.sample.groovy.summary
 
-class Book {
-    //groovy中缺省的访问修饰符是public
-    String title
+def totalClinks = 0
+def partyPeople = 100
 
-    Book (String title) {
-        this.title = title
-    }
-
-    String getTitle() {
-        return title
-    }
+1.upto(partyPeople) { guestNumber ->
+    clinksWithGuest = guestNumber-1
+    totalClinks += clinksWithGuest
 }
+
+println totalClinks
+assert totalClinks == (partyPeople*(partyPeople-1))/2

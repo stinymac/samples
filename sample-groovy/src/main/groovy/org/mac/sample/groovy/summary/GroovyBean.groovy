@@ -12,7 +12,7 @@
  *
  */
 
-package org.mac.sample.groovy.basic_grammar
+package org.mac.sample.groovy.summary
 
 class GroovyBook {
     String title //声明一个属性

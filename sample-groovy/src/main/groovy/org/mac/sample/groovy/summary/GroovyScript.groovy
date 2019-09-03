@@ -12,7 +12,7 @@
  *
  */
 
-package org.mac.sample.groovy.basic_grammar
+package org.mac.sample.groovy.summary
 /**
  * 在没有明确编译Book类的时候使用Book类！唯一的前提是Book类
  * 的文件Book.groovy必须在类路径中，groovy运行时系统将自动找到这个文件，

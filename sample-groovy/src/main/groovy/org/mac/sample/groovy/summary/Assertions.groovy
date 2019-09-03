@@ -12,7 +12,7 @@
  *
  */
 
-package org.mac.sample.groovy.basic_grammar
+package org.mac.sample.groovy.summary
 
 // 断言用来显示程序当前的状态
 // 断言经常用来替换行注释，其显示期望的结果并且在同一时间进行验证，注释在没有人注意的时候也许会过期——断言总是检查正确性，在真实的代码里他们象极小的单元测试。

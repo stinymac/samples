@@ -12,7 +12,7 @@
  *
  */
 
-package org.mac.sample.groovy.basic_grammar
+package org.mac.sample.groovy.summary
 
 def nick = 'Gina'
 def book = 'Groovy in Action'

@@ -12,7 +12,7 @@
  *
  */
 
-package org.mac.sample.groovy.basic_grammar
+package org.mac.sample.groovy.summary
 /**-----------------same--------------------*/
 
 //相同的包处理机制（包括包的声明和 import 语句）

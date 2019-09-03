@@ -14,15 +14,9 @@
 
 package org.mac.sample.groovy.summary
 
-class Book {
-    //groovy中缺省的访问修饰符是public
-    String title
+def x = 1
+def y = 2
 
-    Book (String title) {
-        this.title = title
-    }
-
-    String getTitle() {
-        return title
-    }
-}
+assert x + y == 3
+assert x.plus(y) == 3
+assert x instanceof Integer

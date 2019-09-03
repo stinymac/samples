@@ -14,7 +14,7 @@
  *
  */
 
-package org.mac.sample.groovy.basic_grammar
+package org.mac.sample.groovy.summary
 //"#!" 注释只允许在脚本文件的第一行出现，通过这种方式 Unix shell 能定位 groovy 的启动脚本并且运行这些脚本。
 
 // "//"单行注释，注释文字必须在这一行结束。
