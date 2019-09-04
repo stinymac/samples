@@ -23,4 +23,81 @@ this.afterEvaluate {println '配置阶段完成...'}
 /**gradle执行完成后*/
 this.gradle.buildFinished {println 'gradle执行完成后...'}
 
+/**Project 相关API*/
+getProjects()
 
+def getProjects() {
+
+    this.getAllprojects().eachWithIndex { Project project, int index ->
+        if (index == 0) {
+            println '========================'
+            println 'Root Project'
+            println '========================'
+            println "Root Project ${project.name}"
+        }
+        else {
+            println "+----- ${project.name}"
+        }
+    }
+}
+
+println "SubProjects:"+this.getSubprojects()
+println "ParentProject:"+this.getParent()?.name
+
+println "Root Project:"+this.getRootProject()
+
+/**
+ project('app') {Project project ->
+     println project.name
+     group 'org.mac'
+     version '1.0.0'
+     dependencies {
+     }
+ }
+*/
+
+allprojects {
+    group 'org.mac'
+    version '1.0.0'
+}
+
+subprojects {Project project ->
+    apply from:'../publish-to-maven.gradle'
+}
+
+//子工程可以继承这些属性
+ext {
+    JUNIT_VERSION='4.12'
+}
+
+apply from: 'common.gradle'
+
+
+println "getRootDir() :" + getRootDir()
+println "getBuildDir() :" + getBuildDir()
+println "getProjectDir() :" + getProjectDir()
+
+/*try {
+    File file = this.file('common.gradle')
+    println file.text
+} catch (GradleException e) {
+    e.printStackTrace()
+}*/
+
+/*
+copy {
+    from file(this.getProjectDir().absolutePath+'/src/main/resources/note/gradle.md')
+    into this.getProjectDir().absolutePath+'/note/'
+    exclude {}
+    rename {}
+}*/
+
+
+fileTree('../../samples') {FileTree fileTree ->
+    def counter = 0
+    fileTree.visit {FileTreeElement element ->
+        //println element.file.name
+        counter++
+    }
+    println 'total:'+ counter
+}

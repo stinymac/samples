@@ -37,5 +37,48 @@
     Gradle默认以一个build.gradle文件识别一个Project
     
     查看Projects命令: gradle projects
+    
+####Project API
+
+    Gradle生命周期API
+    
+    Project相关API
+        getAllprojects()
+        getSubprojects()
+        getParent()
+        getRootProject()
+        
+        project(path,configurationClosure)
+        allprojects(closure)
+        subprojects(closure)
+        
+    Task相关API
+    
+    属性相关API
+        String DEFAULT_BUILD_FILE = "build.gradle";
+        String PATH_SEPARATOR = ":";
+        String DEFAULT_BUILD_DIR_NAME = "build";
+        String GRADLE_PROPERTIES = "gradle.properties";
+        String SYSTEM_PROP_PREFIX = "systemProp";
+        String DEFAULT_VERSION = "unspecified";
+        String DEFAULT_STATUS = "release";
+        //自定义扩展属性
+        ext {
+            JUNIT_VERSION='4.12'
+        }
+        // 或者使用gradle.properties文件
+    File相关API
+    
+        getRootDir()
+        getBuildDir()
+        getProjectDir()
+        
+        file(path)
+        files(...)
+        
+        copy(closure)
+        
+        fileTree()
+    其他API
 
     
