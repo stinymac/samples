@@ -1,0 +1,101 @@
+import groovy.xml.MarkupBuilder
+
+class Release {
+    String version
+    String code
+    String description
+}
+
+ext {
+    version = '1.0.1'
+    code = '101'
+    description = 'Release renewal'
+    destFile = file('release.xml')
+
+}
+
+def buildReleaseNoteXmlBodyClosure (Release releaseObj) {
+    return {
+        relaseVersion(releaseObj.version)
+        relaseCode(releaseObj.code)
+        relasedescription(releaseObj.description)
+    }
+}
+
+task writeReleaseNote {
+    //指定输入
+    inputs.property('version',this.version)
+    inputs.property('code',this.code)
+    inputs.property('description',this.ext.description)
+
+    // 指定输出
+    if (destFile != null && !destFile.exists()) {
+        destFile.createNewFile()
+    }
+    outputs.file this.destFile
+
+    doLast {
+        def releaseNote = inputs.getProperties()
+        File file = outputs.getFiles().getSingleFile()
+
+        Release releaseObj = new Release(releaseNote)
+        def sw = new StringWriter()
+        def xmlBuilder = new MarkupBuilder(sw)
+
+        if (file.text == null || file.text.size() <= 0) {
+            println "${releaseObj.version}->${releaseObj.description}"
+            xmlBuilder.releases {
+                release buildReleaseNoteXmlBodyClosure(releaseObj)
+            }
+            file.withWriter {Writer writer -> writer.append(sw.toString())}
+        }
+        else { //append
+            xmlBuilder.release buildReleaseNoteXmlBodyClosure(releaseObj)
+
+            def lines = file.readLines()
+            def length = lines.size() - 1
+            file.withWriter {writer ->
+                lines.eachWithIndex{ String line, int index ->
+                    if (index == length) {
+                        writer.append(sw.toString() + '\r\n')
+                    }
+                    writer.append(line+'\r\n')
+                }
+            }
+        }
+    }
+}
+
+task readReleaseNote {
+
+    inputs.file this.destFile
+
+    doLast {
+        def file = inputs.files.singleFile
+        println "->:"+file.text
+    }
+}
+
+task writeAndReadTest {
+
+    dependsOn (readReleaseNote,writeReleaseNote)
+
+    doLast {
+        println '........'
+    }
+}
+
+
+this.afterEvaluate { project ->
+
+    def buildTask = project.tasks.getByName('build')
+    println "buildTask: $buildTask"
+
+    if (buildTask == null) {
+        throw new GradleException('No task named build')
+    }
+
+    buildTask.doLast {
+        writeReleaseNote.execute()
+    }
+}

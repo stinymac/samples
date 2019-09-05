@@ -41,6 +41,9 @@
 ####Project API
 
     Gradle生命周期API
+        beforeEvaluate()
+        afterEvaluate()
+        buildFinished()
     
     Project相关API
         getAllprojects()
@@ -80,5 +83,84 @@
         
         fileTree()
     其他API
+        依赖相关API
+            repositories()
+            dependencies()
+        外部命令执行
+
+###Gradle Task        
+
+####Task的定义及配置    
+    /**
+     String TASK_NAME = "name";
+     String TASK_DESCRIPTION = "description";
+     String TASK_GROUP = "group";
+     String TASK_TYPE = "type";
+     String TASK_DEPENDS_ON = "dependsOn";
+     String TASK_OVERWRITE = "overwrite";
+     String TASK_ACTION = "action";
+     */
+     
+    task helloWorld {
+        println 'Hello World!!!'
+    }
+    
+    this.tasks.create(name:'sample') {
+        println 'Task sample run...'
+    }
+    
+####Task 执行
+
+    def buildStartTime,buildEndTime
+    
+    this.afterEvaluate {
+        def preBuildTask = this.tasks.findByName('build')
+        preBuildTask?.doFirst {
+            buildStartTime = System.currentTimeMillis()
+            println " build task start time:$buildStartTime"
+        }
+    
+        def buildTask = this.tasks.findByName('build')
+        buildTask?.doLast {
+            buildEndTime = System.currentTimeMillis()
+            println " build task end time:$buildEndTime"
+        }
+    }
+    
+####Task 执行顺序
+
+    dependsOn 依赖
+    
+    Task指定输入输出
+    
+    通过API指定顺序
+    
+    /****************************
+    查看任务依赖详情
+    gradle build -dry-run
+    gradle build -m
+    ****************************/
+    
+####Gradle Task Type
+
+
+###settings.gradle
+
+    include 引入子工程
+    
+###Source Set
+
+    sourceSets {
+        main {
+            resources {
+                setSrcDirs ([
+                        'src/main/resources',
+                        'src/main/resources/common'
+                ])
+            }
+        }
+    }
+    
+###自定义插件
 
     

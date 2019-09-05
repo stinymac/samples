@@ -1,8 +1,8 @@
 group 'org.mac'
 version '1.0-SNAPSHOT'
 
-apply plugin: 'java'
 
+apply plugin: 'java'
 sourceCompatibility = 1.8
 
 repositories {
@@ -93,6 +93,7 @@ copy {
 }*/
 
 
+/*
 fileTree('../../samples') {FileTree fileTree ->
     def counter = 0
     fileTree.visit {FileTreeElement element ->
@@ -100,4 +101,167 @@ fileTree('../../samples') {FileTree fileTree ->
         counter++
     }
     println 'total:'+ counter
+}*/
+
+
+/*buildscript { ScriptHandler handler ->
+    // 仓库地址
+    handler.repositories {RepositoryHandler repositoryHandler ->
+        repositoryHandler.jcenter()
+        repositoryHandler.mavenCentral()
+        repositoryHandler.mavenLocal()
+        repositoryHandler.maven {
+            name 'private'
+            url ''
+            credentials {
+                username = 'admin'
+                password = ''
+            }
+        }
+    }
+    //插件依赖
+    handler.dependencies {
+        classpath ''
+    }
 }
+*/
+
+/*dependencies {
+    compile fileTree(includes: '',dir: '')
+    compile ''
+    compile project('')
+    compile ('') {
+        exclude module: ''
+    }
+}*/
+
+
+
+/*this.tasks.create(name:'externalCopy') {
+    doLast {
+        def source = this.buildDir.path + '/libs/sample-gradle-1.0.0.jar'
+        def dest = 'E:/'
+        def command = "move $source $dest"
+
+        exec {
+            try {
+                executable 'bat'//?
+                args '-c', command
+            } catch (GradleException e) {
+                e.printStackTrace()
+            }
+        }
+    }
+}*/
+
+/**
+ String TASK_NAME = "name";
+ String TASK_DESCRIPTION = "description";
+ String TASK_GROUP = "group";
+ String TASK_TYPE = "type";
+ String TASK_DEPENDS_ON = "dependsOn";
+ String TASK_OVERWRITE = "overwrite";
+ String TASK_ACTION = "action";
+ */
+/*
+task helloWorld(group: 'sample',description:'...') {
+    println 'Hello World!!!'
+    doFirst {
+        println 'group:'+group
+    }
+}
+
+this.tasks.create(name:'sample') {
+    println 'Task sample run...'
+}*/
+
+/*
+def buildStartTime,buildEndTime
+
+this.afterEvaluate {
+    def preBuildTask = this.tasks.findByName('build')
+    preBuildTask?.doFirst {
+        buildStartTime = System.currentTimeMillis()
+        println " build task start time:$buildStartTime"
+    }
+
+    def buildTask = this.tasks.findByName('build')
+    buildTask?.doLast {
+        buildEndTime = System.currentTimeMillis()
+        println " build task end time:$buildEndTime"
+    }
+}
+*/
+
+
+/*task taskX {
+    doLast {
+        println 'task X'
+    }
+}
+
+task taskY {
+    doLast {
+        println 'task Y'
+    }
+}
+
+task taskZ {//dependsOn:[taskX,taskY]
+    dependsOn (this.tasks.findAll {
+        task -> return task.name.startsWith('lib')
+    })
+    doLast {
+        println 'task Z'
+    }
+}
+
+task lib1 << {
+    println 'lib1'
+}
+
+task lib2 << {
+    println 'lib2'
+}
+
+task noLib << {
+    println 'noLib'
+}*/
+
+
+//apply from:'release.gradle'
+
+
+/*
+task taskA {
+    doLast {
+        println 'task A'
+    }
+}
+task taskB {
+    mustRunAfter taskA
+    doLast {
+        println 'task B'
+    }
+}
+task taskC {
+    mustRunAfter taskB
+    doLast {
+        println 'task C'
+    }
+}*/
+
+
+/*
+sourceSets {
+    main {
+        resources {
+            setSrcDirs ([
+                    'src/main/resources',
+                    'src/main/resources/common'
+            ])
+        }
+    }
+}
+*/
+
+
