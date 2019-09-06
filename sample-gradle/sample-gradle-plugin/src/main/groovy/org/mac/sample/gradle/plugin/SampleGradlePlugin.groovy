@@ -7,6 +7,9 @@ class SampleGradlePlugin implements Plugin<Project>{
 
     @Override
     void apply(Project project) {
-        println "Hello ${project.name},I am  sample gradle plugin!"
+        println "===== Hello ${project.name}======="
+        project.extensions.create('releaseNote',SampleGradlePluginExtension)
+        project.tasks.create('writeReleaseNoteTask', SampleGradleTask)
+        println "===== ${project.name} execute plugin success======="
     }
 }

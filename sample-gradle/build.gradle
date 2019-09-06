@@ -11,7 +11,28 @@ repositories {
 }
 
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+   testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+/**引用自定义插件*/
+apply plugin: 'org.mac.sample.gradle.plugin'
+
+buildscript {
+    repositories {
+        maven {
+            url uri('./repo')
+        }
+    }
+    dependencies {
+        classpath 'org.mac:sample-gradle-plugin:1.0.0'
+    }
+}
+
+releaseNote {
+    version = '1.0.0'
+    code = '100'
+    description = 'First Release'
+    fileName = 'release.xml'
 }
 
 /**配置阶段开始前 this.gradle.beforeProject {}*/
@@ -263,5 +284,4 @@ sourceSets {
     }
 }
 */
-
 

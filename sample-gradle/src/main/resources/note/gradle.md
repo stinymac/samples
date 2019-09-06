@@ -162,5 +162,15 @@
     }
     
 ###自定义插件
-
+    [org.mac.sample.gradle.plugin.properties]
+    implementation-class=org.mac.sample.gradle.plugin.SampleGradlePlugin
     
+     @Override
+     void apply(Project project) {
+         println "===== Hello ${project.name}======="
+         project.extensions.create('releaseNote',SampleGradlePluginExtension)
+         project.tasks.create('writeReleaseNoteTask', SampleGradleTask)
+         println "===== ${project.name} execute plugin success======="
+     }
+     
+###Gradle Java plugin
