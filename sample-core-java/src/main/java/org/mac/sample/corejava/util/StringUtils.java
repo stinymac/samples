@@ -29,7 +29,7 @@ public abstract class StringUtils {
     public static final Pattern PATTERN_POSITIVE_INTEGER = Pattern.compile("^[1-9][0-9]*$");
 
 
-    private StringUtils(){}
+    private StringUtils(){throw new AssertionError("No org.mac.sample.corejava.util.StringUtils instances for you!");}
 
     public static boolean isEmpty(String value){
         return value == null || value.trim().length() <= 0;

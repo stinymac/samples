@@ -24,7 +24,8 @@ import java.io.IOException;
  **/
 
 public final class Utils {
-    private Utils(){}
+
+    private Utils(){throw new AssertionError("No org.mac.sample.corejava.util.StringUtils instances for you!");}
 
     public static <T extends Closeable>void close(T... resources) {
         if (resources == null || resources.length <= 0) {
