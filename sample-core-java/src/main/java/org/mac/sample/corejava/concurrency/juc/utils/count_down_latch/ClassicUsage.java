@@ -49,7 +49,7 @@ public class ClassicUsage {
     }
 
     public void case2() {
-        ExecutorService executor = Executors.newFixedThreadPool(10);
+        //ExecutorService executor = Executors.newFixedThreadPool(10);
 
         CountDownLatch latch = new CountDownLatch(10);
 
@@ -64,7 +64,7 @@ public class ClassicUsage {
             }).start();
             latch.countDown();
         }
-        executor.shutdown();
+        //executor.shutdown();
 
     }
 }
