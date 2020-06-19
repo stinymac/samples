@@ -45,7 +45,7 @@ public class DefaultMethodMultiInheritanceConflict {
     private interface D {
 
         default void m (){
-            System.out.print("==B==");
+            System.out.print("==D==");
         }
     }
 
