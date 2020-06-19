@@ -89,7 +89,7 @@ public class ConsistentHashTest {
 
         for (int i = 0; i < size; i++) {
             String key = nextKey(i);
-            System.out.println( key+"->"+ImprovedConsistentHash.routeToServer(key) );
+            ImprovedConsistentHash.routeToServer(key);
         }
     }
 

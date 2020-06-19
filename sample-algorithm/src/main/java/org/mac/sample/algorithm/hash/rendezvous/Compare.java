@@ -19,14 +19,14 @@ import com.google.common.hash.Hashing;
  * @author Chris Lohfink
  */
 public class Compare {
-    private static final HashFunction hfunc = Hashing.murmur3_128();
-    private static final Funnel<CharSequence> strFunnel = Funnels.stringFunnel(Charset.defaultCharset());
+    private static final HashFunction H_FUNC = Hashing.murmur3_128();
+    private static final Funnel<CharSequence> STR_FUNNEL = Funnels.stringFunnel(Charset.defaultCharset());
 
     public static void main(String[] args) {
         Map<String, AtomicInteger> distribution = Maps.newHashMap();
 
         System.out.println("======: ConsistentHash :========");
-        ConsistentHash<String, String> c = new ConsistentHash(hfunc, strFunnel, strFunnel, getNodes(distribution));
+        ConsistentHash<String, String> c = new ConsistentHash(H_FUNC, STR_FUNNEL, STR_FUNNEL, getNodes(distribution));
         for(int i = 0 ; i < 10000; i++) {
             distribution.get(c.get(""+i)).incrementAndGet();
         }
@@ -48,7 +48,7 @@ public class Compare {
 
         System.out.println("======: RendezvousHash :========");
         distribution = Maps.newHashMap();
-        RendezvousHash<String, String> r = new RendezvousHash(hfunc, strFunnel, strFunnel, getNodes(distribution));
+        RendezvousHash<String, String> r = new RendezvousHash(H_FUNC, STR_FUNNEL, STR_FUNNEL, getNodes(distribution));
 
         for(int i = 0 ; i < 10000; i++) {
             distribution.get(r.get(""+i)).incrementAndGet();

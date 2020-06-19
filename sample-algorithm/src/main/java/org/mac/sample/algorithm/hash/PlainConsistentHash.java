@@ -44,7 +44,11 @@ public class PlainConsistentHash {
     static {
         for (int i = 0 ,size = servers.length; i < size; i++) {
             /*String 本身的hash方法此时产生结果分布在一个很小的区间,即hash环数据倾斜*/
+            //System.out.println("servers["+i+"]:"+HashFunctions.fnv1_32_hash(servers[i]));
             buckets.put(HashFunctions.fnv1_32_hash(servers[i]),servers[i]);
+        }
+        if (buckets.size() != servers.length) {
+            throw new RuntimeException("There was a hash conflict");
         }
         //System.out.println(buckets);
     }
@@ -57,8 +61,9 @@ public class PlainConsistentHash {
      */
     public static String routeToServer(String key) {
 
-        int hash  = HashFunctions.fnv1_32_hash(key);
-        SortedMap<Integer, String> set = buckets.tailMap(hash);
+        int fromKey  = HashFunctions.fnv1_32_hash(key);
+        // 返回 <= fromKey的子集
+        SortedMap<Integer, String> set = buckets.tailMap(fromKey);
         if (set.isEmpty()) {
             return buckets.get(buckets.firstKey());
         }

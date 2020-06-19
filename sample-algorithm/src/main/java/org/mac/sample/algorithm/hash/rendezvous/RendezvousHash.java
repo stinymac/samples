@@ -116,6 +116,8 @@ public class RendezvousHash<K, N extends Comparable<? super N>> {
 
     /**
      * return a node for a given key
+     *
+     * 取运算后hash值最大的节点
      */
     public N get(K key) {
         long maxValue = Long.MIN_VALUE;

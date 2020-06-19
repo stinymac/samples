@@ -43,21 +43,26 @@ public class ImprovedConsistentHash {
     private static final SortedMap<Integer, String> virtualBuckets =  new TreeMap<Integer, String>();
 
 
-    /** 每个真实节点对应的虚拟节点 (800 - K * REAL_NODES): 一个真实节点应对应的虚拟节点数的一个大致的函数关系*/
+    /** 每个真实节点对应的虚拟节点 (800 - K * REAL_NODES: 一个真实节点应对应的虚拟节点数的一个大致的函数关系)*/
     //private static final int K = 100;
 
-    private static final int VIRTUAL_NODES = 200 ;
+    private static final int NUMBER_OF_VIRTUAL_NODES = 200 ;
     private static final String SEPARATOR = "-";
 
     static {
         for (String realNode : realServerNodes) {
-            for (int i = 0; i < VIRTUAL_NODES; i++) {
+            for (int i = 0; i < NUMBER_OF_VIRTUAL_NODES; i++) {
                 String virtualNodeName = "VN["+i+"]"+SEPARATOR+realNode;
                 int hash = HashFunctions.fnv1_32_hash(virtualNodeName);
                 virtualBuckets.put(hash, virtualNodeName);
             }
         }
-        //System.out.println(virtualBuckets);
+        if (virtualBuckets.size() != realServerNodes.size()  * NUMBER_OF_VIRTUAL_NODES) {
+            throw new RuntimeException("There was a hash conflict");
+        }
+        System.out.println(virtualBuckets.firstKey());
+        System.out.println(virtualBuckets.lastKey());
+        System.out.println(virtualBuckets.size() == realServerNodes.size()  * NUMBER_OF_VIRTUAL_NODES);
     }
 
     /**
@@ -66,13 +71,18 @@ public class ImprovedConsistentHash {
      * @param key
      * @return
      */
+
     public static String routeToServer(String key) {
 
-        int hash  = HashFunctions.fnv1_32_hash(key);
-        SortedMap<Integer, String> set = virtualBuckets.tailMap(hash);
+        int fromKey  = HashFunctions.fnv1_32_hash(key);
+
+        SortedMap<Integer, String> set = virtualBuckets.tailMap(fromKey);
 
         String firstNode = set.isEmpty()? virtualBuckets.get(virtualBuckets.firstKey()) : set.get(set.firstKey());
 
-        return firstNode.substring(firstNode.indexOf(SEPARATOR)+1);
+        String serverAddress = firstNode.substring(firstNode.indexOf(SEPARATOR)+1);
+        System.out.println( key+"-> [hash:"+ fromKey+"] route to : ["+serverAddress+"]");
+
+        return serverAddress;
     }
 }
